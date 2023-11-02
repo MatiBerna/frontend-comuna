@@ -1,0 +1,161 @@
+<!-- <div
+  class="modal fade"
+  id="editPersonModal"
+  tabindex="-1"
+  aria-labelledby="editPersonModalLabel"
+  aria-hidden="true"
+> -->
+<!-- <div class="modal-dialog"> -->
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Socio</h1>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="personForm">
+      <div class="mb-3">
+        <label for="dniInput" class="form-label">DNI</label>
+        <input
+          formControlName="dni"
+          class="form-control"
+          id="dniInput"
+          aria-describedby="dniHelp"
+        />
+        <div
+          *ngIf="dni.invalid && (dni.dirty || dni.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="dni.errors?.['required']">El dni es requerido</div>
+          <div *ngIf="dni.errors?.['pattern']">El dni debe ser numérico</div>
+          <div *ngIf="dni.errors?.['minLength']">
+            El DNI debe contener al menos 7 dígitos
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6">
+          <label for="firstNameInput" class="form-label">Nombre</label>
+          <input
+            formControlName="firstName"
+            class="form-control"
+            id="firstNameInput"
+            aria-describedby="firstNameHelp"
+          />
+          <div
+            *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="firstName.errors?.['required']">
+              El nombre es requerido
+            </div>
+            <div *ngIf="firstName.errors?.['pattern']">
+              El nombre debe estar conformado solo por letras
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="lastNameInput" class="form-label">Apellido</label>
+          <input
+            formControlName="lastName"
+            class="form-control"
+            id="lastNameInput"
+            aria-describedby="lastNameHelp"
+          />
+          <div
+            *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="lastName.errors?.['required']">
+              El nombre es requerido
+            </div>
+            <div *ngIf="lastName.errors?.['pattern']">
+              El nombre debe estar conformado solo por letras
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="emailInput" class="form-label">Email</label>
+        <input
+          formControlName="email"
+          class="form-control"
+          id="emailInput"
+          aria-describedby="emailHelp"
+        />
+        <div
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="email.errors?.['required']">El email es requerido</div>
+          <div *ngIf="email.errors?.['email']">
+            El email ingresado no tiene un formato válido
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="phoneInput" class="form-label">Phone</label>
+        <input
+          formControlName="phone"
+          class="form-control"
+          id="phoneInput"
+          aria-describedby="phoneHelp"
+        />
+        <div
+          *ngIf="phone.invalid && (phone.dirty || phone.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="phone.errors?.['pattern']">
+            El teléfono ingresado solo debe contener números
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="birthdateInput" class="form-label"
+          >Fecha de nacimiento</label
+        >
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            formControlName="birthdate"
+            ngbDatepicker
+            [minDate]="{ year: 1900, month: 1, day: 1 }"
+            [maxDate]="maxDate"
+            #d="ngbDatepicker"
+          />
+          <button
+            class="btn btn-outline-secondary bi bi-calendar3"
+            (click)="d.toggle()"
+            type="button"
+          ></button>
+        </div>
+        <div
+          *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="birthdate.errors?.['required']">
+            La fecha de nacimiento es requerida
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="close()"
+    >
+      Cerrar
+    </button>
+    <button type="button" class="btn btn-primary">Guardar</button>
+  </div>
+</div>
+<!-- </div> -->
+<!-- </div> -->

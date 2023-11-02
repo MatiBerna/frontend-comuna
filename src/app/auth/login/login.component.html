@@ -1,0 +1,46 @@
+<div class="card container-sm my-3" style="max-width: 600px">
+  <div class="card-body">
+    <form [formGroup]="loginForm">
+      <p class="text-danger">{{ loginError }}</p>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label"
+          >Usuario o Correo Electrónico</label
+        >
+        <input
+          formControlName="username"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="emailHelp"
+        />
+        <div
+          *ngIf="username.invalid && (username.dirty || username.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="username.errors?.['required']">
+            El username es requerido
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Contraseña</label>
+        <input
+          formControlName="password"
+          type="password"
+          class="form-control"
+        />
+        <div
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="password.errors?.['required']">
+            La Contraseña es requerida
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="login()">
+        Aceptar
+      </button>
+    </form>
+  </div>
+</div>
