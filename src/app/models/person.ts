@@ -5,6 +5,6 @@ export interface Person {
   lastName: string;
   phone: string | null;
   email: string;
-  birthdate: Date;
+  birthdate?: Date;
   password?: string;
 }

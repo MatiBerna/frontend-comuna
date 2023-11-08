@@ -1,8 +1,20 @@
 <div class="container-sm" style="max-width: 1200px">
   <p class="text-danger">{{ errorMessage }}</p>
-  <button class="btn btn-primary" (click)="openModal(voidPerson)">
-    Nueva persona
-  </button>
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-primary" (click)="openModal(voidPerson)">
+      Nueva persona
+    </button>
+    <div class="input-group" style="max-width: 400px">
+      <input
+        type="text"
+        class="form-control"
+        aria-describedby="inputGroup-sizing-sm"
+        [(ngModel)]="terminoBusqueda"
+        placeholder="Buscar..."
+      />
+      <span class="input-group-text" id="inputGroup-sizing-sm">buscar</span>
+    </div>
+  </div>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -13,13 +25,19 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let person of personsList">
+      <tr *ngFor="let person of personsList | filter : terminoBusqueda">
         <td>{{ person.dni }}</td>
         <td>{{ person.firstName }}</td>
         <td>{{ person.lastName }}</td>
         <td class="bi bi-edit">
           <button class="btn btn-outline-primary" (click)="openModal(person)">
             <i class="bi bi-pencil-fill"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger ms-2"
+            (click)="deletePerson(person)"
+          >
+            <i class="bi bi-trash-fill"></i>
           </button>
         </td>
       </tr>

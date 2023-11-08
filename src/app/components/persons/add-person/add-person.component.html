@@ -18,6 +18,7 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="personForm">
+      <p class="text-danger">{{ personError }}</p>
       <div class="mb-3">
         <label for="dniInput" class="form-label">DNI</label>
         <input
@@ -154,7 +155,9 @@
     >
       Cerrar
     </button>
-    <button type="button" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-primary" (click)="addOrUpdate()">
+      Guardar
+    </button>
   </div>
 </div>
 <!-- </div> -->

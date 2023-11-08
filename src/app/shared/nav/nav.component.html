@@ -22,13 +22,15 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="#">Features</a>
+          <a class="nav-link text-white" href="#">Eventos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="#">Pricing</a>
+          <a class="nav-link text-white" href="#">Competiciones</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/persons">Personas</a>
+          <a class="nav-link text-white" *ngIf="isAdmin()" routerLink="/persons"
+            >Personas</a
+          >
         </li>
       </ul>
     </div>

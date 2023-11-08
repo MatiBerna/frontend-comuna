@@ -8,6 +8,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
+import { PersonsService } from 'src/app/services/persons/persons.service';
 
 @Component({
   selector: 'app-add-person',
@@ -19,6 +20,7 @@ export class AddPersonComponent implements OnInit {
   modalRef!: NgbModalRef;
   today = new Date();
   maxDate!: NgbDateStruct;
+  personError: string = '';
 
   personForm = this.formBuilder.group({
     _id: [''],
@@ -32,11 +34,11 @@ export class AddPersonComponent implements OnInit {
     ],
     firstName: [
       '',
-      [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú]*$')],
+      [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú ]*$')],
     ],
     lastName: [
       '',
-      [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú]*$')],
+      [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú ]*$')],
     ],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.pattern('^[0-9]+$')]],
@@ -52,17 +54,9 @@ export class AddPersonComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private personService: PersonsService
   ) {}
-
-  // open(content: any) {
-  //   // this.person = person;
-  //   // console.log(content);
-  //   this.modalService.open(content, {
-  //     ariaLabelledBy: 'editPersonModal',
-  //   });
-  //   console.log(this.person);
-  // }
 
   close() {
     this.personForm.reset();
@@ -93,6 +87,38 @@ export class AddPersonComponent implements OnInit {
     return this.personForm.controls.birthdate;
   }
 
+  addOrUpdate() {
+    if (this.personForm.valid) {
+      let jsDate = new Date(
+        this.birthdate.value!.year,
+        this.birthdate.value!.month - 1,
+        this.birthdate.value!.day
+      );
+
+      const personToSend: Person = {
+        _id: this.person._id,
+        dni: this.dni.value!,
+        firstName: this.firstName.value!,
+        lastName: this.lastName.value!,
+        phone: this.phone.value,
+        email: this.email.value!,
+        birthdate: jsDate,
+      };
+      this.personService.addOrUpdate(personToSend).subscribe({
+        error: (err) => {
+          console.log(err);
+          this.personError = err;
+        },
+        complete: () => {
+          console.log('Cambios registrados');
+          this.close();
+        },
+      });
+    } else {
+      this.personForm.markAllAsTouched();
+    }
+  }
+
   ngOnInit(): void {
     this.maxDate = {
       year: this.today.getFullYear(),
@@ -100,7 +126,7 @@ export class AddPersonComponent implements OnInit {
       day: this.today.getDate(),
     };
 
-    let birthdateJS: Date = new Date(this.person.birthdate);
+    let birthdateJS: Date = new Date(this.person.birthdate!);
     let birthdateNgb: NgbDateStruct = {
       year: birthdateJS.getFullYear(),
       month: birthdateJS.getMonth() + 1,

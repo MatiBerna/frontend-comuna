@@ -3,10 +3,12 @@
     <div class="col-5">
       <app-nav></app-nav>
     </div>
-    <div class="col-2 font-weight-bold fs-4">Comuna</div>
+    <div class="col-2 font-weight-bold fs-4 text-center">Comuna</div>
     <div class="col-5 me-8 text-end" *ngIf="userLoginOn">
-      <button class="btn btn-primary">
-        <span class="bi bi-person-circle user-button text-white"> Usuario</span>
+      <button class="btn btn-primary" (click)="logOut()" routerLink="/home">
+        <span class="bi bi-person-circle user-button text-white">
+          Cerrar Sesion</span
+        >
       </button>
     </div>
     <div class="col-5 display-7 font-weight-bold text-end" *ngIf="!userLoginOn">

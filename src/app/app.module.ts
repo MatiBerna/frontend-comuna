@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { PersonsListComponent } from './pages/persons-list/persons-list.component';
 import { AddPersonComponent } from './components/persons/add-person/add-person.component';
 import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CustomFilterPipe } from './pipes/custom-filter-pipe.pipe';
+import { CompetitionTypesComponent } from './pages/competition-types/competition-types.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NavComponent,
     PersonsListComponent,
     AddPersonComponent,
+    CustomFilterPipe,
+    CompetitionTypesComponent,
   ],
   imports: [
     BrowserModule,

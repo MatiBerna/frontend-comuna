@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Person } from 'src/app/models/person';
@@ -12,7 +16,24 @@ export class PersonsService {
 
   getAll(): Observable<Person[]> {
     return this.http
-      .get<Person[]>(`${this.path}`)
+      .get<Person[]>(`${this.path}`, this.createHeaders())
+      .pipe(catchError(this.handleError));
+  }
+
+  addOrUpdate(persona: Person) {
+    if (persona._id === null || persona._id === '') {
+      return this.http
+        .post<Person>(`${this.path}`, persona)
+        .pipe(catchError(this.handleError));
+    }
+    return this.http
+      .patch(`${this.path}/${persona._id}`, persona)
+      .pipe(catchError(this.handleError));
+  }
+
+  delete(persona: Person) {
+    return this.http
+      .delete<Person>(`${this.path}/${persona._id}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -30,5 +51,13 @@ export class PersonsService {
       );
       return throwError(() => new Error(error.error.message));
     }
+  }
+
+  private createHeaders() {
+    return {
+      headers: new HttpHeaders({
+        Authorization: sessionStorage.getItem('token_session')!,
+      }),
+    };
   }
 }

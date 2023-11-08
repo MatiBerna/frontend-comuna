@@ -14,6 +14,7 @@ export class PersonsListComponent implements OnInit {
   editPerson!: AddPersonComponent;
   personsList: Person[] = [];
   errorMessage: string = '';
+  terminoBusqueda: string = '';
   voidPerson: Person = {
     _id: null,
     dni: '',
@@ -21,7 +22,6 @@ export class PersonsListComponent implements OnInit {
     lastName: '',
     email: '',
     phone: '',
-    birthdate: new Date(),
   };
   selectedPerson: Person = {
     _id: null,
@@ -30,7 +30,6 @@ export class PersonsListComponent implements OnInit {
     lastName: '',
     email: '',
     phone: '',
-    birthdate: new Date(),
   };
 
   constructor(
@@ -62,6 +61,25 @@ export class PersonsListComponent implements OnInit {
       backdrop: true,
     });
     modalRef.componentInstance.person = this.selectedPerson;
+
+    modalRef.dismissed.subscribe(() => {
+      this.getPersons();
+    });
+  }
+
+  deletePerson(person: Person) {
+    if (window.confirm('¿estás seguro que quieres borrar el socio?')) {
+      console.log('borrando');
+      this.personsService.delete(person).subscribe({
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+          console.log('Socio Borrado');
+          this.getPersons();
+        },
+      });
+    }
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { Admin } from './admin';
+import { Admin } from '../../models/admin';
 
 export interface UserAndToken {
   data: Admin;
