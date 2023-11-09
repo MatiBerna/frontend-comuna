@@ -6,8 +6,6 @@ export const loginGuard = () => {
   const router = inject(Router);
   const token = sessionStorage.getItem('token_session');
 
-  console.log('HOLAA LOGINGUARD', token);
-
   if (token !== null) {
     if (!expirationTokenAuth(token)) {
       return true;

@@ -1,0 +1,66 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="headerModalLabel">Nuevo Tipo</h1>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="compeTypeForm">
+      <p class="text-danger">{{ compeTypeError }}</p>
+      <div class="mb-3">
+        <label for="descriptionInput" class="form-label">Descripción</label>
+        <input
+          formControlName="description"
+          class="form-control"
+          id="descriptionInput"
+          aria-labelledby="descriptionHelp"
+        />
+        <div
+          *ngIf="
+            description.invalid && (description.dirty || description.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="description.errors?.['required']">
+            El campo descripcion es requerido
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="rulesInput" class="form-label">Reglas</label>
+        <textarea
+          formControlName="rules"
+          class="form-control"
+          id="rulesInput"
+          aria-labelledby="rulesHelp"
+          rows="10"
+        ></textarea>
+        <div
+          *ngIf="rules.invalid && (rules.dirty || rules.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="rules.errors?.['required']">
+            El campo reglas es requerido
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="close()"
+    >
+      Cerrar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="addOrUpdate()">
+      Guardar
+    </button>
+  </div>
+</div>

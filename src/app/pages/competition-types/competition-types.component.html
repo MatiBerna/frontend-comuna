@@ -1,1 +1,51 @@
-<p>competition-types works!</p>
+<div class="container-sm" style="max-width: 1200px">
+  <p class="text-danger">{{ errorMessage }}</p>
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-primary" (click)="openModal(voidCompeType)">
+      Nuevo Tipo
+    </button>
+    <div class="input-group" style="max-width: 400px">
+      <input
+        type="text"
+        class="form-control"
+        aria-describedby="inputGroup-sizing-sm"
+        [(ngModel)]="terminoBusqueda"
+        placeholder="Buscar..."
+      />
+      <span class="input-group-text" id="inputGroup-sizing-sm">buscar</span>
+    </div>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-3" scope="col">Descripcion</th>
+        <th class="col-6" scope="col">Reglas</th>
+        <th class="col-3" scope="col" aria-label="row actions">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let compeType of compTypeList | filter : terminoBusqueda">
+        <td>{{ compeType.description }}</td>
+        <td>
+          <div class="text-truncate" style="max-width: 150px">
+            {{ compeType.rules }}
+          </div>
+        </td>
+        <td class="bi bi-edit">
+          <button
+            class="btn btn-outline-primary"
+            (click)="openModal(compeType)"
+          >
+            <i class="bi bi-pencil-fill"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger mx-2 my-2"
+            (click)="deleteCompeType(compeType)"
+          >
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
