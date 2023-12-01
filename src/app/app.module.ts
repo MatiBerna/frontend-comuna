@@ -16,6 +16,8 @@ import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomFilterPipe } from './pipes/custom-filter-pipe.pipe';
 import { CompetitionTypesComponent } from './pages/competition-types/competition-types.component';
 import { AddCompetitionTypeComponent } from './components/competition-types/add-competition-type/add-competition-type.component';
+import { AddAdminComponent } from './components/admins/add-admin/add-admin.component';
+import { CompetitionComponent } from './pages/competition/competition.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { AddCompetitionTypeComponent } from './components/competition-types/add-
     CustomFilterPipe,
     CompetitionTypesComponent,
     AddCompetitionTypeComponent,
+    AddAdminComponent,
+    CompetitionComponent,
   ],
   imports: [
     BrowserModule,

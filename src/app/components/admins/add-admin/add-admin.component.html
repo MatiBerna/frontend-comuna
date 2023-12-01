@@ -1,0 +1,90 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="headerModalLabel">Nuevo Tipo</h1>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="adminForm">
+      <p class="text-danger">{{ adminError }}</p>
+      <div class="mb-3">
+        <label for="usernameInput" class="form-label">Nombre de Usuario</label>
+        <input
+          formControlName="username"
+          class="form-control"
+          id="usernameInput"
+          aria-labelledby="usernameHelp"
+        />
+        <div
+          *ngIf="username.invalid && (username.dirty || username.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="username.errors?.['required']">
+            El nombre de usuario es requerido
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="passwordInput" class="form-label">Nueva Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          id="passwordInput"
+          aria-labelledby="passwordHelp"
+        />
+        <div
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="password.errors?.['required']">
+            La Contraseña es requerida
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="confirmPasswordInput" class="form-label"
+          >Confirmar Contraseña</label
+        >
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          class="form-control"
+          id="confirmPasswordInput"
+          aria-labelledby="confirmPasswordHelp"
+        />
+        <div
+          *ngIf="
+            confirmPassword.invalid &&
+            (confirmPassword.dirty || confirmPassword.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="confirmPassword.errors?.['required']">
+            Debes confirmar la contraseña
+          </div>
+        </div>
+      </div>
+      <p class="text-danger" *ngIf="adminForm.errors?.['notSame']">
+        Las contraseñas no coinciden
+      </p>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="close()"
+    >
+      Cerrar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="addOrUpdate()">
+      Guardar
+    </button>
+  </div>
+</div>

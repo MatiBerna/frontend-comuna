@@ -24,7 +24,8 @@ export class LoginService {
   currentUserData: BehaviorSubject<Admin | Person> = new BehaviorSubject<
     Admin | Person
   >({
-    _id: '',
+    _id: null,
+    username: null,
   });
 
   constructor(private http: HttpClient) {}
