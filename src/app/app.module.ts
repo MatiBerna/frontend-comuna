@@ -19,6 +19,8 @@ import { AddCompetitionTypeComponent } from './components/competition-types/add-
 import { AddAdminComponent } from './components/admins/add-admin/add-admin.component';
 import { CompetitionComponent } from './pages/competition/competition.component';
 import { EventosComponent } from './pages/eventos/eventos.component';
+import { AddEventoComponent } from './components/eventos/add-evento/add-evento.component';
+import { ToastsComponent } from './shared/toasts/toasts.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { EventosComponent } from './pages/eventos/eventos.component';
     AddAdminComponent,
     CompetitionComponent,
     EventosComponent,
+    AddEventoComponent,
+    ToastsComponent,
   ],
   imports: [
     BrowserModule,
