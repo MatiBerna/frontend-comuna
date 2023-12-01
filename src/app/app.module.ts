@@ -18,6 +18,7 @@ import { CompetitionTypesComponent } from './pages/competition-types/competition
 import { AddCompetitionTypeComponent } from './components/competition-types/add-competition-type/add-competition-type.component';
 import { AddAdminComponent } from './components/admins/add-admin/add-admin.component';
 import { CompetitionComponent } from './pages/competition/competition.component';
+import { EventosComponent } from './pages/eventos/eventos.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { CompetitionComponent } from './pages/competition/competition.component'
     AddCompetitionTypeComponent,
     AddAdminComponent,
     CompetitionComponent,
+    EventosComponent,
   ],
   imports: [
     BrowserModule,
