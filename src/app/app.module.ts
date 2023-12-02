@@ -17,10 +17,11 @@ import { CustomFilterPipe } from './pipes/custom-filter-pipe.pipe';
 import { CompetitionTypesComponent } from './pages/competition-types/competition-types.component';
 import { AddCompetitionTypeComponent } from './components/competition-types/add-competition-type/add-competition-type.component';
 import { AddAdminComponent } from './components/admins/add-admin/add-admin.component';
-import { CompetitionComponent } from './pages/competition/competition.component';
 import { EventosComponent } from './pages/eventos/eventos.component';
 import { AddEventoComponent } from './components/eventos/add-evento/add-evento.component';
 import { ToastsComponent } from './shared/toasts/toasts.component';
+import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
+import { AddCompetitionComponent } from './components/competitions/add-competition/add-competition.component';
 
 @NgModule({
   declarations: [
@@ -36,10 +37,11 @@ import { ToastsComponent } from './shared/toasts/toasts.component';
     CompetitionTypesComponent,
     AddCompetitionTypeComponent,
     AddAdminComponent,
-    CompetitionComponent,
     EventosComponent,
     AddEventoComponent,
     ToastsComponent,
+    CompetitionsListComponent,
+    AddCompetitionComponent,
   ],
   imports: [
     BrowserModule,
