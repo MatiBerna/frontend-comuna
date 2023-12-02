@@ -6,6 +6,8 @@ import { PersonsListComponent } from './pages/persons-list/persons-list.componen
 import { loginGuard } from './guards/login.guard';
 import { adminGuard } from './guards/admin.guard';
 import { CompetitionTypesComponent } from './pages/competition-types/competition-types.component';
+import { EventosComponent } from './pages/eventos/eventos.component';
+import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -20,6 +22,14 @@ const routes: Routes = [
     path: 'competition-types',
     component: CompetitionTypesComponent,
     canActivate: [loginGuard, adminGuard],
+  },
+  {
+    path: 'eventos',
+    component: EventosComponent,
+  },
+  {
+    path: 'competitions',
+    component: CompetitionsListComponent,
   },
 ];
 

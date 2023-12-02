@@ -1,0 +1,136 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Evento</h1>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="eventoForm">
+      <p class="text-danger">{{ eventoError }}</p>
+      <div class="mb-3">
+        <label for="descriptionInput" class="form-label">Descripción</label>
+        <input
+          formControlName="description"
+          class="form-control"
+          id="descriptionInput"
+          aria-describedby="descriptionHelp"
+        />
+        <div
+          *ngIf="
+            description.invalid && (description.dirty || description.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="description.errors?.['required']">
+            La descripcion es requerida
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-8">
+          <label for="fechaIniInput" class="form-label">Fecha Inicio</label>
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              formControlName="fechaIni"
+              ngbDatepicker
+              [minDate]="minDate!"
+              #d="ngbDatepicker"
+            />
+            <button
+              class="btn btn-outline-secondary bi bi-calendar3"
+              (click)="d.toggle()"
+              type="button"
+            ></button>
+          </div>
+          <div
+            *ngIf="fechaIni.invalid && (fechaIni.dirty || fechaIni.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="fechaIni.errors?.['required']">
+              La fecha de inicio es requerida
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="horaIniInput" class="form-label">Hora Inicio</label>
+          <ngb-timepicker
+            class="timePicker"
+            formControlName="horaIni"
+            [spinners]="false"
+          />
+          <div
+            *ngIf="horaIni.invalid && (horaIni.dirty || horaIni.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="horaIni.errors?.['required']">
+              La hora de inicio es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-8">
+          <label for="fechaFinInput" class="form-label">Fecha Fin</label>
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              formControlName="fechaFin"
+              ngbDatepicker
+              [minDate]="minDate!"
+              #d1="ngbDatepicker"
+            />
+            <button
+              class="btn btn-outline-secondary bi bi-calendar3"
+              (click)="d1.toggle()"
+              type="button"
+            ></button>
+          </div>
+          <div
+            *ngIf="fechaFin.invalid && (fechaFin.dirty || fechaFin.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="fechaFin.errors?.['required']">
+              La fecha de fin es requerida
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="horaFinInput" class="form-label">Hora Fin</label>
+          <ngb-timepicker
+            class="timePicker"
+            formControlName="horaFin"
+            [spinners]="false"
+          />
+          <div
+            *ngIf="horaFin.invalid && (horaFin.dirty || horaFin.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="horaFin.errors?.['required']">
+              La hora de fin es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="close()"
+    >
+      Cerrar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="addOrUpdate()">
+      Guardar
+    </button>
+  </div>
+</div>

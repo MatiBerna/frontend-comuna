@@ -1,0 +1,234 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5">Nueva Competencia</h1>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="competitionForm">
+      <p class="text-danger">{{ competitionError }}</p>
+      <div class="mb-3">
+        <label for="descriptionInput" class="form-label">Descripción</label>
+        <textarea
+          formControlName="description"
+          class="form-control"
+          id="descriptionInput"
+          aria-labelledby="descriptionHelp"
+          rows="2"
+        ></textarea>
+        <div
+          *ngIf="
+            description.invalid && (description.dirty || description.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="description.errors?.['required']">
+            La descripcion es requerida
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="eventoInput" class="form-label">Evento</label>
+        <select
+          class="form-select"
+          aria-label="Select evento"
+          formControlName="_idEvento"
+        >
+          <option *ngFor="let event of eventos" [value]="event._id">
+            <p>{{ event.description }}&nbsp;</p>
+            <p>- {{ this.getFecha(event.fechaHoraIni) }}</p>
+          </option>
+        </select>
+        <div
+          *ngIf="_idEvento.invalid && (_idEvento.dirty || _idEvento.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="_idEvento.errors?.['required']">
+            Debe elegir un evento
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="competitionTypeInput" class="form-label"
+          >Tipo Competencia</label
+        >
+        <select
+          class="form-select"
+          aria-label="Select evento"
+          formControlName="_idCompetitionType"
+        >
+          <option *ngFor="let compeType of compeTypes" [value]="compeType._id">
+            <p>{{ compeType.description }}</p>
+          </option>
+        </select>
+        <div
+          *ngIf="
+            _idcompetitionType.invalid &&
+            (_idcompetitionType.dirty || _idcompetitionType.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="_idcompetitionType.errors?.['required']">
+            Debe elegir un Tipo de Competencia
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-8">
+          <label for="fechaIniInput" class="form-label">Fecha Inicio</label>
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              formControlName="fechaIni"
+              ngbDatepicker
+              [minDate]="minDate!"
+              #d1="ngbDatepicker"
+            />
+            <button
+              class="btn btn-outline-secondary bi bi-calendar3"
+              (click)="d1.toggle()"
+              type="button"
+            ></button>
+          </div>
+          <div
+            *ngIf="fechaIni.invalid && (fechaIni.dirty || fechaIni.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="fechaIni.errors?.['required']">
+              La fecha de inicio es requerida
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="horaIniInput" class="form-label">Hora Inicio</label>
+          <ngb-timepicker
+            class="timePicker"
+            formControlName="horaIni"
+            [spinners]="false"
+          />
+          <div
+            *ngIf="horaIni.invalid && (horaIni.dirty || horaIni.touched)"
+            class="text-danger"
+          >
+            <div *ngIf="horaIni.errors?.['required']">
+              La hora de inicio es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-8">
+          <label for="fechaFinEstimadaInput" class="form-label"
+            >Fecha Fin Estimada</label
+          >
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              formControlName="fechaFinEstimada"
+              ngbDatepicker
+              [minDate]="minDate!"
+              #d2="ngbDatepicker"
+            />
+            <button
+              class="btn btn-outline-secondary bi bi-calendar3"
+              (click)="d2.toggle()"
+              type="button"
+            ></button>
+          </div>
+          <div
+            *ngIf="
+              fechaFinEstimada.invalid &&
+              (fechaFinEstimada.dirty || fechaFinEstimada.touched)
+            "
+            class="text-danger"
+          >
+            <div *ngIf="fechaFinEstimada.errors?.['required']">
+              La fecha de fin estimada es requerida
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="horaFinInput" class="form-label">Hora Fin</label>
+          <ngb-timepicker
+            class="timePicker"
+            formControlName="horaFinEstimada"
+            [spinners]="false"
+          />
+          <div
+            *ngIf="
+              horaFinEstimada.invalid &&
+              (horaFinEstimada.dirty || horaFinEstimada.touched)
+            "
+            class="text-danger"
+          >
+            <div *ngIf="horaFinEstimada.errors?.['required']">
+              La hora de fin estimada es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="premiosInput" class="form-label">Premios</label>
+        <textarea
+          formControlName="premios"
+          class="form-control"
+          id="premiosInput"
+          aria-labelledby="premiosHelp"
+          rows="2"
+        ></textarea>
+        <div
+          *ngIf="premios.invalid && (premios.dirty || premios.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="premios.errors?.['required']">
+            El campo premios es requerido
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="costoInscripcionInput" class="form-label"
+          >Costo Inscripción</label
+        >
+        <input
+          formControlName="costoInscripcion"
+          class="form-control"
+          id="costoInscripcionInput"
+          aria-describedby="costoInscripcionHelp"
+        />
+        <div
+          *ngIf="
+            costoInscripcion.invalid &&
+            (costoInscripcion.dirty || costoInscripcion.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="costoInscripcion.errors?.['required']">
+            El costo de inscripcion es requerido
+          </div>
+          <div *ngIf="costoInscripcion.errors?.['pattern']">
+            El costo de inscripcion debe ser un numero real, maximo 2 decimales
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="close()"
+    >
+      Cerrar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="addOrUpdate()">
+      Guardar
+    </button>
+  </div>
+</div>
