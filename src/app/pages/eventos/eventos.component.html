@@ -15,10 +15,17 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a class="dropdown-item" (click)="getEventos('Próximos')">Próximos</a>
+          <a
+            class="dropdown-item"
+            role="button"
+            (click)="getEventos('Próximos')"
+            >Próximos</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" (click)="getEventos('Todos')">Todos</a>
+          <a class="dropdown-item" role="button" (click)="getEventos('Todos')"
+            >Todos</a
+          >
         </li>
       </ul>
     </div>
@@ -30,7 +37,6 @@
         [(ngModel)]="terminoBusqueda"
         placeholder="Buscar..."
       />
-      <span class="input-group-text" id="inputGroup-sizing-sm">buscar</span>
     </div>
   </div>
   <table class="table table-hover">
