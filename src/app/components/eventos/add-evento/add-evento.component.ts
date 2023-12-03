@@ -33,9 +33,7 @@ export class AddEventoComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private eventoService: EventosService,
-    private dateAdapter: NgbDateAdapter<Date>,
-    private timeAdapter: NgbTimeAdapter<Date>
+    private eventoService: EventosService
   ) {}
 
   close() {

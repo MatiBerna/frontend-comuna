@@ -26,10 +26,14 @@
           class="form-control"
           id="dniInput"
           aria-describedby="dniHelp"
+          [ngClass]="{
+            'is-invalid': (dni.dirty || dni.touched) && dni.invalid,
+            'is-valid': !dni.invalid
+          }"
         />
         <div
           *ngIf="dni.invalid && (dni.dirty || dni.touched)"
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="dni.errors?.['required']">El dni es requerido</div>
           <div *ngIf="dni.errors?.['pattern']">El dni debe ser numérico</div>
@@ -46,10 +50,15 @@
             class="form-control"
             id="firstNameInput"
             aria-describedby="firstNameHelp"
+            [ngClass]="{
+              'is-invalid':
+                (firstName.dirty || firstName.touched) && firstName.invalid,
+              'is-valid': !firstName.invalid
+            }"
           />
           <div
             *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
-            class="text-danger"
+            class="invalid-feedback"
           >
             <div *ngIf="firstName.errors?.['required']">
               El nombre es requerido
@@ -66,10 +75,15 @@
             class="form-control"
             id="lastNameInput"
             aria-describedby="lastNameHelp"
+            [ngClass]="{
+              'is-invalid':
+                (lastName.dirty || lastName.touched) && lastName.invalid,
+              'is-valid': !lastName.invalid
+            }"
           />
           <div
             *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
-            class="text-danger"
+            class="invalid-feedback"
           >
             <div *ngIf="lastName.errors?.['required']">
               El nombre es requerido
@@ -87,10 +101,14 @@
           class="form-control"
           id="emailInput"
           aria-describedby="emailHelp"
+          [ngClass]="{
+            'is-invalid': (email.dirty || email.touched) && email.invalid,
+            'is-valid': !email.invalid
+          }"
         />
         <div
           *ngIf="email.invalid && (email.dirty || email.touched)"
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="email.errors?.['required']">El email es requerido</div>
           <div *ngIf="email.errors?.['email']">
@@ -105,10 +123,14 @@
           class="form-control"
           id="phoneInput"
           aria-describedby="phoneHelp"
+          [ngClass]="{
+            'is-invalid': (phone.dirty || phone.touched) && phone.invalid,
+            'is-valid': !phone.invalid && (phone.dirty || phone.touched)
+          }"
         />
         <div
           *ngIf="phone.invalid && (phone.dirty || phone.touched)"
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="phone.errors?.['pattern']">
             El teléfono ingresado solo debe contener números
@@ -125,22 +147,27 @@
             placeholder="yyyy-mm-dd"
             formControlName="birthdate"
             ngbDatepicker
-            [minDate]="{ year: 1900, month: 1, day: 1 }"
-            [maxDate]="maxDate"
+            [maxDate]="maxDate!"
+            [minDate]="minDate!"
             #d="ngbDatepicker"
+            [ngClass]="{
+              'is-invalid':
+                (birthdate.dirty || birthdate.touched) && birthdate.invalid,
+              'is-valid': !birthdate.invalid
+            }"
           />
           <button
             class="btn btn-outline-secondary bi bi-calendar3"
             (click)="d.toggle()"
             type="button"
           ></button>
-        </div>
-        <div
-          *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)"
-          class="text-danger"
-        >
-          <div *ngIf="birthdate.errors?.['required']">
-            La fecha de nacimiento es requerida
+          <div
+            *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="birthdate.errors?.['required']">
+              La fecha de nacimiento es requerida
+            </div>
           </div>
         </div>
       </div>
