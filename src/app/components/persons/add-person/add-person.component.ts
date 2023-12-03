@@ -136,7 +136,5 @@ export class AddPersonComponent implements OnInit {
     this.personForm.controls.email.setValue(this.person.email);
     this.personForm.controls.phone.setValue(this.person.phone);
     this.personForm.controls.birthdate.setValue(birthdateNgb);
-    //this.personForm.controls.dni.setValue(this.person.dni);
-    console.log(this.person);
   }
 }

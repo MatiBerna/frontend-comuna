@@ -130,12 +130,10 @@ export class AddEventoComponent implements OnInit {
     this.eventoForm.controls.horaIni.setValue(horaIni);
     this.eventoForm.controls.fechaFin.setValue(fechaFin);
     this.eventoForm.controls.horaFin.setValue(horaFin);
-    console.log(fechaIni, horaIni);
   }
 
   convertDateToNgbDate(fechaHoraP: string): NgbDateStruct {
     const fechaHora: Date = new Date(fechaHoraP);
-    console.log(fechaHora);
     const fechaNgb: NgbDateStruct = {
       year: fechaHora.getFullYear(),
       month: fechaHora.getMonth() + 1,
