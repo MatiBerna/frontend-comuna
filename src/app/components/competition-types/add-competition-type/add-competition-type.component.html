@@ -1,34 +1,50 @@
 <div class="modal-content">
-  <div class="modal-header">
-    <h1 class="modal-title fs-5" id="headerModalLabel">Nuevo Tipo</h1>
-    <button
-      type="button"
-      class="btn-close"
-      (click)="close()"
-      aria-label="Close"
-    ></button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="compeTypeForm">
+  <form [formGroup]="compeTypeForm" class="needs-validation" novalidate="">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="headerModalLabel">Nuevo Tipo</h1>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="close()"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
       <p class="text-danger">{{ compeTypeError }}</p>
       <div class="mb-3">
         <label for="descriptionInput" class="form-label">Descripción</label>
+
         <input
+          type="text"
           formControlName="description"
           class="form-control"
           id="descriptionInput"
           aria-labelledby="descriptionHelp"
+          [ngClass]="{
+            'is-invalid':
+              (description.dirty || description.touched) && description.invalid,
+            'is-valid': !description.invalid
+          }"
         />
+        <!-- <div class="invalid-feedback">Please choose a username.</div> -->
         <div
           *ngIf="
-            description.invalid && (description.dirty || description.touched)
+            (description.dirty || description.touched) && description.invalid
           "
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="description.errors?.['required']">
             El campo descripcion es requerido
           </div>
         </div>
+        <!-- <div
+          class="invalid-feedback"
+          *ngIf="
+            description.invalid && (description.dirty || description.touched)
+          "
+        >
+          El campo descripcion es requerido
+        </div> -->
       </div>
       <div class="mb-3">
         <label for="rulesInput" class="form-label">Reglas</label>
@@ -38,29 +54,41 @@
           id="rulesInput"
           aria-labelledby="rulesHelp"
           rows="10"
+          [ngClass]="{
+            'is-invalid': (rules.dirty || rules.touched) && rules.invalid,
+            'is-valid': !rules.invalid
+          }"
         ></textarea>
         <div
+          *ngIf="rules.invalid && (rules.dirty || rules.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rules.errors?.['required']">
+            El campo reglas es requerido
+          </div>
+        </div>
+        <!-- <div
           *ngIf="rules.invalid && (rules.dirty || rules.touched)"
           class="text-danger"
         >
           <div *ngIf="rules.errors?.['required']">
             El campo reglas es requerido
           </div>
-        </div>
+        </div> -->
       </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-secondary"
-      data-bs-dismiss="modal"
-      (click)="close()"
-    >
-      Cerrar
-    </button>
-    <button type="button" class="btn btn-primary" (click)="addOrUpdate()">
-      Guardar
-    </button>
-  </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal"
+        (click)="close()"
+      >
+        Cerrar
+      </button>
+      <button type="submit" class="btn btn-primary" (click)="addOrUpdate()">
+        Guardar
+      </button>
+    </div>
+  </form>
 </div>
