@@ -19,12 +19,17 @@
           id="descriptionInput"
           aria-labelledby="descriptionHelp"
           rows="2"
+          [ngClass]="{
+            'is-invalid':
+              (description.dirty || description.touched) && description.invalid,
+            'is-valid': !description.invalid
+          }"
         ></textarea>
         <div
           *ngIf="
             description.invalid && (description.dirty || description.touched)
           "
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="description.errors?.['required']">
             La descripcion es requerida
@@ -37,6 +42,11 @@
           class="form-select"
           aria-label="Select evento"
           formControlName="_idEvento"
+          [ngClass]="{
+            'is-invalid':
+              (_idEvento.dirty || _idEvento.touched) && _idEvento.invalid,
+            'is-valid': !_idEvento.invalid
+          }"
         >
           <option *ngFor="let event of eventos" [value]="event._id">
             <p>{{ event.description }}&nbsp;</p>
@@ -45,7 +55,7 @@
         </select>
         <div
           *ngIf="_idEvento.invalid && (_idEvento.dirty || _idEvento.touched)"
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="_idEvento.errors?.['required']">
             Debe elegir un evento
@@ -60,6 +70,12 @@
           class="form-select"
           aria-label="Select evento"
           formControlName="_idCompetitionType"
+          [ngClass]="{
+            'is-invalid':
+              (_idcompetitionType.dirty || _idcompetitionType.touched) &&
+              _idcompetitionType.invalid,
+            'is-valid': !_idcompetitionType.invalid
+          }"
         >
           <option *ngFor="let compeType of compeTypes" [value]="compeType._id">
             <p>{{ compeType.description }}</p>
@@ -70,7 +86,7 @@
             _idcompetitionType.invalid &&
             (_idcompetitionType.dirty || _idcompetitionType.touched)
           "
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="_idcompetitionType.errors?.['required']">
             Debe elegir un Tipo de Competencia
@@ -88,19 +104,27 @@
               ngbDatepicker
               [minDate]="minDate!"
               #d1="ngbDatepicker"
+              [ngClass]="{
+                'is-invalid':
+                  (fechaIni.dirty || fechaIni.touched) && fechaIni.invalid,
+                'is-valid': !fechaIni.invalid
+              }"
             />
             <button
               class="btn btn-outline-secondary bi bi-calendar3"
               (click)="d1.toggle()"
               type="button"
             ></button>
-          </div>
-          <div
-            *ngIf="fechaIni.invalid && (fechaIni.dirty || fechaIni.touched)"
-            class="text-danger"
-          >
-            <div *ngIf="fechaIni.errors?.['required']">
-              La fecha de inicio es requerida
+            <div
+              *ngIf="fechaIni.invalid && (fechaIni.dirty || fechaIni.touched)"
+              class="invalid-feedback"
+            >
+              <div *ngIf="fechaIni.errors?.['required']">
+                La fecha de inicio es requerida
+              </div>
+              <div *ngIf="!fechaIni.errors?.['required']">
+                Ingrese una fecha válida
+              </div>
             </div>
           </div>
         </div>
@@ -110,6 +134,11 @@
             class="timePicker"
             formControlName="horaIni"
             [spinners]="false"
+            [ngClass]="{
+              'is-invalid':
+                (horaIni.dirty || horaIni.touched) && horaIni.invalid,
+              'is-valid': !horaIni.invalid
+            }"
           />
           <div
             *ngIf="horaIni.invalid && (horaIni.dirty || horaIni.touched)"
@@ -134,22 +163,31 @@
               ngbDatepicker
               [minDate]="minDate!"
               #d2="ngbDatepicker"
+              [ngClass]="{
+                'is-invalid':
+                  (fechaFinEstimada.dirty || fechaFinEstimada.touched) &&
+                  fechaFinEstimada.invalid,
+                'is-valid': !fechaFinEstimada.invalid
+              }"
             />
             <button
               class="btn btn-outline-secondary bi bi-calendar3"
               (click)="d2.toggle()"
               type="button"
             ></button>
-          </div>
-          <div
-            *ngIf="
-              fechaFinEstimada.invalid &&
-              (fechaFinEstimada.dirty || fechaFinEstimada.touched)
-            "
-            class="text-danger"
-          >
-            <div *ngIf="fechaFinEstimada.errors?.['required']">
-              La fecha de fin estimada es requerida
+            <div
+              *ngIf="
+                fechaFinEstimada.invalid &&
+                (fechaFinEstimada.dirty || fechaFinEstimada.touched)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="fechaFinEstimada.errors?.['required']">
+                La fecha de fin estimada es requerida
+              </div>
+              <div *ngIf="!fechaFinEstimada.errors?.['required']">
+                Ingrese una fecha válida
+              </div>
             </div>
           </div>
         </div>
@@ -159,13 +197,19 @@
             class="timePicker"
             formControlName="horaFinEstimada"
             [spinners]="false"
+            [ngClass]="{
+              'is-invalid':
+                (horaFinEstimada.dirty || horaFinEstimada.touched) &&
+                horaFinEstimada.invalid,
+              'is-valid': !horaFinEstimada.invalid
+            }"
           />
           <div
             *ngIf="
               horaFinEstimada.invalid &&
               (horaFinEstimada.dirty || horaFinEstimada.touched)
             "
-            class="text-danger"
+            class="invalid-feedback"
           >
             <div *ngIf="horaFinEstimada.errors?.['required']">
               La hora de fin estimada es requerida
@@ -181,10 +225,14 @@
           id="premiosInput"
           aria-labelledby="premiosHelp"
           rows="2"
+          [ngClass]="{
+            'is-invalid': (premios.dirty || premios.touched) && premios.invalid,
+            'is-valid': !premios.invalid
+          }"
         ></textarea>
         <div
           *ngIf="premios.invalid && (premios.dirty || premios.touched)"
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="premios.errors?.['required']">
             El campo premios es requerido
@@ -200,13 +248,19 @@
           class="form-control"
           id="costoInscripcionInput"
           aria-describedby="costoInscripcionHelp"
+          [ngClass]="{
+            'is-invalid':
+              (costoInscripcion.dirty || costoInscripcion.touched) &&
+              costoInscripcion.invalid,
+            'is-valid': !costoInscripcion.invalid
+          }"
         />
         <div
           *ngIf="
             costoInscripcion.invalid &&
             (costoInscripcion.dirty || costoInscripcion.touched)
           "
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="costoInscripcion.errors?.['required']">
             El costo de inscripcion es requerido

@@ -18,12 +18,12 @@ import { PersonsService } from 'src/app/services/persons/persons.service';
 export class AddPersonComponent implements OnInit {
   @Input() person!: Person;
   modalRef!: NgbModalRef;
-  today = new Date();
-  maxDate!: NgbDateStruct;
+  today: Date = new Date();
+  maxDate!: NgbDateStruct | null;
+  minDate!: NgbDateStruct | null;
   personError: string = '';
 
   personForm = this.formBuilder.group({
-    _id: [''],
     dni: [
       '',
       [
@@ -42,14 +42,7 @@ export class AddPersonComponent implements OnInit {
     ],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.pattern('^[0-9]+$')]],
-    birthdate: [
-      {
-        year: this.today.getFullYear(),
-        month: this.today.getMonth() + 1,
-        day: this.today.getDate(),
-      },
-      [Validators.required],
-    ],
+    birthdate: [this.maxDate, [Validators.required]],
   });
 
   constructor(
@@ -120,6 +113,7 @@ export class AddPersonComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.minDate = { year: 1900, month: 1, day: 1 };
     this.maxDate = {
       year: this.today.getFullYear(),
       month: this.today.getMonth() + 1,
@@ -127,11 +121,14 @@ export class AddPersonComponent implements OnInit {
     };
 
     let birthdateJS: Date = new Date(this.person.birthdate!);
-    let birthdateNgb: NgbDateStruct = {
-      year: birthdateJS.getFullYear(),
-      month: birthdateJS.getMonth() + 1,
-      day: birthdateJS.getDate(),
-    };
+    let birthdateNgb: NgbDateStruct | null = null;
+    if (this.person.birthdate) {
+      birthdateNgb = {
+        year: birthdateJS.getFullYear(),
+        month: birthdateJS.getMonth() + 1,
+        day: birthdateJS.getDate(),
+      };
+    }
 
     this.personForm.controls.dni.setValue(this.person.dni);
     this.personForm.controls.firstName.setValue(this.person.firstName);
@@ -139,7 +136,5 @@ export class AddPersonComponent implements OnInit {
     this.personForm.controls.email.setValue(this.person.email);
     this.personForm.controls.phone.setValue(this.person.phone);
     this.personForm.controls.birthdate.setValue(birthdateNgb);
-    //this.personForm.controls.dni.setValue(this.person.dni);
-    console.log(this.person);
   }
 }

@@ -1,5 +1,5 @@
 <div class="modal-content">
-  <form [formGroup]="compeTypeForm" class="needs-validation" novalidate="">
+  <form [formGroup]="compeTypeForm">
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="headerModalLabel">Nuevo Tipo</h1>
       <button
@@ -26,7 +26,6 @@
             'is-valid': !description.invalid
           }"
         />
-        <!-- <div class="invalid-feedback">Please choose a username.</div> -->
         <div
           *ngIf="
             (description.dirty || description.touched) && description.invalid
@@ -37,14 +36,6 @@
             El campo descripcion es requerido
           </div>
         </div>
-        <!-- <div
-          class="invalid-feedback"
-          *ngIf="
-            description.invalid && (description.dirty || description.touched)
-          "
-        >
-          El campo descripcion es requerido
-        </div> -->
       </div>
       <div class="mb-3">
         <label for="rulesInput" class="form-label">Reglas</label>
@@ -67,14 +58,6 @@
             El campo reglas es requerido
           </div>
         </div>
-        <!-- <div
-          *ngIf="rules.invalid && (rules.dirty || rules.touched)"
-          class="text-danger"
-        >
-          <div *ngIf="rules.errors?.['required']">
-            El campo reglas es requerido
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="modal-footer">

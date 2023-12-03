@@ -20,19 +20,28 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a class="dropdown-item" (click)="getCompetitions('Próximos')"
+          <a
+            class="dropdown-item"
+            (click)="getCompetitions('Próximos')"
+            role="button"
             >Próximos</a
           >
         </li>
         <li>
           <a
             class="dropdown-item"
+            role="button"
             (click)="getCompetitions('Inscripción Abierta')"
             >Inscripción Abierta</a
           >
         </li>
         <li>
-          <a class="dropdown-item" (click)="getCompetitions('Todos')">Todos</a>
+          <a
+            class="dropdown-item"
+            role="button"
+            (click)="getCompetitions('Todos')"
+            >Todos</a
+          >
         </li>
       </ul>
     </div>

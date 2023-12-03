@@ -86,8 +86,6 @@ export class AddCompetitionComponent implements OnInit {
         _idCompetitionType: this._idcompetitionType.value!,
       };
 
-      console.log(competitionToSend);
-
       this.competitionService.addOrUpdate(competitionToSend).subscribe({
         error: (err) => {
           console.log(err);
@@ -236,7 +234,6 @@ export class AddCompetitionComponent implements OnInit {
 
   convertDateToNgbDate(fechaHoraP: string): NgbDateStruct {
     const fechaHora: Date = new Date(fechaHoraP);
-    console.log(fechaHora);
     const fechaNgb: NgbDateStruct = {
       year: fechaHora.getFullYear(),
       month: fechaHora.getMonth() + 1,

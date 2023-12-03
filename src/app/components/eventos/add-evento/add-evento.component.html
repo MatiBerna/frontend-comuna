@@ -18,12 +18,17 @@
           class="form-control"
           id="descriptionInput"
           aria-describedby="descriptionHelp"
+          [ngClass]="{
+            'is-invalid':
+              (description.dirty || description.touched) && description.invalid,
+            'is-valid': !description.invalid
+          }"
         />
         <div
           *ngIf="
             description.invalid && (description.dirty || description.touched)
           "
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="description.errors?.['required']">
             La descripcion es requerida
@@ -41,19 +46,27 @@
               ngbDatepicker
               [minDate]="minDate!"
               #d="ngbDatepicker"
+              [ngClass]="{
+                'is-invalid':
+                  (fechaIni.dirty || fechaIni.touched) && fechaIni.invalid,
+                'is-valid': !fechaIni.invalid
+              }"
             />
             <button
               class="btn btn-outline-secondary bi bi-calendar3"
               (click)="d.toggle()"
               type="button"
             ></button>
-          </div>
-          <div
-            *ngIf="fechaIni.invalid && (fechaIni.dirty || fechaIni.touched)"
-            class="text-danger"
-          >
-            <div *ngIf="fechaIni.errors?.['required']">
-              La fecha de inicio es requerida
+            <div
+              *ngIf="fechaIni.invalid && (fechaIni.dirty || fechaIni.touched)"
+              class="invalid-feedback"
+            >
+              <div *ngIf="fechaIni.errors?.['required']">
+                La fecha de inicio es requerida
+              </div>
+              <div *ngIf="!fechaIni.errors?.['required']">
+                Ingrese una fecha válida
+              </div>
             </div>
           </div>
         </div>
@@ -63,10 +76,15 @@
             class="timePicker"
             formControlName="horaIni"
             [spinners]="false"
+            [ngClass]="{
+              'is-invalid':
+                (horaIni.dirty || horaIni.touched) && horaIni.invalid,
+              'is-valid': !horaIni.invalid
+            }"
           />
           <div
             *ngIf="horaIni.invalid && (horaIni.dirty || horaIni.touched)"
-            class="text-danger"
+            class="invalid-feedback"
           >
             <div *ngIf="horaIni.errors?.['required']">
               La hora de inicio es requerida
@@ -85,19 +103,27 @@
               ngbDatepicker
               [minDate]="minDate!"
               #d1="ngbDatepicker"
+              [ngClass]="{
+                'is-invalid':
+                  (fechaFin.dirty || fechaFin.touched) && fechaFin.invalid,
+                'is-valid': !fechaFin.invalid
+              }"
             />
             <button
               class="btn btn-outline-secondary bi bi-calendar3"
               (click)="d1.toggle()"
               type="button"
             ></button>
-          </div>
-          <div
-            *ngIf="fechaFin.invalid && (fechaFin.dirty || fechaFin.touched)"
-            class="text-danger"
-          >
-            <div *ngIf="fechaFin.errors?.['required']">
-              La fecha de fin es requerida
+            <div
+              *ngIf="fechaFin.invalid && (fechaFin.dirty || fechaFin.touched)"
+              class="invalid-feedback"
+            >
+              <div *ngIf="fechaFin.errors?.['required']">
+                La fecha de fin es requerida
+              </div>
+              <div *ngIf="!fechaFin.errors?.['required']">
+                Ingrese una fecha válida
+              </div>
             </div>
           </div>
         </div>
@@ -107,10 +133,15 @@
             class="timePicker"
             formControlName="horaFin"
             [spinners]="false"
+            [ngClass]="{
+              'is-invalid':
+                (horaFin.dirty || horaFin.touched) && horaFin.invalid,
+              'is-valid': !horaFin.invalid
+            }"
           />
           <div
             *ngIf="horaFin.invalid && (horaFin.dirty || horaFin.touched)"
-            class="text-danger"
+            class="invalid-feedback"
           >
             <div *ngIf="horaFin.errors?.['required']">
               La hora de fin es requerida

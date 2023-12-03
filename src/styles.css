@@ -1,12 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-.ng-valid:not(form, ngb-timepicker).ng-touched {
+/* .ng-valid:not(form, ngb-timepicker).ng-touched {
   border-left: 5px solid #42a948;
 }
 
 .ng-invalid:not(form, ngb-timepicker).ng-touched {
   border-left: 5px solid #a94442;
 }
-
+*/
 html,
 body {
   height: 100%;
