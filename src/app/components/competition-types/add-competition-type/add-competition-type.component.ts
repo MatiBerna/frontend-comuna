@@ -12,6 +12,7 @@ import { CompetitionTypesService } from 'src/app/services/competition-types/comp
 export class AddCompetitionTypeComponent implements OnInit {
   @Input() compeType!: CompetitionType;
   compeTypeError: string = '';
+  submitted: boolean = false;
   compeTypeForm = this.formBuilder.group({
     _id: [''],
     description: ['', [Validators.required]],
@@ -30,6 +31,7 @@ export class AddCompetitionTypeComponent implements OnInit {
   }
 
   addOrUpdate() {
+    this.submitted = true;
     if (this.compeTypeForm.valid) {
       const compeTypeToSend: CompetitionType = this.compeTypeForm
         .value as CompetitionType;
@@ -49,12 +51,16 @@ export class AddCompetitionTypeComponent implements OnInit {
     }
   }
 
+  get controls() {
+    return this.compeTypeForm.controls;
+  }
+
   get description() {
     return this.compeTypeForm.controls.description;
   }
 
   get rules() {
-    return this.compeTypeForm.controls.description;
+    return this.compeTypeForm.controls.rules;
   }
 
   ngOnInit(): void {
