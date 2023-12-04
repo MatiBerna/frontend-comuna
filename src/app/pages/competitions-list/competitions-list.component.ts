@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddCompetitionComponent } from 'src/app/components/competitions/add-competition/add-competition.component';
+import { CompetitionDetailComponent } from 'src/app/components/competitions/competition-detail/competition-detail.component';
 import { Competition } from 'src/app/models/competition';
 import { CompetitionsService } from 'src/app/services/competitions/competitions.service';
 import { ToastService } from 'src/app/services/shared/toast/toast.service';
@@ -52,9 +53,20 @@ export class CompetitionsListComponent implements OnInit {
     });
     modalRef.componentInstance.competition = competition;
 
-    modalRef.dismissed.subscribe(() => {
+    modalRef.dismissed.subscribe((reason: string) => {
+      if (reason === 'Registro') {
+        this.toastService.show('Cambios registrados', {
+          classname: 'bg-success text-light',
+          delay: 5000,
+        });
+      }
       this.getCompetitions(this.tipoLista);
     });
+  }
+
+  openDetails(competition: Competition) {
+    const modalRef = this.modalService.open(CompetitionDetailComponent);
+    modalRef.componentInstance.competition = competition;
   }
 
   deleteCompetition(competition: Competition) {

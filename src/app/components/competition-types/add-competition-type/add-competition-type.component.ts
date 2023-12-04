@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CompetitionType } from 'src/app/models/competition-type';
@@ -25,9 +25,9 @@ export class AddCompetitionTypeComponent implements OnInit {
     private compTypesService: CompetitionTypesService
   ) {}
 
-  close() {
+  close(reason: string) {
     this.compeTypeForm.reset();
-    this.modalService.dismissAll();
+    this.modalService.dismissAll(reason);
   }
 
   addOrUpdate() {
@@ -43,7 +43,7 @@ export class AddCompetitionTypeComponent implements OnInit {
         },
         complete: () => {
           console.log('Cambios Registrados');
-          this.close();
+          this.close('Registro');
         },
       });
     } else {

@@ -22,6 +22,7 @@ import { AddEventoComponent } from './components/eventos/add-evento/add-evento.c
 import { ToastsComponent } from './shared/toasts/toasts.component';
 import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
 import { AddCompetitionComponent } from './components/competitions/add-competition/add-competition.component';
+import { CompetitionDetailComponent } from './components/competitions/competition-detail/competition-detail.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AddCompetitionComponent } from './components/competitions/add-competiti
     ToastsComponent,
     CompetitionsListComponent,
     AddCompetitionComponent,
+    CompetitionDetailComponent,
   ],
   imports: [
     BrowserModule,

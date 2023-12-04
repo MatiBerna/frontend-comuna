@@ -23,7 +23,7 @@ export class EventosComponent implements OnInit, OnDestroy {
   constructor(
     private eventosService: EventosService,
     private modalService: NgbModal,
-    public toastService: ToastService
+    private toastService: ToastService
   ) {}
 
   getEventos(tipo: string) {
@@ -49,7 +49,13 @@ export class EventosComponent implements OnInit, OnDestroy {
     });
     modalRef.componentInstance.evento = evento;
 
-    modalRef.dismissed.subscribe(() => {
+    modalRef.dismissed.subscribe((reason: string) => {
+      if (reason === 'Registro') {
+        this.toastService.show('Cambios registrados', {
+          classname: 'bg-success text-light',
+          delay: 5000,
+        });
+      }
       this.getEventos(this.tipoLista);
     });
   }
