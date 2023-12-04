@@ -36,9 +36,9 @@ export class AddEventoComponent implements OnInit {
     private eventoService: EventosService
   ) {}
 
-  close() {
+  close(reason: string) {
     this.eventoForm.reset();
-    this.modalService.dismissAll();
+    this.modalService.dismissAll(reason);
   }
 
   addOrUpdate() {
@@ -72,7 +72,7 @@ export class AddEventoComponent implements OnInit {
         },
         complete: () => {
           console.log('Cambios registrados');
-          this.close();
+          this.close('Registro');
         },
       });
     } else {

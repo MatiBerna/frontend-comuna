@@ -32,13 +32,13 @@
         </td>
         <td class="bi bi-edit">
           <button
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary me-2"
             (click)="openModal(compeType)"
           >
             <i class="bi bi-pencil-fill"></i>
           </button>
           <button
-            class="btn btn-outline-danger mx-2 my-2"
+            class="btn btn-outline-danger my-2"
             (click)="deleteCompeType(compeType)"
           >
             <i class="bi bi-trash-fill"></i>
@@ -48,3 +48,5 @@
     </tbody>
   </table>
 </div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

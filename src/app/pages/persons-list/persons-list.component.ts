@@ -3,6 +3,7 @@ import { AddPersonComponent } from 'src/app/components/persons/add-person/add-pe
 import { Person } from 'src/app/models/person';
 import { PersonsService } from 'src/app/services/persons/persons.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from 'src/app/services/shared/toast/toast.service';
 
 @Component({
   selector: 'app-persons-list',
@@ -34,7 +35,8 @@ export class PersonsListComponent implements OnInit {
 
   constructor(
     private personsService: PersonsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) {}
 
   getPersons() {
@@ -62,7 +64,13 @@ export class PersonsListComponent implements OnInit {
     });
     modalRef.componentInstance.person = this.selectedPerson;
 
-    modalRef.dismissed.subscribe(() => {
+    modalRef.dismissed.subscribe((reason: string) => {
+      if (reason === 'Registro') {
+        this.toastService.show('Cambios registrados', {
+          classname: 'bg-success text-light',
+          delay: 5000,
+        });
+      }
       this.getPersons();
     });
   }
@@ -73,6 +81,10 @@ export class PersonsListComponent implements OnInit {
       this.personsService.delete(person).subscribe({
         error: (error) => {
           console.log(error);
+          this.toastService.show(error, {
+            classname: 'bg-danger text-light',
+            delay: 10000,
+          });
         },
         complete: () => {
           console.log('Socio Borrado');

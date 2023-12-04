@@ -93,7 +93,7 @@ export class AddCompetitionComponent implements OnInit {
         },
         complete: () => {
           console.log('Cambios registrados');
-          this.close();
+          this.close('Registro');
         },
       });
     } else {
@@ -101,8 +101,8 @@ export class AddCompetitionComponent implements OnInit {
     }
   }
 
-  close() {
-    this.modalService.dismissAll();
+  close(reason: string) {
+    this.modalService.dismissAll(reason);
   }
 
   //#region geters
@@ -170,7 +170,7 @@ export class AddCompetitionComponent implements OnInit {
           classname: 'bg-danger text-light',
           delay: 10000,
         });
-        this.close();
+        this.close('');
       },
     });
 
@@ -184,7 +184,7 @@ export class AddCompetitionComponent implements OnInit {
           classname: 'bg-danger text-light',
           delay: 10000,
         });
-        this.close();
+        this.close('');
       },
     });
 

@@ -51,9 +51,9 @@ export class AddPersonComponent implements OnInit {
     private personService: PersonsService
   ) {}
 
-  close() {
+  close(reason: string) {
     this.personForm.reset();
-    this.modalService.dismissAll();
+    this.modalService.dismissAll(reason);
   }
 
   get dni() {
@@ -104,7 +104,7 @@ export class AddPersonComponent implements OnInit {
         },
         complete: () => {
           console.log('Cambios registrados');
-          this.close();
+          this.close('Registro');
         },
       });
     } else {

@@ -92,6 +92,12 @@
           <p class="card-text fw-medium">Costo de Inscripcion: &nbsp;</p>
           <p class="card-text">${{ competition.costoInscripcion }}</p>
         </div>
+        <div
+          class="d-flex justify-content-end"
+          (click)="openDetails(competition)"
+        >
+          <i class="bi bi-plus-circle" role="button"></i>
+        </div>
       </div>
       <div class="card-footer d-flex justify-content-between">
         <button
