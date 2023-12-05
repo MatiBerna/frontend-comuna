@@ -14,9 +14,13 @@ export class PersonsService {
   path: string = 'http://localhost:3000/api/person';
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Person[]> {
+  getAll(filter: string | null): Observable<Person[]> {
+    let query: string = '';
+    if (filter) {
+      query = `?filter=${filter}`;
+    }
     return this.http
-      .get<Person[]>(`${this.path}`, this.createHeaders())
+      .get<Person[]>(`${this.path}${query}`, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 

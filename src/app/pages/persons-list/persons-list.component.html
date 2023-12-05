@@ -1,6 +1,6 @@
 <div class="container-sm" style="max-width: 1200px">
   <p class="text-danger">{{ errorMessage }}</p>
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between mb-3">
     <button class="btn btn-primary me-1" (click)="openModal(voidPerson)">
       Nuevo&nbsp;Socio
     </button>
@@ -12,7 +12,21 @@
         [(ngModel)]="terminoBusqueda"
         placeholder="Buscar..."
       />
+      <button
+        class="btn btn-outline-secondary bi bi-search"
+        (click)="getPersons()"
+      ></button>
     </div>
+  </div>
+  <div>
+    <ngb-pagination
+      [collectionSize]="personsList.length"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+    ></ngb-pagination>
   </div>
   <table class="table table-hover" style="table-layout: fixed">
     <thead>
@@ -24,7 +38,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let person of personsList | filter : terminoBusqueda">
+      <tr
+        *ngFor="
+          let person of personsList
+            | slice : (page - 1) * pageSize : page * pageSize
+        "
+      >
         <td>{{ person.dni }}</td>
         <td>{{ person.firstName }}</td>
         <td>{{ person.lastName }}</td>
