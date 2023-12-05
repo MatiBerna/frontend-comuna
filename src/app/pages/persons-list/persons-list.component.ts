@@ -14,7 +14,7 @@ export class PersonsListComponent implements OnInit {
   @ViewChild('editPersonModal')
   editPerson!: AddPersonComponent;
   page: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   personsList: Person[] = [];
   errorMessage: string = '';
   terminoBusqueda: string = '';
@@ -42,7 +42,11 @@ export class PersonsListComponent implements OnInit {
   ) {}
 
   getPersons() {
-    this.personsService.getAll().subscribe({
+    let filtro: string | null = null;
+    if (this.terminoBusqueda !== '') {
+      filtro = this.terminoBusqueda;
+    }
+    this.personsService.getAll(filtro).subscribe({
       next: (persons: Person[]) => {
         this.personsList = persons;
       },

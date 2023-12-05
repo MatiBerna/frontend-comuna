@@ -37,7 +37,7 @@
         >
           <div *ngIf="dni.errors?.['required']">El dni es requerido</div>
           <div *ngIf="dni.errors?.['pattern']">El dni debe ser numérico</div>
-          <div *ngIf="dni.errors?.['minLength']">
+          <div *ngIf="dni.errors?.['minlength']">
             El DNI debe contener al menos 7 dígitos
           </div>
         </div>

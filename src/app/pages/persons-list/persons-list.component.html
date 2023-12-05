@@ -12,6 +12,10 @@
         [(ngModel)]="terminoBusqueda"
         placeholder="Buscar..."
       />
+      <button
+        class="btn btn-outline-secondary bi bi-search"
+        (click)="getPersons()"
+      ></button>
     </div>
   </div>
   <div>
@@ -38,7 +42,6 @@
         *ngFor="
           let person of personsList
             | slice : (page - 1) * pageSize : page * pageSize
-            | filter : terminoBusqueda
         "
       >
         <td>{{ person.dni }}</td>
