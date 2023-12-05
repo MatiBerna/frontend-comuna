@@ -13,6 +13,8 @@ import { ToastService } from 'src/app/services/shared/toast/toast.service';
 export class PersonsListComponent implements OnInit {
   @ViewChild('editPersonModal')
   editPerson!: AddPersonComponent;
+  page: number = 1;
+  pageSize: number = 5;
   personsList: Person[] = [];
   errorMessage: string = '';
   terminoBusqueda: string = '';
