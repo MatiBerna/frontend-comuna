@@ -13,6 +13,7 @@ import { getDecodedAccessToken } from 'src/app/utils/tokenValidations';
 export class NavComponent implements OnInit, OnDestroy {
   userLoginOn: boolean = false;
   userData?: Admin | Person;
+  isCollapsed: boolean = true;
   private loginSubs!: Subscription;
   private userDataSubs!: Subscription;
   constructor(public loginService: LoginService) {}

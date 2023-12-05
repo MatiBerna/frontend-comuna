@@ -1,10 +1,10 @@
 <div class="container-sm" style="max-width: 1200px">
   <p class="text-danger">{{ errorMessage }}</p>
   <div class="d-flex justify-content-between">
-    <button class="btn btn-primary" (click)="openModal(voidCompeType)">
-      Nuevo Tipo
+    <button class="btn btn-primary me-1" (click)="openModal(voidCompeType)">
+      Nuevo&nbsp;Tipo
     </button>
-    <div class="input-group" style="max-width: 400px">
+    <div class="input-group ms-1" style="max-width: 400px">
       <input
         type="text"
         class="form-control"
@@ -38,7 +38,7 @@
             <i class="bi bi-pencil-fill"></i>
           </button>
           <button
-            class="btn btn-outline-danger my-2"
+            class="btn btn-outline-danger my-2 my-lg-0"
             (click)="deleteCompeType(compeType)"
           >
             <i class="bi bi-trash-fill"></i>
