@@ -23,8 +23,10 @@ export class AddCompetitionComponent implements OnInit {
   competitionError: string = '';
   today: Date = new Date();
   eventos: Evento[] = [];
+  selectedEventId: string = '';
   compeTypes: CompetitionType[] = [];
   minDate!: NgbDateStruct | null;
+  maxDate!: NgbDateStruct | null;
   minHour!: NgbTimeStruct | null;
 
   competitionForm = this.formBuilder.group({
@@ -105,6 +107,25 @@ export class AddCompetitionComponent implements OnInit {
     this.modalService.dismissAll(reason);
   }
 
+  setLimitesFechas(id: string | null) {
+    const evento = this.eventos.find((event) => event._id === id);
+
+    if (evento) {
+      const fechaHoraIni = new Date(evento.fechaHoraIni!);
+      this.minDate = {
+        year: fechaHoraIni!.getFullYear(),
+        month: fechaHoraIni!.getMonth() + 1,
+        day: fechaHoraIni!.getDate(),
+      };
+      const fechaHoraFin = new Date(evento.fechaHoraFin!);
+      this.maxDate = {
+        year: fechaHoraFin!.getFullYear(),
+        month: fechaHoraFin!.getMonth() + 1,
+        day: fechaHoraFin!.getDate(),
+      };
+    }
+  }
+
   //#region geters
   getFecha(fechaHora: Date | undefined) {
     const fecha = new Date(fechaHora!).toLocaleDateString('es-AR');
@@ -160,9 +181,14 @@ export class AddCompetitionComponent implements OnInit {
       second: this.today.getSeconds(),
     };
 
+    //#region services calls
+
     this.eventoService.getAll('?prox=true').subscribe({
       next: (eventos: Evento[]) => {
         this.eventos = eventos;
+        if (this.competition.evento) {
+          this.setLimitesFechas(this.competition.evento!._id);
+        }
       },
       error: (errorData) => {
         console.log(errorData);
@@ -187,7 +213,9 @@ export class AddCompetitionComponent implements OnInit {
         this.close('');
       },
     });
+    //#endregion
 
+    //#region  convert Dates
     let fechaIni: NgbDateStruct | null = null;
     let horaIni: NgbTimeStruct | null = null;
     if (this.competition.fechaHoraIni) {
@@ -208,7 +236,9 @@ export class AddCompetitionComponent implements OnInit {
         this.competition.fechaHoraFinEstimada.toString()
       );
     }
+    //#endregion
 
+    //#region setValues
     this.competitionForm.controls.description.setValue(
       this.competition.descripcion
     );
@@ -216,6 +246,7 @@ export class AddCompetitionComponent implements OnInit {
       this.competitionForm.controls._idEvento.setValue(
         this.competition.evento!._id
       );
+
       this.competitionForm.controls._idCompetitionType.setValue(
         this.competition.competitionType!._id
       );
@@ -230,6 +261,7 @@ export class AddCompetitionComponent implements OnInit {
     this.competitionForm.controls.horaIni.setValue(horaIni);
     this.competitionForm.controls.fechaFinEstimada.setValue(fechaFin);
     this.competitionForm.controls.horaFinEstimada.setValue(horaFin);
+    //#endregion
   }
 
   convertDateToNgbDate(fechaHoraP: string): NgbDateStruct {
