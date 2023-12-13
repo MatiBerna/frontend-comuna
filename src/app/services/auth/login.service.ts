@@ -33,19 +33,32 @@ export class LoginService {
   login(credentials: LoginRequest): Observable<UserAndToken> {
     return this.http
       .post<UserAndToken>(
-        'http://localhost:3000/api/auth/admin/login',
+        'http://localhost:3000/api/auth/user/login',
         credentials
       )
       .pipe(
         tap((userData: UserAndToken) => {
-          console.log('Antes de asignar a observables', userData);
-          console.log(this.currentUserData);
           this.currentUserData.next(userData.data);
-          console.log('durante asignar obs');
           this.currentUserLoginOn.next(true);
-          console.log('luego');
         }),
-        catchError(this.handleError)
+        catchError((error) => {
+          if (error.status === 401) {
+            return this.http
+              .post<UserAndToken>(
+                'http://localhost:3000/api/auth/admin/login',
+                credentials
+              )
+              .pipe(
+                tap((userData: UserAndToken) => {
+                  this.currentUserData.next(userData.data);
+                  this.currentUserLoginOn.next(true);
+                }),
+                catchError(this.handleError)
+              );
+          } else {
+            return this.handleError(error);
+          }
+        })
       );
   }
 

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { AddAdminComponent } from 'src/app/components/admins/add-admin/add-admin.component';
+import { AddPersonComponent } from 'src/app/components/persons/add-person/add-person.component';
 import { adminGuard } from 'src/app/guards/admin.guard';
 import { loginGuard } from 'src/app/guards/login.guard';
 import { Admin } from 'src/app/models/admin';
@@ -34,7 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (adminGuard()) {
         this.modalService.open(AddAdminComponent, { backdrop: true });
       } else {
-        window.alert('NO ESTA HECHO MI REY');
+        const modalref = this.modalService.open(AddPersonComponent);
+        modalref.componentInstance.person = this.userData;
       }
     }
   }

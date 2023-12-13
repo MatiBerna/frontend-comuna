@@ -18,10 +18,15 @@
           class="form-control"
           id="usernameInput"
           aria-labelledby="usernameHelp"
+          [ngClass]="{
+            'is-invalid':
+              (username.dirty || username.touched) && username.invalid,
+            'is-valid': !username.invalid
+          }"
         />
         <div
           *ngIf="username.invalid && (username.dirty || username.touched)"
-          class="text-danger"
+          class="invalid-feedback"
         >
           <div *ngIf="username.errors?.['required']">
             El nombre de usuario es requerido
@@ -36,15 +41,13 @@
           class="form-control"
           id="passwordInput"
           aria-labelledby="passwordHelp"
+          [ngClass]="{
+            'is-invalid':
+              (confirmPassword.dirty || confirmPassword.touched) &&
+              adminForm.invalid,
+            'is-valid': !adminForm.invalid
+          }"
         />
-        <div
-          *ngIf="password.invalid && (password.dirty || password.touched)"
-          class="text-danger"
-        >
-          <div *ngIf="password.errors?.['required']">
-            La Contraseña es requerida
-          </div>
-        </div>
       </div>
       <div class="mb-3">
         <label for="confirmPasswordInput" class="form-label"
@@ -56,22 +59,25 @@
           class="form-control"
           id="confirmPasswordInput"
           aria-labelledby="confirmPasswordHelp"
+          [ngClass]="{
+            'is-invalid':
+              (confirmPassword.dirty || confirmPassword.touched) &&
+              adminForm.invalid,
+            'is-valid': !adminForm.invalid
+          }"
         />
         <div
           *ngIf="
-            confirmPassword.invalid &&
+            adminForm.invalid &&
             (confirmPassword.dirty || confirmPassword.touched)
           "
-          class="text-danger"
+          class="invalid-feedback"
         >
-          <div *ngIf="confirmPassword.errors?.['required']">
-            Debes confirmar la contraseña
+          <div *ngIf="adminForm.errors?.['notSame']">
+            Las contraseñas no coinciden
           </div>
         </div>
       </div>
-      <p class="text-danger" *ngIf="adminForm.errors?.['notSame']">
-        Las contraseñas no coinciden
-      </p>
     </form>
   </div>
   <div class="modal-footer">
