@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,9 +16,9 @@ import { LoginService } from 'src/app/services/auth/login.service';
   templateUrl: './add-admin.component.html',
   styleUrls: ['./add-admin.component.css'],
 })
-export class AddAdminComponent implements OnInit, OnDestroy {
-  userData!: Admin;
-  private userDataSubs!: Subscription;
+export class AddAdminComponent implements OnInit {
+  @Input() admin!: Admin;
+  //private userDataSubs!: Subscription;
   adminError: string = '';
   adminForm = this.formBuilder.group(
     {
@@ -64,11 +64,11 @@ export class AddAdminComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           console.log('Cambios Registrados');
-          window.alert('Se cerrará la sesion luego de aplicados los cambios');
-          sessionStorage.removeItem('token_session');
-          //this.loginService.checkLoginStatus();
-          location.reload(); //probablemente haya una mejor práctica
-          this.close();
+          // window.alert('Se cerrará la sesion luego de aplicados los cambios');
+          // sessionStorage.removeItem('token_session');
+          // //this.loginService.checkLoginStatus();
+          // location.reload(); //probablemente haya una mejor práctica
+          this.close('Registro');
         },
       });
     } else {
@@ -88,22 +88,18 @@ export class AddAdminComponent implements OnInit, OnDestroy {
     return this.adminForm.controls.confirmPassword;
   }
 
-  close() {
+  close(reason: string) {
     this.adminForm.reset();
-    this.modalService.dismissAll();
+    this.modalService.dismissAll(reason);
   }
 
   ngOnInit(): void {
-    this.userDataSubs = this.loginService.currentUserData.subscribe({
-      next: (userData) => {
-        this.userData = userData as Admin;
-      },
-    });
-    this.adminForm.controls._id.setValue(this.userData._id!);
-    this.adminForm.controls.username.setValue(this.userData.username!);
-  }
+    this.adminForm.controls._id.setValue(this.admin._id!);
 
-  ngOnDestroy(): void {
-    this.userDataSubs.unsubscribe();
+    if (this.admin._id !== null) {
+      this.adminForm.controls.username.setValue(this.admin.username!);
+    } else {
+      this.adminForm.controls.password.addValidators(Validators.required);
+    }
   }
 }

@@ -23,6 +23,7 @@ import { ToastsComponent } from './shared/toasts/toasts.component';
 import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
 import { AddCompetitionComponent } from './components/competitions/add-competition/add-competition.component';
 import { CompetitionDetailComponent } from './components/competitions/competition-detail/competition-detail.component';
+import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { CompetitionDetailComponent } from './components/competitions/competitio
     CompetitionsListComponent,
     AddCompetitionComponent,
     CompetitionDetailComponent,
+    AdminListComponent,
   ],
   imports: [
     BrowserModule,

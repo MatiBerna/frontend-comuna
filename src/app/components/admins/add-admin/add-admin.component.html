@@ -4,7 +4,7 @@
     <button
       type="button"
       class="btn-close"
-      (click)="close()"
+      (click)="close(' ')"
       aria-label="Close"
     ></button>
   </div>
@@ -48,6 +48,14 @@
             'is-valid': !adminForm.invalid
           }"
         />
+        <div
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="password.errors?.['required']">
+            La Contraseña es requerida
+          </div>
+        </div>
       </div>
       <div class="mb-3">
         <label for="confirmPasswordInput" class="form-label"
@@ -85,7 +93,7 @@
       type="button"
       class="btn btn-secondary"
       data-bs-dismiss="modal"
-      (click)="close()"
+      (click)="close(' ')"
     >
       Cerrar
     </button>
