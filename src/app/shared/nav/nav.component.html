@@ -9,13 +9,28 @@
     >
       <span class="bi bi-list display-6 text-white"></span>
     </button>
+    <a
+      class="navbar-brand text-white"
+      routerLinkActive="fw-semibold"
+      routerLink="/home"
+      >Villa&nbsp;Fucsia</a
+    >
+    <!-- <button
+      class="navbar-toggler border-0 p-0"
+      type="button"
+      (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls="navbarNav"
+    >
+      <span class="bi bi-list display-6 text-white"></span>
+    </button> -->
     <div
       [ngbCollapse]="isCollapsed"
       class="collapse navbar-collapse"
       id="navbarNav"
     >
       <ul class="navbar-nav d-flex">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a
             class="nav-link text-white"
             (click)="isCollapsed = true"
@@ -23,7 +38,7 @@
             routerLink="/home"
             ><i class="bi bi-house-fill"></i
           ></a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a
             class="nav-link text-white"
