@@ -24,6 +24,7 @@ import { CompetitionsListComponent } from './pages/competitions-list/competition
 import { AddCompetitionComponent } from './components/competitions/add-competition/add-competition.component';
 import { CompetitionDetailComponent } from './components/competitions/competition-detail/competition-detail.component';
 import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AdminListComponent } from './pages/admin/admin-list/admin-list.componen
     AddCompetitionComponent,
     CompetitionDetailComponent,
     AdminListComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
