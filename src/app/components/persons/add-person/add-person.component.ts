@@ -7,7 +7,7 @@ import {
   NgbCalendar,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { PersonsService } from 'src/app/services/persons/persons.service';
 
 @Component({
@@ -23,27 +23,32 @@ export class AddPersonComponent implements OnInit {
   minDate!: NgbDateStruct | null;
   personError: string = '';
 
-  personForm = this.formBuilder.group({
-    dni: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern('^[0-9]+$'),
-        Validators.minLength(7),
+  personForm = this.formBuilder.group(
+    {
+      dni: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9]+$'),
+          Validators.minLength(7),
+        ],
       ],
-    ],
-    firstName: [
-      '',
-      [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú ]*$')],
-    ],
-    lastName: [
-      '',
-      [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú ]*$')],
-    ],
-    email: ['', [Validators.required, Validators.email]],
-    phone: ['', [Validators.pattern('^[0-9]+$')]],
-    birthdate: [this.maxDate, [Validators.required]],
-  });
+      firstName: [
+        '',
+        [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú ]*$')],
+      ],
+      lastName: [
+        '',
+        [Validators.required, Validators.pattern('^[a-zA-ZñÑá-úÁ-Ú ]*$')],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.pattern('^[0-9]+$')]],
+      birthdate: [this.maxDate, [Validators.required]],
+      password: ['', [Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.minLength(6)]],
+    },
+    { validators: this.checkPasswords }
+  );
 
   constructor(
     private modalService: NgbModal,
@@ -80,6 +85,21 @@ export class AddPersonComponent implements OnInit {
     return this.personForm.controls.birthdate;
   }
 
+  get password() {
+    return this.personForm.controls.password;
+  }
+
+  get confirmPassword() {
+    return this.personForm.controls.confirmPassword;
+  }
+
+  checkPasswords(group: AbstractControl) {
+    let pass = group.get('password')!.value;
+    let confirmPass = group.get('confirmPassword')!.value;
+
+    return pass === confirmPass ? null : { notSame: true };
+  }
+
   addOrUpdate() {
     if (this.personForm.valid) {
       let jsDate = new Date(
@@ -97,6 +117,9 @@ export class AddPersonComponent implements OnInit {
         email: this.email.value!,
         birthdate: jsDate,
       };
+      if (this.password.value !== '' && this.password.value !== null) {
+        personToSend.password = this.password.value;
+      }
       this.personService.addOrUpdate(personToSend).subscribe({
         error: (err) => {
           console.log(err);
@@ -136,5 +159,8 @@ export class AddPersonComponent implements OnInit {
     this.personForm.controls.email.setValue(this.person.email);
     this.personForm.controls.phone.setValue(this.person.phone);
     this.personForm.controls.birthdate.setValue(birthdateNgb);
+    if (this.person._id === null) {
+      this.personForm.controls.password.addValidators(Validators.required);
+    }
   }
 }

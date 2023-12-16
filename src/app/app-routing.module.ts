@@ -8,6 +8,8 @@ import { adminGuard } from './guards/admin.guard';
 import { CompetitionTypesComponent } from './pages/competition-types/competition-types.component';
 import { EventosComponent } from './pages/eventos/eventos.component';
 import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
+import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -30,6 +32,15 @@ const routes: Routes = [
   {
     path: 'competitions',
     component: CompetitionsListComponent,
+  },
+  {
+    path: 'admins',
+    component: AdminListComponent,
+    canActivate: [loginGuard, adminGuard],
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
 ];
 

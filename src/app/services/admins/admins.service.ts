@@ -14,6 +14,12 @@ export class AdminsService {
   path: string = 'http://localhost:3000/api/admin';
   constructor(private http: HttpClient) {}
 
+  public getAll(): Observable<Admin[]> {
+    return this.http
+      .get<Admin[]>(`${this.path}`, this.createHeaders())
+      .pipe(catchError(this.handleError));
+  }
+
   public addOrEdit(admin: Admin): Observable<Admin> {
     if (admin._id === null || admin._id === '') {
       return this.http
@@ -22,6 +28,12 @@ export class AdminsService {
     }
     return this.http
       .patch<Admin>(`${this.path}/${admin._id}`, admin, this.createHeaders())
+      .pipe(catchError(this.handleError));
+  }
+
+  public delete(admin: Admin) {
+    return this.http
+      .delete(`${this.path}/${admin._id}`, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 
