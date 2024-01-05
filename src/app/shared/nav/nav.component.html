@@ -43,6 +43,7 @@
           <a
             class="nav-link text-white"
             (click)="isCollapsed = true"
+            *ngIf="isAdmin()"
             routerLinkActive="fw-semibold"
             routerLink="/eventos"
             >Eventos</a
@@ -52,6 +53,7 @@
           <a
             class="nav-link text-white"
             (click)="isCollapsed = true"
+            *ngIf="isAdmin()"
             routerLinkActive="fw-semibold"
             routerLink="/competitions"
             >Competencias</a
