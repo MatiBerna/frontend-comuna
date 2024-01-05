@@ -3,4 +3,5 @@ export interface Evento {
   description: string;
   fechaHoraIni?: Date;
   fechaHoraFin?: Date;
+  image: string;
 }

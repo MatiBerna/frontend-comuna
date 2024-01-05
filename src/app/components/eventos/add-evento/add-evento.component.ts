@@ -18,12 +18,17 @@ import { EventosService } from 'src/app/services/eventos/eventos.service';
 export class AddEventoComponent implements OnInit {
   @Input() evento!: Evento;
   eventoError: string = '';
+  imagePreview: string[] = [944, 1011, 984].map(
+    (n) =>
+      `https://images.unsplash.com/photo-1512389142860-9c449e58a543?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`
+  );
   today: Date = new Date();
   minDate!: NgbDateStruct | null;
   minHour!: NgbTimeStruct | null;
 
   eventoForm = this.formBuilder.group({
     description: ['', [Validators.required]],
+    image: ['', [Validators.required]],
     fechaIni: [this.minDate, [Validators.required]],
     horaIni: [this.minHour, [Validators.required]],
     fechaFin: [this.minDate, [Validators.required]],
@@ -61,6 +66,7 @@ export class AddEventoComponent implements OnInit {
       const eventoToSend: Evento = {
         _id: this.evento._id,
         description: this.description.value!,
+        image: this.image.value!,
         fechaHoraIni: fechaHoraIni,
         fechaHoraFin: fechaHoraFin,
       };
@@ -82,6 +88,10 @@ export class AddEventoComponent implements OnInit {
 
   get description() {
     return this.eventoForm.controls.description;
+  }
+
+  get image() {
+    return this.eventoForm.controls.image;
   }
 
   get fechaIni() {
@@ -126,6 +136,7 @@ export class AddEventoComponent implements OnInit {
     }
 
     this.eventoForm.controls.description.setValue(this.evento.description);
+    this.eventoForm.controls.image.setValue(this.evento.image);
     this.eventoForm.controls.fechaIni.setValue(fechaIni);
     this.eventoForm.controls.horaIni.setValue(horaIni);
     this.eventoForm.controls.fechaFin.setValue(fechaFin);
@@ -151,4 +162,17 @@ export class AddEventoComponent implements OnInit {
     };
     return horaNgb;
   }
+
+  // onImageChange(event: any) {
+  //   const reader = new FileReader();
+
+  //   if (event.target.files && event.target.files.length) {
+  //     const [file] = event.target.files;
+  //     reader.readAsDataURL(file);
+
+  //     reader.onload = () => {
+  //       this.imagePreview = reader.result as string;
+  //     };
+  //   }
+  // }
 }

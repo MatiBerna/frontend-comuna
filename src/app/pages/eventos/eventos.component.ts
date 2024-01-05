@@ -18,6 +18,7 @@ export class EventosComponent implements OnInit, OnDestroy {
   voidEvento: Evento = {
     _id: null,
     description: '',
+    image: '',
   };
 
   constructor(

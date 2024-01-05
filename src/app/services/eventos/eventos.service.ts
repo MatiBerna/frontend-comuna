@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Evento } from 'src/app/models/evento';
@@ -20,18 +24,26 @@ export class EventosService {
   addOrUpdate(evento: Evento) {
     if (evento._id === null || evento._id === '') {
       return this.http
-        .post<Evento>(`${this.path}`, evento)
+        .post<Evento>(`${this.path}`, evento, this.createHeaders())
         .pipe(catchError(this.handleError));
     }
     return this.http
-      .patch<Evento>(`${this.path}/${evento._id}`, evento)
+      .patch<Evento>(`${this.path}/${evento._id}`, evento, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 
   delete(evento: Evento) {
     return this.http
-      .delete<Evento>(`${this.path}/${evento._id}`)
+      .delete<Evento>(`${this.path}/${evento._id}`, this.createHeaders())
       .pipe(catchError(this.handleError));
+  }
+
+  private createHeaders() {
+    return {
+      headers: new HttpHeaders({
+        Authorization: sessionStorage.getItem('token_session')!,
+      }),
+    };
   }
 
   private handleError(error: HttpErrorResponse) {
