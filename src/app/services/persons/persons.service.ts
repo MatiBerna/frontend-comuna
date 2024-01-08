@@ -27,17 +27,17 @@ export class PersonsService {
   addOrUpdate(persona: Person) {
     if (persona._id === null || persona._id === '') {
       return this.http
-        .post<Person>(`${this.path}`, persona)
+        .post<Person>(`${this.path}`, persona, this.createHeaders())
         .pipe(catchError(this.handleError));
     }
     return this.http
-      .patch(`${this.path}/${persona._id}`, persona)
+      .patch(`${this.path}/${persona._id}`, persona, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 
   delete(persona: Person) {
     return this.http
-      .delete<Person>(`${this.path}/${persona._id}`)
+      .delete<Person>(`${this.path}/${persona._id}`, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 

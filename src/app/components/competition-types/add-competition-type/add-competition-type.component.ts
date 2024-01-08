@@ -16,6 +16,7 @@ export class AddCompetitionTypeComponent implements OnInit {
   compeTypeForm = this.formBuilder.group({
     _id: [''],
     description: ['', [Validators.required]],
+    image: ['', [Validators.required]],
     rules: ['', [Validators.required]],
   });
 
@@ -35,7 +36,7 @@ export class AddCompetitionTypeComponent implements OnInit {
     if (this.compeTypeForm.valid) {
       const compeTypeToSend: CompetitionType = this.compeTypeForm
         .value as CompetitionType;
-
+      console.log(compeTypeToSend);
       this.compTypesService.addOrUpdate(compeTypeToSend).subscribe({
         error: (err) => {
           console.log(err);
@@ -59,11 +60,21 @@ export class AddCompetitionTypeComponent implements OnInit {
     return this.compeTypeForm.controls.description;
   }
 
+  get image() {
+    return this.compeTypeForm.controls.image;
+  }
+
   get rules() {
     return this.compeTypeForm.controls.rules;
   }
 
   ngOnInit(): void {
-    this.compeTypeForm.setValue(this.compeType);
+    //this.compeTypeForm.setValue(this.compeType);
+    this.compeTypeForm.controls._id.setValue(this.compeType._id);
+    this.compeTypeForm.controls.image.setValue(this.compeType.image);
+    this.compeTypeForm.controls.description.setValue(
+      this.compeType.description
+    );
+    this.compeTypeForm.controls.rules.setValue(this.compeType.rules);
   }
 }

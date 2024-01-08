@@ -1,14 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Competition } from 'src/app/models/competition';
+import { CompetitionType } from 'src/app/models/competition-type';
+import { Evento } from 'src/app/models/evento';
 
 @Component({
   selector: 'app-competition-detail',
   templateUrl: './competition-detail.component.html',
   styleUrls: ['./competition-detail.component.css'],
 })
-export class CompetitionDetailComponent {
+export class CompetitionDetailComponent implements OnInit {
   @Input() competition!: Competition;
+  evento!: Evento;
+  competitionType!: CompetitionType;
 
   constructor(private modalService: NgbModal) {}
 
@@ -27,5 +31,10 @@ export class CompetitionDetailComponent {
       minute: '2-digit',
     });
     return hora;
+  }
+
+  ngOnInit(): void {
+    this.evento = this.competition.evento as Evento;
+    this.competitionType = this.competition.competitionType as CompetitionType;
   }
 }

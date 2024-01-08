@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Competition } from 'src/app/models/competition';
@@ -20,18 +24,33 @@ export class CompetitionsService {
   addOrUpdate(competition: Competition): Observable<Competition> {
     if (competition._id === null || competition._id === '') {
       return this.http
-        .post<Competition>(`${this.path}`, competition)
+        .post<Competition>(`${this.path}`, competition, this.createHeaders())
         .pipe(catchError(this.handleError));
     }
     return this.http
-      .patch<Competition>(`${this.path}/${competition._id}`, competition)
+      .patch<Competition>(
+        `${this.path}/${competition._id}`,
+        competition,
+        this.createHeaders()
+      )
       .pipe(catchError(this.handleError));
   }
 
   delete(competition: Competition): Observable<Competition> {
     return this.http
-      .delete<Competition>(`${this.path}/${competition._id}`)
+      .delete<Competition>(
+        `${this.path}/${competition._id}`,
+        this.createHeaders()
+      )
       .pipe(catchError(this.handleError));
+  }
+
+  private createHeaders() {
+    return {
+      headers: new HttpHeaders({
+        Authorization: sessionStorage.getItem('token_session')!,
+      }),
+    };
   }
 
   private handleError(error: HttpErrorResponse) {
