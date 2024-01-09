@@ -84,8 +84,8 @@ export class AddCompetitionComponent implements OnInit {
         fechaHoraFinEstimada: fechaHoraFinEstimada,
         premios: this.premios.value!,
         costoInscripcion: ncostoInsc,
-        _idEvento: this._idEvento.value!,
-        _idCompetitionType: this._idcompetitionType.value!,
+        evento: this._idEvento.value!,
+        competitionType: this._idcompetitionType.value!,
       };
 
       this.competitionService.addOrUpdate(competitionToSend).subscribe({
@@ -187,7 +187,7 @@ export class AddCompetitionComponent implements OnInit {
       next: (eventos: Evento[]) => {
         this.eventos = eventos;
         if (this.competition.evento) {
-          this.setLimitesFechas(this.competition.evento!._id);
+          this.setLimitesFechas((this.competition.evento as Evento)._id);
         }
       },
       error: (errorData) => {
@@ -244,11 +244,11 @@ export class AddCompetitionComponent implements OnInit {
     );
     if (this.competition.evento) {
       this.competitionForm.controls._idEvento.setValue(
-        this.competition.evento!._id
+        (this.competition.evento as Evento)._id
       );
 
       this.competitionForm.controls._idCompetitionType.setValue(
-        this.competition.competitionType!._id
+        (this.competition.competitionType as CompetitionType)._id
       );
     }
     this.competitionForm.controls.premios.setValue(this.competition.premios!);

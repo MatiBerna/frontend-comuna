@@ -25,6 +25,7 @@ import { AddCompetitionComponent } from './components/competitions/add-competiti
 import { CompetitionDetailComponent } from './components/competitions/competition-detail/competition-detail.component';
 import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { RegisterComponent } from './auth/register/register.component';
     CompetitionDetailComponent,
     AdminListComponent,
     RegisterComponent,
+    ConfirmModalComponent,
   ],
   imports: [
     BrowserModule,

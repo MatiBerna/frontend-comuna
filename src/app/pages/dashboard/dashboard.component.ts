@@ -10,28 +10,9 @@ import { LoginService } from 'src/app/services/auth/login.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  userLoginOn: boolean = false;
-  userData?: Admin | Person;
-  private loginSubs!: Subscription;
-  private userDataSubs!: Subscription;
   constructor(private loginService: LoginService) {}
 
-  ngOnInit(): void {
-    this.loginSubs = this.loginService.currentUserLoginOn.subscribe({
-      next: (userLoginOn) => {
-        this.userLoginOn = userLoginOn;
-      },
-    });
+  ngOnInit(): void {}
 
-    this.userDataSubs = this.loginService.currentUserData.subscribe({
-      next: (userData) => {
-        this.userData = userData;
-      },
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.userDataSubs.unsubscribe();
-    this.loginSubs.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

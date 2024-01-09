@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddCompetitionComponent } from 'src/app/components/competitions/add-competition/add-competition.component';
 import { CompetitionDetailComponent } from 'src/app/components/competitions/competition-detail/competition-detail.component';
+import { ConfirmModalComponent } from 'src/app/components/shared/confirm-modal/confirm-modal.component';
 import { Competition } from 'src/app/models/competition';
 import { CompetitionsService } from 'src/app/services/competitions/competitions.service';
 import { ToastService } from 'src/app/services/shared/toast/toast.service';
@@ -70,25 +71,33 @@ export class CompetitionsListComponent implements OnInit {
   }
 
   deleteCompetition(competition: Competition) {
-    if (window.confirm('¿Estás seguro que quieres eliminar el evento?')) {
-      this.competitionService.delete(competition).subscribe({
-        error: (error) => {
-          console.log(error);
-          this.toastService.show(error, {
-            classname: 'bg-danger text-light',
-            delay: 5000,
-          });
-        },
-        complete: () => {
-          console.log('Evento borrado');
-          this.toastService.show('Evento borrado', {
-            classname: 'bg-success text-light',
-            delay: 10000,
-          });
-          this.getCompetitions(this.tipoLista);
-        },
-      });
-    }
+    const modalRef = this.modalService.open(ConfirmModalComponent, {
+      centered: true,
+    });
+    modalRef.componentInstance.message =
+      '¿Está seguro que quiere eliminar la competencia? Esta acción no se puede revertir';
+    modalRef.dismissed.subscribe((reason: string) => {
+      if (reason === 'aceptar') {
+        console.log('borrando');
+        this.competitionService.delete(competition).subscribe({
+          error: (error) => {
+            console.log(error);
+            this.toastService.show(error, {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            });
+          },
+          complete: () => {
+            console.log('Socio Borrado');
+            this.toastService.show('Socio borrado', {
+              classname: 'bg-success text-light',
+              delay: 5000,
+            });
+            this.getCompetitions(this.tipoLista);
+          },
+        });
+      }
+    });
   }
 
   getFecha(fechaHora: string) {

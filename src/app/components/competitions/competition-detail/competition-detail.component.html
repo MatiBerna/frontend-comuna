@@ -1,7 +1,7 @@
 <div class="modal-content">
   <div class="modal-header">
     <h1 class="modal-title fs-5">
-      {{ competition.competitionType!.description }}
+      {{ competitionType.description }}
     </h1>
     <button
       type="button"
@@ -31,7 +31,7 @@
           data-bs-parent="#accordionExample"
         >
           <div class="accordion-body">
-            <p>Reglas: {{ competition.competitionType!.rules }}</p>
+            <p>Reglas: {{ competitionType.rules }}</p>
           </div>
         </div>
       </div>
@@ -54,23 +54,23 @@
           data-bs-parent="#accordionExample"
         >
           <div class="accordion-body">
-            <strong>{{ competition.evento!.description }}</strong>
+            <strong>{{ evento.description }}</strong>
             <p class="mb-0 fw-medium">Fecha y Hora inicio</p>
             <div class="row">
               <p class="card-text col-6">
-                Fecha: {{ getFecha(competition.evento!.fechaHoraIni!) }}
+                Fecha: {{ getFecha(evento.fechaHoraIni!) }}
               </p>
               <p class="card-text col-6">
-                Hora: {{ getHora(competition.evento!.fechaHoraIni!) }}
+                Hora: {{ getHora(evento.fechaHoraIni!) }}
               </p>
             </div>
             <p class="mb-0 fw-medium">Fecha y Hora fin</p>
             <div class="row">
               <p class="card-text col-6">
-                Fecha: {{ getFecha(competition.evento!.fechaHoraFin!) }}
+                Fecha: {{ getFecha(evento.fechaHoraFin!) }}
               </p>
               <p class="card-text col-6">
-                Hora: {{ getHora(competition.evento!.fechaHoraFin!) }}
+                Hora: {{ getHora(evento.fechaHoraFin!) }}
               </p>
             </div>
           </div>
