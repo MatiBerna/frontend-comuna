@@ -34,6 +34,9 @@
           <div *ngIf="description.errors?.['required']">
             La descripcion es requerida
           </div>
+          <div *ngIf="description.errors?.['serverError']">
+            {{ description.getError("serverError") }}
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -60,6 +63,9 @@
         >
           <div *ngIf="_idEvento.errors?.['required']">
             Debe elegir un evento
+          </div>
+          <div *ngIf="_idEvento.errors?.['serverError']">
+            {{ _idEvento.getError("serverError") }}
           </div>
         </div>
       </div>
@@ -91,6 +97,9 @@
         >
           <div *ngIf="_idcompetitionType.errors?.['required']">
             Debe elegir un Tipo de Competencia
+          </div>
+          <div *ngIf="_idcompetitionType.errors?.['serverError']">
+            {{ _idcompetitionType.getError("serverError") }}
           </div>
         </div>
       </div>
@@ -124,8 +133,11 @@
               <div *ngIf="fechaIni.errors?.['required']">
                 La fecha de inicio es requerida
               </div>
-              <div *ngIf="!fechaIni.errors?.['required']">
+              <div *ngIf="fechaIni.errors?.['ngbDate']">
                 Ingrese una fecha válida
+              </div>
+              <div *ngIf="fechaIni.errors?.['serverError']">
+                {{ fechaIni.getError("serverError") }}
               </div>
             </div>
           </div>
@@ -188,8 +200,11 @@
               <div *ngIf="fechaFinEstimada.errors?.['required']">
                 La fecha de fin estimada es requerida
               </div>
-              <div *ngIf="!fechaFinEstimada.errors?.['required']">
+              <div *ngIf="fechaFinEstimada.errors?.['ngbDate']">
                 Ingrese una fecha válida
+              </div>
+              <div *ngIf="fechaFinEstimada.errors?.['serverError']">
+                {{ fechaFinEstimada.getError("serverError") }}
               </div>
             </div>
           </div>
@@ -240,6 +255,9 @@
           <div *ngIf="premios.errors?.['required']">
             El campo premios es requerido
           </div>
+          <div *ngIf="premios.errors?.['serverError']">
+            {{ premios.getError("serverError") }}
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -270,6 +288,9 @@
           </div>
           <div *ngIf="costoInscripcion.errors?.['pattern']">
             El costo de inscripcion debe ser un numero real, maximo 2 decimales
+          </div>
+          <div *ngIf="costoInscripcion.errors?.['serverError']">
+            {{ costoInscripcion.getError("serverError") }}
           </div>
         </div>
       </div>

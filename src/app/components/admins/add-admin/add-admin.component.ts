@@ -10,16 +10,18 @@ import { Subscription } from 'rxjs';
 import { Admin } from 'src/app/models/admin';
 import { AdminsService } from 'src/app/services/admins/admins.service';
 import { LoginService } from 'src/app/services/auth/login.service';
+import { ErrorService } from 'src/app/services/error/error.service';
 
 @Component({
   selector: 'app-add-admin',
   templateUrl: './add-admin.component.html',
   styleUrls: ['./add-admin.component.css'],
 })
-export class AddAdminComponent implements OnInit {
+export class AddAdminComponent implements OnInit, OnDestroy {
   @Input() admin!: Admin;
   //private userDataSubs!: Subscription;
   adminError: string = '';
+  private errorSub!: Subscription;
   adminForm = this.formBuilder.group(
     {
       _id: [''],
@@ -33,8 +35,8 @@ export class AddAdminComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private loginService: LoginService,
-    private adminsService: AdminsService
+    private adminsService: AdminsService,
+    private errorService: ErrorService
   ) {}
 
   checkPasswords(group: AbstractControl) {
@@ -64,10 +66,6 @@ export class AddAdminComponent implements OnInit {
         },
         complete: () => {
           console.log('Cambios Registrados');
-          // window.alert('Se cerrará la sesion luego de aplicados los cambios');
-          // sessionStorage.removeItem('token_session');
-          // //this.loginService.checkLoginStatus();
-          // location.reload(); //probablemente haya una mejor práctica
           this.close('Registro');
         },
       });
@@ -101,5 +99,22 @@ export class AddAdminComponent implements OnInit {
     } else {
       this.adminForm.controls.password.addValidators(Validators.required);
     }
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      for (const error of errors) {
+        switch (error.path) {
+          case 'username':
+            this.username.setErrors({ serverError: error.msg });
+            break;
+          case 'password':
+            this.password.setErrors({ serverError: error.msg });
+            break;
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.errorSub.unsubscribe();
   }
 }

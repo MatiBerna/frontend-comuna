@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Person } from 'src/app/models/person';
 import {
   NgbDate,
@@ -9,15 +9,18 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { PersonsService } from 'src/app/services/persons/persons.service';
+import { ErrorService } from 'src/app/services/error/error.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-person',
   templateUrl: './add-person.component.html',
   styleUrls: ['./add-person.component.css'],
 })
-export class AddPersonComponent implements OnInit {
+export class AddPersonComponent implements OnInit, OnDestroy {
   @Input() person!: Person;
   modalRef!: NgbModalRef;
+  private errorSub!: Subscription;
   today: Date = new Date();
   maxDate!: NgbDateStruct | null;
   minDate!: NgbDateStruct | null;
@@ -53,7 +56,8 @@ export class AddPersonComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private personService: PersonsService
+    private personService: PersonsService,
+    private errorService: ErrorService
   ) {}
 
   close(reason: string) {
@@ -61,6 +65,7 @@ export class AddPersonComponent implements OnInit {
     this.modalService.dismissAll(reason);
   }
 
+  //#region geters
   get dni() {
     return this.personForm.controls.dni;
   }
@@ -92,6 +97,7 @@ export class AddPersonComponent implements OnInit {
   get confirmPassword() {
     return this.personForm.controls.confirmPassword;
   }
+  //#endregion
 
   checkPasswords(group: AbstractControl) {
     let pass = group.get('password')!.value;
@@ -162,5 +168,36 @@ export class AddPersonComponent implements OnInit {
     if (this.person._id === null) {
       this.personForm.controls.password.addValidators(Validators.required);
     }
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      errors.forEach((error: any) => {
+        switch (error.path) {
+          case 'dni':
+            this.dni.setErrors({ serverError: error.msg });
+            break;
+          case 'firstName':
+            this.firstName.setErrors({ serverError: error.msg });
+            break;
+          case 'lastName':
+            this.lastName.setErrors({ serverError: error.msg });
+            break;
+          case 'email':
+            this.email.setErrors({ serverError: error.msg });
+            break;
+          case 'phone':
+            this.phone.setErrors({ serverError: error.msg });
+            break;
+          case 'birthdate':
+            this.birthdate.setErrors({ serverError: error.msg });
+            break;
+          case 'password':
+            this.password.setErrors({ serverError: error.msg });
+            break;
+        }
+      });
+    });
+  }
+  ngOnDestroy(): void {
+    this.errorSub.unsubscribe();
   }
 }

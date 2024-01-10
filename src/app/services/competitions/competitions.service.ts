@@ -6,6 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Competition } from 'src/app/models/competition';
+import { ErrorService } from '../error/error.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ import { Competition } from 'src/app/models/competition';
 export class CompetitionsService {
   path: string = 'http://localhost:3000/api/competition';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   getAll(query: string): Observable<Competition[]> {
     return this.http
@@ -53,12 +54,16 @@ export class CompetitionsService {
     };
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError = (error: HttpErrorResponse) => {
     if (error.status === 0) {
       console.log(`Se ha producido un error: ${error.error}`);
       return throwError(
         () => new Error('Algo falló. Por favor intente nuevamente')
       );
+    } else if (error.status === 400) {
+      console.log('Error de tipo 400:', error.error.errors);
+      this.errorService.sendErrors(error.error.errors);
+      return throwError(() => new Error('Error en los datos ingresados'));
     } else {
       console.log(
         'Backend retornó el código de estado: ',
@@ -67,5 +72,5 @@ export class CompetitionsService {
       );
       return throwError(() => new Error(error.error.message));
     }
-  }
+  };
 }

@@ -33,6 +33,9 @@
           <div *ngIf="description.errors?.['required']">
             La descripcion es requerida
           </div>
+          <div *ngIf="description.errors?.['serverError']">
+            {{ description.getError("serverError") }}
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -53,6 +56,9 @@
         >
           <div *ngIf="image.errors?.['required']">
             La URL de la imagen es requerida
+          </div>
+          <div *ngIf="image.errors?.['serverError']">
+            {{ image.getError("serverError") }}
           </div>
         </div>
         <div *ngIf="image.valid">
@@ -88,8 +94,11 @@
               <div *ngIf="fechaIni.errors?.['required']">
                 La fecha de inicio es requerida
               </div>
-              <div *ngIf="!fechaIni.errors?.['required']">
+              <div *ngIf="fechaIni.errors?.['ngbDate']">
                 Ingrese una fecha válida
+              </div>
+              <div *ngIf="fechaIni.errors?.['serverError']">
+                {{ fechaIni.getError("serverError") }}
               </div>
             </div>
           </div>
@@ -112,6 +121,9 @@
           >
             <div *ngIf="horaIni.errors?.['required']">
               La hora de inicio es requerida
+            </div>
+            <div *ngIf="horaIni.errors?.['serverError']">
+              {{ horaIni.getError("serverError") }}
             </div>
           </div>
         </div>
@@ -145,8 +157,11 @@
               <div *ngIf="fechaFin.errors?.['required']">
                 La fecha de fin es requerida
               </div>
-              <div *ngIf="!fechaFin.errors?.['required']">
+              <div *ngIf="fechaFin.errors?.['ngbDate']">
                 Ingrese una fecha válida
+              </div>
+              <div *ngIf="fechaFin.errors?.['serverError']">
+                {{ fechaFin.getError("serverError") }}
               </div>
             </div>
           </div>
@@ -169,6 +184,9 @@
           >
             <div *ngIf="horaFin.errors?.['required']">
               La hora de fin es requerida
+            </div>
+            <div *ngIf="horaFin.errors?.['serverError']">
+              {{ horaFin.getError("serverError") }}
             </div>
           </div>
         </div>

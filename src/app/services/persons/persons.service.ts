@@ -6,13 +6,14 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Person } from 'src/app/models/person';
+import { ErrorService } from '../error/error.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PersonsService {
   path: string = 'http://localhost:3000/api/person';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   getAll(filter: string | null): Observable<Person[]> {
     let query: string = '';
@@ -41,12 +42,16 @@ export class PersonsService {
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError = (error: HttpErrorResponse) => {
     if (error.status === 0) {
       console.log(`Se ha producido un error: ${error.error}`);
       return throwError(
         () => new Error('Algo falló. Por favor intente nuevamente')
       );
+    } else if (error.status === 400) {
+      console.log('Error de tipo 400:', error.error.errors);
+      this.errorService.sendErrors(error.error.errors);
+      return throwError(() => new Error('Error en los datos ingresados'));
     } else {
       console.log(
         'Backend retornó el código de estado: ',
@@ -55,7 +60,7 @@ export class PersonsService {
       );
       return throwError(() => new Error(error.error.message));
     }
-  }
+  };
 
   private createHeaders() {
     return {

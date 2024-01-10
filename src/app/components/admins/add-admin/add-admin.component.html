@@ -31,6 +31,9 @@
           <div *ngIf="username.errors?.['required']">
             El nombre de usuario es requerido
           </div>
+          <div *ngIf="username.errors?.['serverError']">
+            {{ username.getError("serverError") }}
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -54,6 +57,9 @@
         >
           <div *ngIf="password.errors?.['required']">
             La Contraseña es requerida
+          </div>
+          <div *ngIf="password.errors?.['serverError']">
+            {{ password.getError("serverError") }}
           </div>
         </div>
       </div>

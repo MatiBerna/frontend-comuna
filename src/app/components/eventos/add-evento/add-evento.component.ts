@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
   NgbDateAdapter,
@@ -7,7 +7,9 @@ import {
   NgbTimeAdapter,
   NgbTimeStruct,
 } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Evento } from 'src/app/models/evento';
+import { ErrorService } from 'src/app/services/error/error.service';
 import { EventosService } from 'src/app/services/eventos/eventos.service';
 
 @Component({
@@ -15,13 +17,10 @@ import { EventosService } from 'src/app/services/eventos/eventos.service';
   templateUrl: './add-evento.component.html',
   styleUrls: ['./add-evento.component.css'],
 })
-export class AddEventoComponent implements OnInit {
+export class AddEventoComponent implements OnInit, OnDestroy {
   @Input() evento!: Evento;
   eventoError: string = '';
-  imagePreview: string[] = [944, 1011, 984].map(
-    (n) =>
-      `https://images.unsplash.com/photo-1512389142860-9c449e58a543?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`
-  );
+  private errorSub!: Subscription;
   today: Date = new Date();
   minDate!: NgbDateStruct | null;
   minHour!: NgbTimeStruct | null;
@@ -38,7 +37,8 @@ export class AddEventoComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private eventoService: EventosService
+    private eventoService: EventosService,
+    private errorService: ErrorService
   ) {}
 
   close(reason: string) {
@@ -86,6 +86,7 @@ export class AddEventoComponent implements OnInit {
     }
   }
 
+  //#region geters
   get description() {
     return this.eventoForm.controls.description;
   }
@@ -109,6 +110,7 @@ export class AddEventoComponent implements OnInit {
   get horaFin() {
     return this.eventoForm.controls.horaFin;
   }
+  //#endregion
 
   ngOnInit(): void {
     this.minDate = {
@@ -141,6 +143,28 @@ export class AddEventoComponent implements OnInit {
     this.eventoForm.controls.horaIni.setValue(horaIni);
     this.eventoForm.controls.fechaFin.setValue(fechaFin);
     this.eventoForm.controls.horaFin.setValue(horaFin);
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      for (const error of errors) {
+        switch (error.path) {
+          case 'description':
+            this.description.setErrors({ serverError: error.msg });
+            break;
+          case 'image':
+            this.image.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraIni':
+            this.fechaIni.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraFin':
+            this.fechaFin.setErrors({ serverError: error.msg });
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.errorSub.unsubscribe();
   }
 
   convertDateToNgbDate(fechaHoraP: string): NgbDateStruct {
@@ -162,17 +186,4 @@ export class AddEventoComponent implements OnInit {
     };
     return horaNgb;
   }
-
-  // onImageChange(event: any) {
-  //   const reader = new FileReader();
-
-  //   if (event.target.files && event.target.files.length) {
-  //     const [file] = event.target.files;
-  //     reader.readAsDataURL(file);
-
-  //     reader.onload = () => {
-  //       this.imagePreview = reader.result as string;
-  //     };
-  //   }
-  // }
 }
