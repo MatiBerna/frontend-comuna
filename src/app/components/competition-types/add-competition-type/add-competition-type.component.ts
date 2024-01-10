@@ -1,18 +1,27 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { CompetitionType } from 'src/app/models/competition-type';
 import { CompetitionTypesService } from 'src/app/services/competition-types/competition-types.service';
+import { ErrorService } from 'src/app/services/error/error.service';
 
 @Component({
   selector: 'app-add-competition-type',
   templateUrl: './add-competition-type.component.html',
   styleUrls: ['./add-competition-type.component.css'],
 })
-export class AddCompetitionTypeComponent implements OnInit {
+export class AddCompetitionTypeComponent implements OnInit, OnDestroy {
   @Input() compeType!: CompetitionType;
   compeTypeError: string = '';
-  submitted: boolean = false;
+  private errorSub!: Subscription;
   compeTypeForm = this.formBuilder.group({
     _id: [''],
     description: ['', [Validators.required]],
@@ -23,7 +32,8 @@ export class AddCompetitionTypeComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private compTypesService: CompetitionTypesService
+    private compTypesService: CompetitionTypesService,
+    private errorService: ErrorService
   ) {}
 
   close(reason: string) {
@@ -32,15 +42,14 @@ export class AddCompetitionTypeComponent implements OnInit {
   }
 
   addOrUpdate() {
-    this.submitted = true;
     if (this.compeTypeForm.valid) {
       const compeTypeToSend: CompetitionType = this.compeTypeForm
         .value as CompetitionType;
       console.log(compeTypeToSend);
       this.compTypesService.addOrUpdate(compeTypeToSend).subscribe({
         error: (err) => {
-          console.log(err);
-          this.compeTypeError = err;
+          console.log(err.message);
+          this.compeTypeError = err.message;
         },
         complete: () => {
           console.log('Cambios Registrados');
@@ -76,5 +85,25 @@ export class AddCompetitionTypeComponent implements OnInit {
       this.compeType.description
     );
     this.compeTypeForm.controls.rules.setValue(this.compeType.rules);
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      for (const error of errors) {
+        switch (error.path) {
+          case 'description':
+            this.description.setErrors({ serverError: error.msg });
+            break;
+          case 'image':
+            this.image.setErrors({ serverError: error.msg });
+            break;
+          case 'rules':
+            this.rules.setErrors({ serverError: error.msg });
+            break;
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.errorSub.unsubscribe();
   }
 }

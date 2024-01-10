@@ -5,11 +5,13 @@ import {
   NgbModal,
   NgbTimeStruct,
 } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Competition } from 'src/app/models/competition';
 import { CompetitionType } from 'src/app/models/competition-type';
 import { Evento } from 'src/app/models/evento';
 import { CompetitionTypesService } from 'src/app/services/competition-types/competition-types.service';
 import { CompetitionsService } from 'src/app/services/competitions/competitions.service';
+import { ErrorService } from 'src/app/services/error/error.service';
 import { EventosService } from 'src/app/services/eventos/eventos.service';
 import { ToastService } from 'src/app/services/shared/toast/toast.service';
 
@@ -21,6 +23,7 @@ import { ToastService } from 'src/app/services/shared/toast/toast.service';
 export class AddCompetitionComponent implements OnInit {
   @Input() competition!: Competition;
   competitionError: string = '';
+  private errorSub!: Subscription;
   today: Date = new Date();
   eventos: Evento[] = [];
   selectedEventId: string = '';
@@ -54,7 +57,8 @@ export class AddCompetitionComponent implements OnInit {
     private eventoService: EventosService,
     private competitionTypeService: CompetitionTypesService,
     private competitionService: CompetitionsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private errorService: ErrorService
   ) {}
 
   addOrUpdate() {
@@ -262,6 +266,34 @@ export class AddCompetitionComponent implements OnInit {
     this.competitionForm.controls.fechaFinEstimada.setValue(fechaFin);
     this.competitionForm.controls.horaFinEstimada.setValue(horaFin);
     //#endregion
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      for (const error of errors) {
+        switch (error.path) {
+          case 'description':
+            this.description.setErrors({ serverError: error.msg });
+            break;
+          case 'evento':
+            this._idEvento.setErrors({ serverError: error.msg });
+            break;
+          case 'competitionType':
+            this._idcompetitionType.setErrors({ serverError: error.msg });
+            break;
+          case 'premios':
+            this.premios.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraIni':
+            this.fechaIni.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraFinEstimada':
+            this.fechaFinEstimada.setErrors({ serverError: error.msg });
+            break;
+          case 'costoInscripcion':
+            this.costoInscripcion.setErrors({ serverError: error.msg });
+            break;
+        }
+      }
+    });
   }
 
   convertDateToNgbDate(fechaHoraP: string): NgbDateStruct {

@@ -26,6 +26,7 @@ import { CompetitionDetailComponent } from './components/competitions/competitio
 import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
+import { ErrorService } from './services/error/error.service';
 
 @NgModule({
   declarations: [

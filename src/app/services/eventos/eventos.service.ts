@@ -6,6 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Evento } from 'src/app/models/evento';
+import { ErrorService } from '../error/error.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ import { Evento } from 'src/app/models/evento';
 export class EventosService {
   path: string = 'http://localhost:3000/api/evento';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   getAll(query: string): Observable<Evento[]> {
     return this.http
@@ -46,12 +47,16 @@ export class EventosService {
     };
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError = (error: HttpErrorResponse) => {
     if (error.status === 0) {
       console.log(`Se ha producido un error: ${error.error}`);
       return throwError(
         () => new Error('Algo falló. Por favor intente nuevamente')
       );
+    } else if (error.status === 400) {
+      console.log('Error de tipo 400:', error.error.errors);
+      this.errorService.sendErrors(error.error.errors);
+      return throwError(() => new Error('Error en los datos ingresados'));
     } else {
       console.log(
         'Backend retornó el código de estado: ',
@@ -60,5 +65,5 @@ export class EventosService {
       );
       return throwError(() => new Error(error.error.message));
     }
-  }
+  };
 }
