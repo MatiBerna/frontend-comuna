@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Person } from 'src/app/models/person';
 import { ErrorService } from '../error/error.service';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +16,13 @@ export class PersonsService {
   path: string = 'http://localhost:3000/api/person';
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
-  getAll(filter: string | null): Observable<Person[]> {
-    let query: string = '';
+  getAll(filter: string | null, page: number): Observable<PaginationResponse> {
+    let query: string = `?page=${page}`;
     if (filter) {
-      query = `?filter=${filter}`;
+      query = query + `&filter=${filter}`;
     }
     return this.http
-      .get<Person[]>(`${this.path}${query}`, this.createHeaders())
+      .get<PaginationResponse>(`${this.path}${query}`, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 

@@ -5,6 +5,7 @@ import { PersonsService } from 'src/app/services/persons/persons.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/services/shared/toast/toast.service';
 import { ConfirmModalComponent } from 'src/app/components/shared/confirm-modal/confirm-modal.component';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 
 @Component({
   selector: 'app-persons-list',
@@ -16,6 +17,8 @@ export class PersonsListComponent implements OnInit {
   editPerson!: AddPersonComponent;
   page: number = 1;
   pageSize: number = 10;
+  totalDocs!: number;
+  pagingCounter!: number;
   personsList: Person[] = [];
   errorMessage: string = '';
   terminoBusqueda: string = '';
@@ -42,14 +45,18 @@ export class PersonsListComponent implements OnInit {
     private toastService: ToastService
   ) {}
 
-  getPersons() {
+  getPersons(newPage: number) {
     let filtro: string | null = null;
     if (this.terminoBusqueda !== '') {
       filtro = this.terminoBusqueda;
     }
-    this.personsService.getAll(filtro).subscribe({
-      next: (persons: Person[]) => {
-        this.personsList = persons;
+    this.personsService.getAll(filtro, newPage).subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.totalDocs = pagResponse.totalDocs;
+        this.page = pagResponse.page;
+        this.pagingCounter = pagResponse.pagingCounter;
+        this.personsList = pagResponse.docs as Person[];
+        console.log(this.personsList);
       },
       error: (errorData) => {
         console.log(errorData);
@@ -58,14 +65,8 @@ export class PersonsListComponent implements OnInit {
     });
   }
 
-  changeSelectedPerson(person: Person) {
-    this.selectedPerson = person;
-    console.log(this.selectedPerson);
-  }
-
   openModal(person: Person) {
     this.selectedPerson = person;
-    console.log(this.selectedPerson);
     const modalRef = this.modalService.open(AddPersonComponent, {
       backdrop: true,
     });
@@ -78,7 +79,7 @@ export class PersonsListComponent implements OnInit {
           delay: 5000,
         });
       }
-      this.getPersons();
+      this.getPersons(this.page);
     });
   }
 
@@ -105,7 +106,7 @@ export class PersonsListComponent implements OnInit {
               classname: 'bg-success text-light',
               delay: 5000,
             });
-            this.getPersons();
+            this.getPersons(this.page);
           },
         });
       }
@@ -113,6 +114,6 @@ export class PersonsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getPersons();
+    this.getPersons(this.page);
   }
 }

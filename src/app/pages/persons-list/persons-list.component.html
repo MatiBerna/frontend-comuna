@@ -14,19 +14,25 @@
       />
       <button
         class="btn btn-outline-secondary bi bi-search"
-        (click)="getPersons()"
+        (click)="getPersons(1)"
       ></button>
     </div>
   </div>
-  <div>
+  <div class="d-flex justify-content-between">
     <ngb-pagination
-      [collectionSize]="personsList.length"
+      [collectionSize]="totalDocs"
       [(page)]="page"
       [pageSize]="pageSize"
       [maxSize]="5"
       [rotate]="true"
       size="sm"
+      (pageChange)="getPersons($event)"
     ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{ pagingCounter + personsList.length - 1 }}
+      filas de
+      {{ totalDocs }}
+    </p>
   </div>
   <table class="table table-hover" style="table-layout: fixed">
     <thead>
@@ -38,12 +44,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="
-          let person of personsList
-            | slice : (page - 1) * pageSize : page * pageSize
-        "
-      >
+      <tr *ngFor="let person of personsList">
         <td>{{ person.dni }}</td>
         <td>{{ person.firstName }}</td>
         <td>{{ person.lastName }}</td>
