@@ -4,6 +4,9 @@ import { AddCompetitionComponent } from 'src/app/components/competitions/add-com
 import { CompetitionDetailComponent } from 'src/app/components/competitions/competition-detail/competition-detail.component';
 import { ConfirmModalComponent } from 'src/app/components/shared/confirm-modal/confirm-modal.component';
 import { Competition } from 'src/app/models/competition';
+import { CompetitionType } from 'src/app/models/competition-type';
+import { Evento } from 'src/app/models/evento';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 import { CompetitionsService } from 'src/app/services/competitions/competitions.service';
 import { ToastService } from 'src/app/services/shared/toast/toast.service';
 
@@ -16,6 +19,10 @@ export class CompetitionsListComponent implements OnInit {
   errorMessage: string = '';
   terminoBusqueda: string = '';
   tipoLista: string = 'Próximos';
+  page: number = 1;
+  pageSize: number = 10;
+  totalDocs!: number;
+  pagingCounter!: number;
   competitionsList: Competition[] = [];
   voidCompetition: Competition = {
     _id: null,
@@ -28,18 +35,20 @@ export class CompetitionsListComponent implements OnInit {
     private toastService: ToastService
   ) {}
 
-  getCompetitions(tipo: string) {
-    let query: string = '';
+  getCompetitions(tipo: string, newPage: number) {
     this.tipoLista = tipo;
-    if (tipo === 'Próximos') {
-      query = '?prox=true';
-    }
-    if (tipo === 'Inscripción Abierta') {
-      query = '?disp=true';
-    }
-    this.competitionService.getAll(query).subscribe({
-      next: (competitions: Competition[]) => {
-        this.competitionsList = competitions;
+    let prox: boolean = false;
+    let disp: boolean = false;
+    let filtro: string | null = null;
+    if (tipo === 'Próximos') prox = true;
+    if (tipo === 'Inscripción Abierta') disp = true;
+    if (this.terminoBusqueda !== '') filtro = this.terminoBusqueda;
+    this.competitionService.getAll(newPage, filtro, prox, disp).subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.totalDocs = pagResponse.totalDocs;
+        this.page = pagResponse.page;
+        this.pagingCounter = pagResponse.pagingCounter;
+        this.competitionsList = pagResponse.docs as Competition[];
       },
       error: (errorData) => {
         console.log(errorData);
@@ -61,7 +70,7 @@ export class CompetitionsListComponent implements OnInit {
           delay: 5000,
         });
       }
-      this.getCompetitions(this.tipoLista);
+      this.getCompetitions(this.tipoLista, this.page);
     });
   }
 
@@ -93,19 +102,19 @@ export class CompetitionsListComponent implements OnInit {
               classname: 'bg-success text-light',
               delay: 5000,
             });
-            this.getCompetitions(this.tipoLista);
+            this.getCompetitions(this.tipoLista, this.page);
           },
         });
       }
     });
   }
 
-  getFecha(fechaHora: string) {
+  getFecha(fechaHora: Date) {
     const fecha = new Date(fechaHora).toLocaleDateString('es-AR');
     return fecha;
   }
 
-  getHora(fechaHora: string) {
+  getHora(fechaHora: Date) {
     const hora = new Date(fechaHora).toLocaleTimeString('es-AR', {
       hour: '2-digit',
       minute: '2-digit',
@@ -113,7 +122,15 @@ export class CompetitionsListComponent implements OnInit {
     return hora;
   }
 
+  setICompetitionType(competitionType: CompetitionType | string) {
+    return competitionType as CompetitionType;
+  }
+
+  setIEvento(evento: Evento | string) {
+    return evento as Evento;
+  }
+
   ngOnInit(): void {
-    this.getCompetitions(this.tipoLista);
+    this.getCompetitions(this.tipoLista, this.page);
   }
 }

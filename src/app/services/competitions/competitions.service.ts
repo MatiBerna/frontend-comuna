@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Competition } from 'src/app/models/competition';
 import { ErrorService } from '../error/error.service';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,19 @@ export class CompetitionsService {
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
-  getAll(query: string): Observable<Competition[]> {
+  getAll(
+    page: number | null,
+    filter: string | null,
+    prox: boolean,
+    disp: boolean
+  ): Observable<PaginationResponse> {
+    let query: string = '?';
+    if (page) query += `page=${page}&`;
+    if (filter) query += `filter=${filter}&`;
+    if (prox) query += `prox=${prox}`;
+    if (disp) query += `disp=${disp}`;
     return this.http
-      .get<Competition[]>(`${this.path}${query}`)
+      .get<PaginationResponse>(`${this.path}${query}`)
       .pipe(catchError(this.handleError));
   }
 
