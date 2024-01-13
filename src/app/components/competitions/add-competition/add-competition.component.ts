@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { Competition } from 'src/app/models/competition';
 import { CompetitionType } from 'src/app/models/competition-type';
 import { Evento } from 'src/app/models/evento';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 import { CompetitionTypesService } from 'src/app/services/competition-types/competition-types.service';
 import { CompetitionsService } from 'src/app/services/competitions/competitions.service';
 import { ErrorService } from 'src/app/services/error/error.service';
@@ -204,9 +205,9 @@ export class AddCompetitionComponent implements OnInit {
       },
     });
 
-    this.competitionTypeService.getAll().subscribe({
-      next: (compeTypes: CompetitionType[]) => {
-        this.compeTypes = compeTypes;
+    this.competitionTypeService.getAll(null, null).subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.compeTypes = pagResponse.docs as CompetitionType[];
       },
       error: (errorData) => {
         console.log(errorData);

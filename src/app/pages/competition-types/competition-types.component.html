@@ -1,6 +1,6 @@
 <div class="container-sm" style="max-width: 1200px">
   <p class="text-danger">{{ errorMessage }}</p>
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between mb-3">
     <button class="btn btn-primary me-1" (click)="openModal(voidCompeType)">
       Nuevo&nbsp;Tipo
     </button>
@@ -12,7 +12,29 @@
         [(ngModel)]="terminoBusqueda"
         placeholder="Buscar..."
       />
+      <button
+        class="btn btn-outline-secondary bi bi-search"
+        (click)="getCompetitionTypes(1)"
+      ></button>
     </div>
+  </div>
+  <div class="d-flex justify-content-between">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getCompetitionTypes($event)"
+    ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{
+        pagingCounter + compTypeList.length - 1
+      }}
+      filas de
+      {{ totalDocs }}
+    </p>
   </div>
   <table class="table table-hover">
     <thead>
@@ -23,7 +45,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let compeType of compTypeList | filter : terminoBusqueda">
+      <tr *ngFor="let compeType of compTypeList">
         <td>{{ compeType.description }}</td>
         <td>
           <div class="text-truncate" style="max-width: 150px">

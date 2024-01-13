@@ -1,7 +1,9 @@
+import { CompetitionType } from './competition-type';
+import { Evento } from './evento';
 import { Person } from './person';
 
 export interface PaginationResponse {
-  docs: Person[];
+  docs: Person[] | CompetitionType[] | Evento[];
   totalDocs: number;
   limit: number;
   totalPages: number;

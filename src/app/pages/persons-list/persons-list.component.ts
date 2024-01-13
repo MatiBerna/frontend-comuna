@@ -56,7 +56,6 @@ export class PersonsListComponent implements OnInit {
         this.page = pagResponse.page;
         this.pagingCounter = pagResponse.pagingCounter;
         this.personsList = pagResponse.docs as Person[];
-        console.log(this.personsList);
       },
       error: (errorData) => {
         console.log(errorData);
