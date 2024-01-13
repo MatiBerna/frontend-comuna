@@ -1,9 +1,10 @@
+import { Competition } from './competition';
 import { CompetitionType } from './competition-type';
 import { Evento } from './evento';
 import { Person } from './person';
 
 export interface PaginationResponse {
-  docs: Person[] | CompetitionType[] | Evento[];
+  docs: Person[] | CompetitionType[] | Evento[] | Competition[];
   totalDocs: number;
   limit: number;
   totalPages: number;

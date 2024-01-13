@@ -45,7 +45,6 @@ export class EventosComponent implements OnInit, OnDestroy {
         this.page = pagResponse.page;
         this.pagingCounter = pagResponse.pagingCounter;
         this.eventoList = pagResponse.docs as Evento[];
-        console.log(pagResponse);
       },
       error: (errorData) => {
         console.log(errorData);
