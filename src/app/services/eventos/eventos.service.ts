@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Evento } from 'src/app/models/evento';
 import { ErrorService } from '../error/error.service';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,17 @@ export class EventosService {
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
-  getAll(query: string): Observable<Evento[]> {
+  getAll(
+    page: number | null,
+    filter: string | null,
+    prox: string | null
+  ): Observable<PaginationResponse> {
+    let query: string = '?';
+    if (page) query += `page=${page}&`;
+    if (filter) query += `filter=${filter}&`;
+    if (prox) query += `prox=${prox}`;
     return this.http
-      .get<Evento[]>(`${this.path}${query}`)
+      .get<PaginationResponse>(`${this.path}${query}`)
       .pipe(catchError(this.handleError));
   }
 

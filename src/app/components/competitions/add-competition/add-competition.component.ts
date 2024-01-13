@@ -188,9 +188,9 @@ export class AddCompetitionComponent implements OnInit {
 
     //#region services calls
 
-    this.eventoService.getAll('?prox=true').subscribe({
-      next: (eventos: Evento[]) => {
-        this.eventos = eventos;
+    this.eventoService.getAll(null, null, 'true').subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.eventos = pagResponse.docs as Evento[];
         if (this.competition.evento) {
           this.setLimitesFechas((this.competition.evento as Evento)._id);
         }
