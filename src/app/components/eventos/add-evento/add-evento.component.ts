@@ -23,6 +23,8 @@ export class AddEventoComponent implements OnInit, OnDestroy {
   private errorSub!: Subscription;
   today: Date = new Date();
   minDate!: NgbDateStruct | null;
+  maxDateIni!: NgbDateStruct;
+  minDateFin!: NgbDateStruct | null;
   minHour!: NgbTimeStruct | null;
 
   eventoForm = this.formBuilder.group({
@@ -86,6 +88,14 @@ export class AddEventoComponent implements OnInit, OnDestroy {
     }
   }
 
+  setLimiteFechaFin(fecha: NgbDateStruct) {
+    this.minDateFin = fecha;
+  }
+
+  setLimiteFechaIni(fecha: NgbDateStruct) {
+    this.maxDateIni = fecha;
+  }
+
   //#region geters
   get description() {
     return this.eventoForm.controls.description;
@@ -118,6 +128,7 @@ export class AddEventoComponent implements OnInit, OnDestroy {
       month: this.today.getMonth() + 1,
       day: this.today.getDate(),
     };
+    this.minDateFin = this.minDate;
     this.minHour = {
       hour: this.today.getHours(),
       minute: this.today.getMinutes(),
