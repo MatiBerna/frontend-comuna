@@ -28,10 +28,12 @@ const routes: Routes = [
   {
     path: 'eventos',
     component: EventosComponent,
+    canActivate: [loginGuard, adminGuard],
   },
   {
     path: 'competitions',
     component: CompetitionsListComponent,
+    canActivate: [loginGuard, adminGuard],
   },
   {
     path: 'admins',

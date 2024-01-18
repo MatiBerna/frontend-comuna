@@ -4,9 +4,9 @@
     poder inscribirse (2 dias antes de la fecha de inicio)
   </p>
   <p class="text-danger">{{ errorMessage }}</p>
-  <div class="d-flex justify-content-between mb-3">
+  <div class="d-flex justify-content-between flex-wrap flex-sm-nowrap mb-3">
     <button
-      class="btn btn-primary me-1 d-flex align-items-center"
+      class="btn btn-primary me-1 d-flex align-items-center mb-2"
       (click)="openModal(voidCompetition)"
     >
       <i class="bi bi-plus"></i>
@@ -14,7 +14,7 @@
     </button>
     <div class="dropdown">
       <button
-        class="btn btn-outline-primary dropdown-toggle mx-1"
+        class="btn btn-outline-primary dropdown-toggle mx-sm-1"
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
@@ -48,18 +48,54 @@
         </li>
       </ul>
     </div>
-    <div class="input-group ms-1" style="max-width: 400px">
-      <input
-        type="text"
-        class="form-control"
-        aria-describedby="inputGroup-sizing-sm"
-        [(ngModel)]="terminoBusqueda"
-        placeholder="Buscar..."
-      />
-      <button
-        class="btn btn-outline-secondary bi bi-search"
-        (click)="getCompetitions(tipoLista, 1)"
-      ></button>
+    <div class="flex-fill flex-sm-grow-0 responsive-input-group">
+      <div class="input-group ms-sm-1">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ tipoFiltro }}
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" (click)="changeTipoFiltro('Tipo')"
+              >Tipo Competencia</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" (click)="changeTipoFiltro('Evento')"
+              >Evento</a
+            >
+          </li>
+        </ul>
+        <input
+          type="text"
+          class="form-control"
+          id="filtro-busqueda"
+          [disabled]="tipoFiltro === 'Filtrar por'"
+          [(ngModel)]="terminoBusqueda"
+          placeholder="Buscar..."
+        />
+        <button
+          class="btn btn-outline-secondary bi bi-search"
+          (click)="getCompetitions(tipoLista, 1)"
+        ></button>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div *ngIf="getOtherFilterStr()" class="form-text">
+          {{ getOtherFilterStr() }}
+        </div>
+        <div *ngIf="getOtherFilterStr()">
+          <a
+            (click)="deleteFiltros()"
+            class="form-text link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            style="cursor: pointer"
+            >borrar filtros</a
+          >
+        </div>
+      </div>
     </div>
   </div>
   <div class="d-flex justify-content-between">

@@ -141,6 +141,10 @@
               </div>
             </div>
           </div>
+          <div *ngIf="fechaIniEvento" class="form-text" id="basic-addon4">
+            Fecha de inicio del evento: {{ getFecha(fechaIniEvento) }}
+            {{ getHora(fechaIniEvento) }}
+          </div>
         </div>
         <div class="col-4">
           <label for="horaIniInput" class="form-label">Hora Inicio</label>
@@ -207,6 +211,10 @@
                 {{ fechaFinEstimada.getError("serverError") }}
               </div>
             </div>
+          </div>
+          <div *ngIf="fechaIniEvento" class="form-text" id="basic-addon4">
+            Fecha de fin del evento: {{ getFecha(fechaFinEvento) }}
+            {{ getHora(fechaFinEvento) }}
           </div>
         </div>
         <div class="col-4">

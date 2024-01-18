@@ -18,6 +18,9 @@ import { ToastService } from 'src/app/services/shared/toast/toast.service';
 export class CompetitionsListComponent implements OnInit {
   errorMessage: string = '';
   terminoBusqueda: string = '';
+  filtroCompeType: string = '';
+  filtroEvento: string = '';
+  tipoFiltro: string = 'Filtrar por';
   tipoLista: string = 'Próximos';
   page: number = 1;
   pageSize: number = 10;
@@ -36,25 +39,41 @@ export class CompetitionsListComponent implements OnInit {
   ) {}
 
   getCompetitions(tipo: string, newPage: number) {
-    this.tipoLista = tipo;
     let prox: boolean = false;
     let disp: boolean = false;
-    let filtro: string | null = null;
+    let evento: string | undefined = undefined;
+    let compeType: string | undefined = undefined;
+
+    this.tipoLista = tipo;
+
+    switch (this.tipoFiltro) {
+      case 'Tipo':
+        this.filtroCompeType = this.terminoBusqueda;
+        break;
+      case 'Evento':
+        this.filtroEvento = this.terminoBusqueda;
+        break;
+    }
+
     if (tipo === 'Próximos') prox = true;
     if (tipo === 'Inscripción Abierta') disp = true;
-    if (this.terminoBusqueda !== '') filtro = this.terminoBusqueda;
-    this.competitionService.getAll(newPage, filtro, prox, disp).subscribe({
-      next: (pagResponse: PaginationResponse) => {
-        this.totalDocs = pagResponse.totalDocs;
-        this.page = pagResponse.page;
-        this.pagingCounter = pagResponse.pagingCounter;
-        this.competitionsList = pagResponse.docs as Competition[];
-      },
-      error: (errorData) => {
-        console.log(errorData);
-        this.errorMessage = errorData;
-      },
-    });
+    if (this.filtroEvento !== '') evento = this.filtroEvento;
+    if (this.filtroCompeType !== '') compeType = this.filtroCompeType;
+
+    this.competitionService
+      .getAll(prox, disp, newPage, evento, compeType)
+      .subscribe({
+        next: (pagResponse: PaginationResponse) => {
+          this.totalDocs = pagResponse.totalDocs;
+          this.page = pagResponse.page;
+          this.pagingCounter = pagResponse.pagingCounter;
+          this.competitionsList = pagResponse.docs as Competition[];
+        },
+        error: (errorData) => {
+          console.log(errorData);
+          this.errorMessage = errorData;
+        },
+      });
   }
 
   openModal(competition: Competition) {
@@ -109,6 +128,18 @@ export class CompetitionsListComponent implements OnInit {
     });
   }
 
+  changeTipoFiltro(tipo: string) {
+    if (tipo === 'Tipo' && this.tipoFiltro === 'Evento') {
+      this.filtroEvento = this.terminoBusqueda;
+      this.terminoBusqueda = this.filtroCompeType;
+    } else if (tipo === 'Evento' && this.tipoFiltro === 'Tipo') {
+      this.filtroCompeType = this.terminoBusqueda;
+      this.terminoBusqueda = this.filtroEvento;
+    }
+
+    this.tipoFiltro = tipo;
+  }
+
   getFecha(fechaHora: Date) {
     const fecha = new Date(fechaHora).toLocaleDateString('es-AR');
     return fecha;
@@ -122,12 +153,32 @@ export class CompetitionsListComponent implements OnInit {
     return hora;
   }
 
+  getOtherFilterStr() {
+    switch (this.tipoFiltro) {
+      case 'Evento':
+        if (this.filtroCompeType !== '')
+          return `Tipo Competencia: ${this.filtroCompeType}`;
+        else return undefined;
+      case 'Tipo':
+        if (this.filtroEvento !== '') return `Evento: ${this.filtroEvento}`;
+        else return undefined;
+      default:
+        return undefined;
+    }
+  }
+
   setICompetitionType(competitionType: CompetitionType | string) {
     return competitionType as CompetitionType;
   }
 
   setIEvento(evento: Evento | string) {
     return evento as Evento;
+  }
+
+  deleteFiltros() {
+    this.filtroCompeType = '';
+    this.filtroEvento = '';
+    this.terminoBusqueda = '';
   }
 
   ngOnInit(): void {

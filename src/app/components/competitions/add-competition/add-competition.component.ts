@@ -32,6 +32,8 @@ export class AddCompetitionComponent implements OnInit {
   minDate!: NgbDateStruct | null;
   maxDate!: NgbDateStruct | null;
   minHour!: NgbTimeStruct | null;
+  fechaIniEvento!: Date | undefined;
+  fechaFinEvento!: Date;
 
   competitionForm = this.formBuilder.group({
     _idCompetitionType: ['', [Validators.required]],
@@ -117,6 +119,8 @@ export class AddCompetitionComponent implements OnInit {
 
     if (evento) {
       const fechaHoraIni = new Date(evento.fechaHoraIni!);
+      this.fechaIniEvento = new Date(evento.fechaHoraIni!);
+      this.fechaFinEvento = new Date(evento.fechaHoraFin!);
       this.minDate = {
         year: fechaHoraIni!.getFullYear(),
         month: fechaHoraIni!.getMonth() + 1,
@@ -135,6 +139,14 @@ export class AddCompetitionComponent implements OnInit {
   getFecha(fechaHora: Date | undefined) {
     const fecha = new Date(fechaHora!).toLocaleDateString('es-AR');
     return fecha;
+  }
+
+  getHora(fechaHora: Date) {
+    const hora = new Date(fechaHora).toLocaleTimeString('es-AR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return hora;
   }
 
   get description() {

@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   logOut(): void {
-    sessionStorage.removeItem('token_session');
     this.loginService.logOut();
   }
 

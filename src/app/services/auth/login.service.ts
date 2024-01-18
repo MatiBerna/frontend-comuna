@@ -82,7 +82,13 @@ export class LoginService {
   }
 
   logOut(): void {
-    this.checkLoginStatus();
+    //this.checkLoginStatus();
+    this.currentUserLoginOn.next(false);
+    this.currentUserData.next({
+      _id: null,
+      username: null,
+    });
+    sessionStorage.removeItem('token_session');
   }
 
   private handleError(error: HttpErrorResponse) {
