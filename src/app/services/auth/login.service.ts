@@ -68,6 +68,10 @@ export class LoginService {
       if (expirationTokenAuth(token)) {
         // El token ha expirado
         this.currentUserLoginOn.next(false);
+        this.currentUserData.next({
+          _id: null,
+          username: null,
+        });
         sessionStorage.removeItem('token_session');
       } else {
         // El token es válido
@@ -78,6 +82,10 @@ export class LoginService {
     } else {
       // No hay token
       this.currentUserLoginOn.next(false);
+      this.currentUserData.next({
+        _id: null,
+        username: null,
+      });
     }
   }
 
