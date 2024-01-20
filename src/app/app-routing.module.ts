@@ -10,6 +10,7 @@ import { EventosComponent } from './pages/eventos/eventos.component';
 import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
 import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { CompetitorsComponent } from './pages/competitors/competitors.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -43,6 +44,11 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'competitors/:id',
+    component: CompetitorsComponent,
+    canActivate: [loginGuard, adminGuard],
   },
 ];
 

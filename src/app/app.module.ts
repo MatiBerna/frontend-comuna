@@ -27,6 +27,8 @@ import { AdminListComponent } from './pages/admin/admin-list/admin-list.componen
 import { RegisterComponent } from './auth/register/register.component';
 import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
 import { ErrorService } from './services/error/error.service';
+import { CompetitorsComponent } from './pages/competitors/competitors.component';
+import { AddCompetitorComponent } from './components/competitors/add-competitor/add-competitor.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { ErrorService } from './services/error/error.service';
     AdminListComponent,
     RegisterComponent,
     ConfirmModalComponent,
+    CompetitorsComponent,
+    AddCompetitorComponent,
   ],
   imports: [
     BrowserModule,

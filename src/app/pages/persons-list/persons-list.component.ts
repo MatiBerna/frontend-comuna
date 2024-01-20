@@ -13,8 +13,6 @@ import { PaginationResponse } from 'src/app/models/paginationResponse';
   styleUrls: ['./persons-list.component.css'],
 })
 export class PersonsListComponent implements OnInit {
-  @ViewChild('editPersonModal')
-  editPerson!: AddPersonComponent;
   page: number = 1;
   pageSize: number = 10;
   totalDocs!: number;
