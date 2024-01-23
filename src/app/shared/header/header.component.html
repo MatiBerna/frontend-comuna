@@ -15,7 +15,14 @@
         <span class="bi bi-person-circle text-white"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" (click)="openModifyUser()">Usuario</a></li>
+        <li>
+          <a
+            class="dropdown-item"
+            (click)="openModifyUser()"
+            style="cursor: pointer"
+            >Usuario</a
+          >
+        </li>
         <li *ngIf="checkUserRole() === 'Admin'">
           <hr class="dropdown-divider" />
         </li>

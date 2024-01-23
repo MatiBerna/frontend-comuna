@@ -30,6 +30,7 @@ import { ErrorService } from './services/error/error.service';
 import { CompetitorsComponent } from './pages/competitors/competitors.component';
 import { AddCompetitorComponent } from './components/competitors/add-competitor/add-competitor.component';
 import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
+import { ConfirmAddModalComponent } from './components/shared/confirm-add-modal/confirm-add-modal.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { EventoDescriptionComponent } from './pages/common-user/evento-descripti
     CompetitorsComponent,
     AddCompetitorComponent,
     EventoDescriptionComponent,
+    ConfirmAddModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -14,9 +14,11 @@
     </p>
   </div>
 </div>
-
+<hr class="mt-0" />
 <div class="container-sm">
-  <div class="d-flex justify-content-between">
+  <h3>Competencias</h3>
+  <hr />
+  <div class="d-flex justify-content-between mt-4">
     <ngb-pagination
       [collectionSize]="totalDocs"
       [(page)]="page"
@@ -46,19 +48,49 @@
         alt="Foto de la competencia"
         style="height: 200px; object-fit: cover"
       />
-      <div class="card-body">
+      <div class="card-body d-flex flex-column">
         <h5 class="card-title">
           {{ setICompetitionType(competition.competitionType!).description }}
         </h5>
         <p class="card-text">
-          {{ getFecha(competition.fechaHoraIni!) }} -
+          Inicio: {{ getFecha(competition.fechaHoraIni!) }} -
           {{ getHora(competition.fechaHoraIni!) }}
         </p>
         <p class="card-text">
-          {{ getFecha(competition.fechaHoraFinEstimada!) }} -
+          Fin estimado:
+          {{ getFecha(competition.fechaHoraFinEstimada!) }}
+          -
           {{ getHora(competition.fechaHoraFinEstimada!) }}
+        </p>
+        <p class="card-text">
+          Costo Inscripción: ${{ competition.costoInscripcion }}
+        </p>
+        <div class="mt-auto">
+          <a class="float-end" role="button" (click)="openDetails(competition)"
+            >Más info</a
+          >
+        </div>
+      </div>
+      <div class="card-footer">
+        <button
+          class="btn btn-primary"
+          *ngIf="userLoginOn && checkUserRole() === 'Person'"
+          (click)="addInscription(competition)"
+        >
+          Inscribirse
+        </button>
+        <p class="text-body-secondary" *ngIf="!userLoginOn">
+          Inicie sesion para inscribirse
+        </p>
+        <p
+          class="text-body-secondary"
+          *ngIf="userLoginOn && checkUserRole() === 'Admin'"
+        >
+          Inscripción no disponible
         </p>
       </div>
     </div>
   </div>
 </div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

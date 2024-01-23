@@ -13,6 +13,7 @@ import {
   getDecodedAccessToken,
 } from 'src/app/utils/tokenValidations';
 import { Person } from 'src/app/models/person';
+import { ToastService } from '../shared/toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class LoginService {
     username: null,
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastService: ToastService) {}
 
   login(credentials: LoginRequest): Observable<UserAndToken> {
     return this.http
@@ -73,6 +74,10 @@ export class LoginService {
           username: null,
         });
         sessionStorage.removeItem('token_session');
+        this.toastService.show('Tiempo de Sesión finalizado', {
+          classname: 'bg-warning text-light',
+          delay: 5000,
+        });
       } else {
         // El token es válido
         this.currentUserLoginOn.next(true);
@@ -85,6 +90,10 @@ export class LoginService {
       this.currentUserData.next({
         _id: null,
         username: null,
+      });
+      this.toastService.show('Tiempo de Sesión finalizado', {
+        classname: 'bg-warning text-light',
+        delay: 5000,
       });
     }
   }
