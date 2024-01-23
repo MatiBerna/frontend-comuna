@@ -74,7 +74,11 @@
       <div class="card-footer">
         <button
           class="btn btn-primary"
-          *ngIf="userLoginOn && checkUserRole() === 'Person'"
+          *ngIf="
+            userLoginOn &&
+            checkUserRole() === 'Person' &&
+            isOpenedInscription(competition.fechaHoraIni!)
+          "
           (click)="addInscription(competition)"
         >
           Inscribirse
@@ -87,6 +91,17 @@
           *ngIf="userLoginOn && checkUserRole() === 'Admin'"
         >
           Inscripción no disponible
+        </p>
+        <p
+          class="text-body-secondary"
+          *ngIf="
+            userLoginOn &&
+            checkUserRole() === 'Person' &&
+            !isOpenedInscription(competition.fechaHoraIni!)
+          "
+        >
+          La inscripción abrirá
+          {{ getInscriptionOpening(competition.fechaHoraIni!) }}
         </p>
       </div>
     </div>
