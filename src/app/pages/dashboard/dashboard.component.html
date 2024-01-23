@@ -1,1 +1,60 @@
-<p>dashboard works!</p>
+<div class="position-relative text-center text-white">
+  <img
+    src="../../../assets/foto-villa-fucsia.jpg"
+    alt="Imagen de fondo"
+    class="w-100"
+    style="height: 25rem; object-fit: cover"
+  />
+  <h1 class="position-absolute top-50 start-50 translate-middle">
+    ¡Bienvenidos a Villa Fucsia!
+  </h1>
+</div>
+<div class="container-sm mt-3">
+  <h3>Nuestros Eventos Próximos</h3>
+</div>
+<hr />
+<div class="container-sm">
+  <div class="d-flex align-items-stretch flex-wrap justify-content-center my-3">
+    <div
+      class="card m-1"
+      style="width: 19rem; cursor: pointer"
+      *ngFor="let evento of eventosList"
+      [routerLink]="['/event', evento._id]"
+    >
+      <img
+        [src]="evento.image"
+        class="card-img-top"
+        [alt]="evento.description"
+        style="height: 200px; object-fit: cover"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ evento.description }}</h5>
+        <p class="card-text">
+          {{ getFecha(evento.fechaHoraIni!) }} -
+          {{ getHora(evento.fechaHoraIni!) }}
+        </p>
+        <p class="card-text">
+          {{ getFecha(evento.fechaHoraFin!) }} -
+          {{ getHora(evento.fechaHoraFin!) }}
+        </p>
+        <a class="btn btn-primary">Más Info</a>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between mt-3">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getEventos($event)"
+    ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{ pagingCounter + eventosList.length - 1 }}
+      filas de
+      {{ totalDocs }}
+    </p>
+  </div>
+</div>

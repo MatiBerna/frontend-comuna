@@ -31,6 +31,12 @@ export class EventosService {
       .pipe(catchError(this.handleError));
   }
 
+  getOne(id: string): Observable<Evento> {
+    return this.http
+      .get<Evento>(`${this.path}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
   addOrUpdate(evento: Evento) {
     if (evento._id === null || evento._id === '') {
       return this.http

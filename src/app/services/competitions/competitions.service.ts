@@ -18,11 +18,12 @@ export class CompetitionsService {
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   getAll(
+    page: number,
     prox?: boolean,
     disp?: boolean,
-    page?: number,
     evento?: string,
-    compeType?: string
+    compeType?: string,
+    idEvento?: string
   ): Observable<PaginationResponse> {
     let query: string = '?';
     if (page) query += `page=${page}&`;
@@ -30,6 +31,7 @@ export class CompetitionsService {
     if (compeType) query += `compeType=${compeType}&`;
     if (prox) query += `prox=${prox}&`;
     if (disp) query += `disp=${disp}&`;
+    if (idEvento) query += `idEvento=${idEvento}&`;
     return this.http
       .get<PaginationResponse>(`${this.path}${query}`)
       .pipe(catchError(this.handleError));

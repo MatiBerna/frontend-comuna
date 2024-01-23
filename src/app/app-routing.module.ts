@@ -11,6 +11,7 @@ import { CompetitionsListComponent } from './pages/competitions-list/competition
 import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { CompetitorsComponent } from './pages/competitors/competitors.component';
+import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -49,6 +50,10 @@ const routes: Routes = [
     path: 'competitors/:id',
     component: CompetitorsComponent,
     canActivate: [loginGuard, adminGuard],
+  },
+  {
+    path: 'event/:id',
+    component: EventoDescriptionComponent,
   },
 ];
 

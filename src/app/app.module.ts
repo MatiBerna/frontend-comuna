@@ -29,6 +29,7 @@ import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm
 import { ErrorService } from './services/error/error.service';
 import { CompetitorsComponent } from './pages/competitors/competitors.component';
 import { AddCompetitorComponent } from './components/competitors/add-competitor/add-competitor.component';
+import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { AddCompetitorComponent } from './components/competitors/add-competitor/
     ConfirmModalComponent,
     CompetitorsComponent,
     AddCompetitorComponent,
+    EventoDescriptionComponent,
   ],
   imports: [
     BrowserModule,

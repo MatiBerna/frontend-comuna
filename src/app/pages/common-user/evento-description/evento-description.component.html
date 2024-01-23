@@ -1,0 +1,64 @@
+<div class="d-flex flex-wrap">
+  <div class="col-12 col-sm-6 col-lg-4 p-0">
+    <img [src]="evento.image" alt="Imagen de fondo" class="img-fluid w-100" />
+  </div>
+  <div class="col-12 col-sm-6 col-lg-8 p-2">
+    <h2 class="h2">{{ evento.description }}</h2>
+    <p>
+      Fecha y hora de Inicio: {{ getFecha(evento.fechaHoraIni!) }} -
+      {{ getHora(evento.fechaHoraIni!) }}
+    </p>
+    <p>
+      Fecha y hora de Fin: {{ getFecha(evento.fechaHoraFin!) }} -
+      {{ getHora(evento.fechaHoraFin!) }}
+    </p>
+  </div>
+</div>
+
+<div class="container-sm">
+  <div class="d-flex justify-content-between">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getCompetitions($event)"
+    ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{
+        pagingCounter + competitionsList.length - 1
+      }}
+      filas de
+      {{ totalDocs }}
+    </p>
+  </div>
+  <div class="d-flex align-items-stretch flex-wrap justify-content-center my-3">
+    <div
+      class="card m-1"
+      style="width: 19rem"
+      *ngFor="let competition of competitionsList"
+    >
+      <img
+        [src]="setICompetitionType(competition.competitionType!).image"
+        class="card-img-top"
+        alt="Foto de la competencia"
+        style="height: 200px; object-fit: cover"
+      />
+      <div class="card-body">
+        <h5 class="card-title">
+          {{ setICompetitionType(competition.competitionType!).description }}
+        </h5>
+        <p class="card-text">
+          {{ getFecha(competition.fechaHoraIni!) }} -
+          {{ getHora(competition.fechaHoraIni!) }}
+        </p>
+        <p class="card-text">
+          {{ getFecha(competition.fechaHoraFinEstimada!) }} -
+          {{ getHora(competition.fechaHoraFinEstimada!) }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

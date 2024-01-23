@@ -61,7 +61,7 @@ export class CompetitionsListComponent implements OnInit {
     if (this.filtroCompeType !== '') compeType = this.filtroCompeType;
 
     this.competitionService
-      .getAll(prox, disp, newPage, evento, compeType)
+      .getAll(newPage, prox, disp, evento, compeType)
       .subscribe({
         next: (pagResponse: PaginationResponse) => {
           this.totalDocs = pagResponse.totalDocs;
