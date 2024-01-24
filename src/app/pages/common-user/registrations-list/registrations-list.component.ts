@@ -80,8 +80,8 @@ export class RegistrationsListComponent implements OnInit, OnDestroy {
             });
           },
           complete: () => {
-            console.log('Tipo de Competencia Borrado');
-            this.toastService.show('Tipo de competencia borrado', {
+            console.log('Inscripción Borrada');
+            this.toastService.show('Inscripción borrada', {
               classname: 'bg-success text-light',
               delay: 5000,
             });

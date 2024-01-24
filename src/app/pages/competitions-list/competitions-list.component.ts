@@ -116,8 +116,8 @@ export class CompetitionsListComponent implements OnInit {
             });
           },
           complete: () => {
-            console.log('Socio Borrado');
-            this.toastService.show('Socio borrado', {
+            console.log('Competencia Borrada');
+            this.toastService.show('Competencia borrada', {
               classname: 'bg-success text-light',
               delay: 5000,
             });

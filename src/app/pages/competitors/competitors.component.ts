@@ -74,7 +74,7 @@ export class CompetitorsComponent implements OnInit, OnDestroy {
       centered: true,
     });
     modalRef.componentInstance.message =
-      '¿Está seguro que quiere eliminar el evento? Esta acción no se puede revertir';
+      '¿Está seguro que quiere eliminar la inscripción? Esta acción no se puede revertir';
     modalRef.dismissed.subscribe((reason: string) => {
       if (reason === 'aceptar') {
         console.log('borrando');

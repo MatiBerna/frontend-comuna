@@ -85,7 +85,7 @@ export class PersonsListComponent implements OnInit {
       centered: true,
     });
     modalRef.componentInstance.message =
-      '¿Está seguro que quiere eliminar la competencia? Esta acción no se puede revertir';
+      '¿Está seguro que quiere eliminar el Socio? Esta acción no se puede revertir';
     modalRef.dismissed.subscribe((reason: string) => {
       if (reason === 'aceptar') {
         console.log('borrando');
@@ -98,8 +98,8 @@ export class PersonsListComponent implements OnInit {
             });
           },
           complete: () => {
-            console.log('Tipo de Competencia Borrado');
-            this.toastService.show('Competencia borrada', {
+            console.log('Socio Borrado');
+            this.toastService.show('Socio borrado', {
               classname: 'bg-success text-light',
               delay: 5000,
             });
