@@ -79,9 +79,13 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
   getInscriptionOpening(fechaHoraIni: Date) {
     let fechaLimite = new Date(fechaHoraIni);
     fechaLimite.setMonth(fechaLimite.getMonth() - 1);
-    return `${this.getFecha(fechaLimite)} a las ${this.getHora(
-      fechaLimite
-    )}hs.`;
+    let fechaActual = new Date();
+
+    if (fechaActual <= fechaLimite)
+      return `La inscripción abrirá ${this.getFecha(
+        fechaLimite
+      )} a las ${this.getHora(fechaLimite)}hs.`;
+    else return `Tiempo de inscripción finalizado`;
   }
 
   getCompetitions(newPage: number) {

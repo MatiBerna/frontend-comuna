@@ -43,9 +43,9 @@
           <a
             class="nav-link text-white"
             (click)="isCollapsed = true"
-            *ngIf="isAdmin()"
+            *ngIf="checkRole() === 'Admin'"
             routerLinkActive="fw-semibold"
-            routerLink="/eventos"
+            routerLink="/eventos-admin"
             >Eventos</a
           >
         </li>
@@ -53,7 +53,7 @@
           <a
             class="nav-link text-white"
             (click)="isCollapsed = true"
-            *ngIf="isAdmin()"
+            *ngIf="checkRole() === 'Admin'"
             routerLinkActive="fw-semibold"
             routerLink="/competitions"
             >Competencias</a
@@ -63,7 +63,7 @@
           <a
             class="nav-link text-white"
             (click)="isCollapsed = true"
-            *ngIf="isAdmin()"
+            *ngIf="checkRole() === 'Admin'"
             routerLinkActive="fw-semibold"
             routerLink="/persons"
             >Socios</a
@@ -72,11 +72,21 @@
         <li class="nav-item">
           <a
             class="nav-link text-white"
-            *ngIf="isAdmin()"
+            *ngIf="checkRole() === 'Admin'"
             (click)="isCollapsed = true"
             routerLinkActive="fw-semibold"
             routerLink="/competition-types"
             >Tipos&nbsp;Competencia</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link text-white"
+            *ngIf="checkRole() !== 'Admin'"
+            (click)="isCollapsed = true"
+            routerLinkActive="fw-semibold"
+            routerLink="/eventos"
+            >Eventos</a
           >
         </li>
       </ul>

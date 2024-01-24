@@ -14,6 +14,7 @@ import { CompetitorsComponent } from './pages/competitors/competitors.component'
 import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
 import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
 import { personGuard } from './guards/person.guard';
+import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -30,7 +31,7 @@ const routes: Routes = [
     canActivate: [loginGuard, adminGuard],
   },
   {
-    path: 'eventos',
+    path: 'eventos-admin',
     component: EventosComponent,
     canActivate: [loginGuard, adminGuard],
   },
@@ -61,6 +62,10 @@ const routes: Routes = [
     path: 'registrations',
     component: RegistrationsListComponent,
     canActivate: [loginGuard, personGuard],
+  },
+  {
+    path: 'eventos',
+    component: EventosListComponent,
   },
 ];
 
