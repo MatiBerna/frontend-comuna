@@ -32,14 +32,22 @@ export class NavComponent implements OnInit, OnDestroy {
     });
   }
 
-  isAdmin() {
-    const token = sessionStorage.getItem('token_session');
+  checkRole() {
+    // const token = sessionStorage.getItem('token_session');
 
-    if (token) {
-      const decodedToken = getDecodedAccessToken(token);
-      return 'username' in decodedToken.user;
+    // if (token) {
+    //   const decodedToken = getDecodedAccessToken(token);
+    //   return 'username' in decodedToken.user;
+    // }
+    // return false;
+    if (this.userLoginOn) {
+      if ('username' in this.userData!) {
+        return 'Admin';
+      } else if ('email' in this.userData!) {
+        return 'Person';
+      }
     }
-    return false;
+    return '';
   }
 
   ngOnDestroy(): void {
