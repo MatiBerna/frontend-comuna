@@ -3,7 +3,72 @@
 </div>
 <hr />
 <div class="container-sm">
-  <div class="d-flex align-items-stretch flex-wrap justify-content-center my-3">
+  <div class="d-flex justify-content-between flex-wrap flex-sm-nowrap mb-3">
+    <div class="dropdown">
+      <button
+        class="btn btn-outline-primary dropdown-toggle mx-sm-1"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ tipoLista }}
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a
+            class="dropdown-item"
+            role="button"
+            (click)="getEventos('Próximos', 1)"
+            >Próximos</a
+          >
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            role="button"
+            (click)="getEventos('Todos', 1)"
+            >Todos</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div class="flex-fill flex-sm-grow-0 responsive-input-group">
+      <div class="input-group ms-sm-1">
+        <input
+          type="text"
+          class="form-control"
+          aria-describedby="inputGroup-sizing-sm"
+          [(ngModel)]="terminoBusqueda"
+          placeholder="Buscar..."
+        />
+        <button
+          class="btn btn-outline-secondary bi bi-search"
+          (click)="getEventos(tipoLista, 1)"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between mt-3">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getEventos(tipoLista, $event)"
+    ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{ pagingCounter + eventosList.length - 1 }}
+      filas de
+      {{ totalDocs }}
+    </p>
+  </div>
+  <h5 *ngIf="eventosList.length === 0">No se encontraron eventos</h5>
+  <div
+    class="d-flex align-items-stretch flex-wrap justify-content-center my-3"
+    *ngIf="eventosList.length !== 0"
+  >
     <div
       class="card m-1"
       style="width: 19rem; cursor: pointer"
@@ -31,21 +96,5 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="d-flex justify-content-between mt-3">
-    <ngb-pagination
-      [collectionSize]="totalDocs"
-      [(page)]="page"
-      [pageSize]="pageSize"
-      [maxSize]="5"
-      [rotate]="true"
-      size="sm"
-      (pageChange)="getEventos($event)"
-    ></ngb-pagination>
-    <p class="text-body-secondary">
-      Mostrando {{ pagingCounter }}-{{ pagingCounter + eventosList.length - 1 }}
-      filas de
-      {{ totalDocs }}
-    </p>
   </div>
 </div>

@@ -14,12 +14,19 @@ export class EventosListComponent implements OnInit {
   totalDocs!: number;
   pagingCounter!: number;
   eventosList: Evento[] = [];
+  tipoLista: string = 'Próximos';
   errorMessage: string = '';
+  terminoBusqueda: string = '';
 
   constructor(private eventosService: EventosService) {}
 
-  getEventos(newPage: number) {
-    this.eventosService.getAll(newPage, null, 'true').subscribe({
+  getEventos(tipo: string, newPage: number) {
+    let prox: string | null = null;
+    let filtro: string | null = null;
+    this.tipoLista = tipo;
+    if (tipo === 'Próximos') prox = 'true';
+    if (this.terminoBusqueda !== '') filtro = this.terminoBusqueda;
+    this.eventosService.getAll(newPage, filtro, prox).subscribe({
       next: (pagResponse: PaginationResponse) => {
         this.totalDocs = pagResponse.totalDocs;
         this.page = pagResponse.page;
@@ -47,6 +54,6 @@ export class EventosListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getEventos(this.page);
+    this.getEventos(this.tipoLista, this.page);
   }
 }
