@@ -140,6 +140,19 @@ export class CompetitionsListComponent implements OnInit {
     this.tipoFiltro = tipo;
   }
 
+  isOpenedInscription(fechaHoraIni: Date) {
+    let fechaActual = new Date();
+    let fechaLimite = new Date(fechaHoraIni);
+    fechaLimite.setMonth(fechaLimite.getMonth() - 1);
+    let fechaInicio = new Date(fechaHoraIni);
+
+    if (fechaActual > fechaLimite && fechaActual < fechaInicio) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getFecha(fechaHora: Date) {
     const fecha = new Date(fechaHora).toLocaleDateString('es-AR');
     return fecha;
