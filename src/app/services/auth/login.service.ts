@@ -91,10 +91,6 @@ export class LoginService {
         _id: null,
         username: null,
       });
-      this.toastService.show('Tiempo de Sesión finalizado', {
-        classname: 'bg-warning text-light',
-        delay: 5000,
-      });
     }
   }
 

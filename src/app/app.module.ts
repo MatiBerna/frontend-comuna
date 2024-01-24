@@ -31,6 +31,7 @@ import { CompetitorsComponent } from './pages/competitors/competitors.component'
 import { AddCompetitorComponent } from './components/competitors/add-competitor/add-competitor.component';
 import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
 import { ConfirmAddModalComponent } from './components/shared/confirm-add-modal/confirm-add-modal.component';
+import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ConfirmAddModalComponent } from './components/shared/confirm-add-modal/
     AddCompetitorComponent,
     EventoDescriptionComponent,
     ConfirmAddModalComponent,
+    RegistrationsListComponent,
   ],
   imports: [
     BrowserModule,
