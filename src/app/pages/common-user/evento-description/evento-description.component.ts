@@ -63,6 +63,27 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
     return hora;
   }
 
+  isOpenedInscription(fechaHoraIni: Date) {
+    let fechaActual = new Date();
+    let fechaLimite = new Date(fechaHoraIni);
+    fechaLimite.setMonth(fechaLimite.getMonth() - 1);
+    let fechaInicio = new Date(fechaHoraIni);
+
+    if (fechaActual > fechaLimite && fechaActual < fechaInicio) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getInscriptionOpening(fechaHoraIni: Date) {
+    let fechaLimite = new Date(fechaHoraIni);
+    fechaLimite.setMonth(fechaLimite.getMonth() - 1);
+    return `${this.getFecha(fechaLimite)} a las ${this.getHora(
+      fechaLimite
+    )}hs.`;
+  }
+
   getCompetitions(newPage: number) {
     this.competitionsService
       .getAll(

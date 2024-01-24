@@ -25,10 +25,6 @@ export const loginGuard = () => {
     }
   } else {
     loginService.logOut();
-    toastService.show('Tiempo de Sesión finalizado', {
-      classname: 'bg-warning text-light',
-      delay: 5000,
-    });
     router.navigate(['login']);
     return false;
   }

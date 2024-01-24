@@ -21,12 +21,13 @@ export class CompetitorsService {
   getAll(
     page: number,
     competition?: string,
-    person?: string
+    person?: string,
+    prox?: string
   ): Observable<PaginationResponse> {
     let query: string = `?page=${page}`;
     if (competition) query += `&competition=${competition}`;
     if (person) query += `&person=${person}`;
-
+    if (prox && prox === 'true') query += `&prox=true`;
     return this.http
       .get<PaginationResponse>(`${this.path}${query}`, this.createHeaders())
       .pipe(catchError(this.handleError));

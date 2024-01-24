@@ -34,6 +34,17 @@
             >Administradores</a
           >
         </li>
+        <li *ngIf="checkUserRole() === 'Person'">
+          <hr class="dropdown-divider" />
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            routerLink="/registrations"
+            *ngIf="checkUserRole() === 'Person'"
+            >Mis Inscripciones</a
+          >
+        </li>
         <li><hr class="dropdown-divider" /></li>
         <li>
           <a class="dropdown-item" (click)="logOut()" routerLink="/home"
