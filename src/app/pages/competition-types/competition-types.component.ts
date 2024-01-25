@@ -20,7 +20,6 @@ export class CompetitionTypesComponent implements OnInit, OnDestroy {
   compTypeList: CompetitionType[] = [];
   errorMessage: string = '';
   terminoBusqueda: string = '';
-  addedMessage: string = '';
   voidCompeType: CompetitionType = {
     _id: null,
     description: '',

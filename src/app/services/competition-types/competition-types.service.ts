@@ -28,7 +28,7 @@ export class CompetitionTypesService {
       query = query + `&filter=${filter}`;
     }
     return this.http
-      .get<PaginationResponse>(`${this.path}${query}`, this.createHeaders())
+      .get<PaginationResponse>(`${this.path}${query}`)
       .pipe(catchError(this.handleError));
   }
 
