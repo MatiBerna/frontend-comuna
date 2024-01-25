@@ -18,11 +18,9 @@ import { EventosListComponent } from './pages/common-user/eventos-list/eventos-l
 import { CompetitionTypesListComponent } from './pages/common-user/competition-types-list/competition-types-list.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
-
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '404' },
   { path: 'home', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
   {
@@ -76,6 +74,7 @@ const routes: Routes = [
     path: 'competitionTypes',
     component: CompetitionTypesListComponent,
   },
+  { path: '**', redirectTo: '404' },
 ];
 
 @NgModule({

@@ -29,7 +29,7 @@ export class PersonsService {
   addOrUpdate(persona: Person) {
     if (persona._id === null || persona._id === '') {
       return this.http
-        .post<Person>(`${this.path}`, persona, this.createHeaders())
+        .post<Person>(`${this.path}`, persona)
         .pipe(catchError(this.handleError));
     }
     return this.http
