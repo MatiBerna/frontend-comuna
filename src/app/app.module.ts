@@ -32,6 +32,7 @@ import { EventoDescriptionComponent } from './pages/common-user/evento-descripti
 import { ConfirmAddModalComponent } from './components/shared/confirm-add-modal/confirm-add-modal.component';
 import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
 import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { EventosListComponent } from './pages/common-user/eventos-list/eventos-l
     ConfirmAddModalComponent,
     RegistrationsListComponent,
     EventosListComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
