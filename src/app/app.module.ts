@@ -34,6 +34,8 @@ import { RegistrationsListComponent } from './pages/common-user/registrations-li
 import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
 import { CompetitionTypesListComponent } from './pages/common-user/competition-types-list/competition-types-list.component';
 import { CompetitionTypeDetailsComponent } from './components/competition-types/competition-type-details/competition-type-details.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { CompetitionTypeDetailsComponent } from './components/competition-types/
     EventosListComponent,
     CompetitionTypesListComponent,
     CompetitionTypeDetailsComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
