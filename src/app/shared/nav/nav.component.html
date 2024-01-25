@@ -89,6 +89,16 @@
             >Eventos</a
           >
         </li>
+        <li class="nav-item">
+          <a
+            class="nav-link text-white"
+            *ngIf="checkRole() !== 'Admin'"
+            (click)="isCollapsed = true"
+            routerLinkActive="fw-semibold"
+            routerLink="/competitionTypes"
+            >Competencias</a
+          >
+        </li>
       </ul>
     </div>
   </div>

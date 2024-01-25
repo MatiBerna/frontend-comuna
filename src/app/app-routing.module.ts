@@ -15,6 +15,7 @@ import { EventoDescriptionComponent } from './pages/common-user/evento-descripti
 import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
 import { personGuard } from './guards/person.guard';
 import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
+import { CompetitionTypesListComponent } from './pages/common-user/competition-types-list/competition-types-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -66,6 +67,10 @@ const routes: Routes = [
   {
     path: 'eventos',
     component: EventosListComponent,
+  },
+  {
+    path: 'competitionTypes',
+    component: CompetitionTypesListComponent,
   },
 ];
 
