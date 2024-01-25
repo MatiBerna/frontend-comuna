@@ -15,7 +15,14 @@
         <span class="bi bi-person-circle text-white"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" (click)="openModifyUser()">Usuario</a></li>
+        <li>
+          <a
+            class="dropdown-item"
+            (click)="openModifyUser()"
+            style="cursor: pointer"
+            >Usuario</a
+          >
+        </li>
         <li *ngIf="checkUserRole() === 'Admin'">
           <hr class="dropdown-divider" />
         </li>
@@ -25,6 +32,17 @@
             routerLink="/admins"
             *ngIf="checkUserRole() === 'Admin'"
             >Administradores</a
+          >
+        </li>
+        <li *ngIf="checkUserRole() === 'Person'">
+          <hr class="dropdown-divider" />
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            routerLink="/registrations"
+            *ngIf="checkUserRole() === 'Person'"
+            >Mis Inscripciones</a
           >
         </li>
         <li><hr class="dropdown-divider" /></li>

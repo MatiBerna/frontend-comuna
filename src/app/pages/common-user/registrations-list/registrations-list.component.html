@@ -1,0 +1,89 @@
+<div class="container-sm" style="max-width: 1200px">
+  <h4 class="mt-4">Mis Inscripciones</h4>
+  <p class="text-danger">{{ errorMessage }}</p>
+  <div class="d-flex justify-content-between flex-wrap">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getRegistrations(tipoLista, $event)"
+    ></ngb-pagination>
+    <div class="dropdown">
+      <button
+        class="btn btn-outline-primary dropdown-toggle mx-sm-1"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ tipoLista }}
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a
+            class="dropdown-item"
+            (click)="getRegistrations('Próximos', 1)"
+            role="button"
+            >Próximos</a
+          >
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            role="button"
+            (click)="getRegistrations('Todos', 1)"
+            >Todos</a
+          >
+        </li>
+      </ul>
+    </div>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{
+        pagingCounter + registrationsList.length - 1
+      }}
+      filas de
+      {{ totalDocs }}
+    </p>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-3" scope="col">Competencia</th>
+        <th class="col-3" scope="col">Evento</th>
+        <th class="col-3" scope="col">Fecha Inscripción</th>
+        <th class="col-3" scope="col" aria-label="row actions">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let registration of registrationsList">
+        <td>{{ getCompetitionType(registration.competition).description }}</td>
+        <td>
+          {{ getEvento(registration.competition).description }}
+        </td>
+        <td>
+          {{ getFecha(registration.fechaHoraInscripcion!) }} -
+          {{ getHora(registration.fechaHoraInscripcion!) }}
+        </td>
+        <td>
+          <button
+            class="btn btn-outline-primary me-0 me-sm-2"
+            (click)="openDetails(registration.competition)"
+          >
+            <i class="bi bi-info-circle"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger my-2 my-lg-0"
+            (click)="deleteRegistration(registration)"
+            *ngIf="isProxCompetition(registration.competition)"
+          >
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

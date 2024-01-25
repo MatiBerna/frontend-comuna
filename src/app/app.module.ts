@@ -26,7 +26,12 @@ import { CompetitionDetailComponent } from './components/competitions/competitio
 import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
-import { ErrorService } from './services/error/error.service';
+import { CompetitorsComponent } from './pages/competitors/competitors.component';
+import { AddCompetitorComponent } from './components/competitors/add-competitor/add-competitor.component';
+import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
+import { ConfirmAddModalComponent } from './components/shared/confirm-add-modal/confirm-add-modal.component';
+import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
+import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +56,12 @@ import { ErrorService } from './services/error/error.service';
     AdminListComponent,
     RegisterComponent,
     ConfirmModalComponent,
+    CompetitorsComponent,
+    AddCompetitorComponent,
+    EventoDescriptionComponent,
+    ConfirmAddModalComponent,
+    RegistrationsListComponent,
+    EventosListComponent,
   ],
   imports: [
     BrowserModule,

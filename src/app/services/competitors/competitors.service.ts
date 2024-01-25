@@ -4,53 +4,47 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
-import { Evento } from 'src/app/models/evento';
 import { ErrorService } from '../error/error.service';
+import { Observable, catchError, throwError } from 'rxjs';
 import { PaginationResponse } from 'src/app/models/paginationResponse';
+import { Competitor } from 'src/app/models/competitor';
+import { LoginService } from '../auth/login.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EventosService {
-  path: string = 'http://localhost:3000/api/evento';
+export class CompetitorsService {
+  path: string = 'http://localhost:3000/api/competitor';
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   getAll(
-    page: number | null,
-    filter: string | null,
-    prox: string | null
+    page: number,
+    competition?: string,
+    person?: string,
+    prox?: string
   ): Observable<PaginationResponse> {
-    let query: string = '?';
-    if (page) query += `page=${page}&`;
-    if (filter) query += `filter=${filter}&`;
-    if (prox) query += `prox=${prox}`;
+    let query: string = `?page=${page}`;
+    if (competition) query += `&competition=${competition}`;
+    if (person) query += `&person=${person}`;
+    if (prox && prox === 'true') query += `&prox=true`;
     return this.http
-      .get<PaginationResponse>(`${this.path}${query}`)
+      .get<PaginationResponse>(`${this.path}${query}`, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 
-  getOne(id: string): Observable<Evento> {
+  add(competitor: Competitor) {
     return this.http
-      .get<Evento>(`${this.path}/${id}`)
+      .post<Competitor>(`${this.path}`, competitor, this.createHeaders())
       .pipe(catchError(this.handleError));
   }
 
-  addOrUpdate(evento: Evento) {
-    if (evento._id === null || evento._id === '') {
-      return this.http
-        .post<Evento>(`${this.path}`, evento, this.createHeaders())
-        .pipe(catchError(this.handleError));
-    }
+  delete(competitor: Competitor) {
     return this.http
-      .patch<Evento>(`${this.path}/${evento._id}`, evento, this.createHeaders())
-      .pipe(catchError(this.handleError));
-  }
-
-  delete(evento: Evento) {
-    return this.http
-      .delete<Evento>(`${this.path}/${evento._id}`, this.createHeaders())
+      .delete<Competitor>(
+        `${this.path}/${competitor._id}`,
+        this.createHeaders()
+      )
       .pipe(catchError(this.handleError));
   }
 

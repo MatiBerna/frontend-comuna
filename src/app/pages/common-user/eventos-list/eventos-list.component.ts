@@ -1,27 +1,32 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { Evento } from 'src/app/models/evento';
 import { PaginationResponse } from 'src/app/models/paginationResponse';
-import { LoginService } from 'src/app/services/auth/login.service';
 import { EventosService } from 'src/app/services/eventos/eventos.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  selector: 'app-eventos-list',
+  templateUrl: './eventos-list.component.html',
+  styleUrls: ['./eventos-list.component.css'],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class EventosListComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
   totalDocs!: number;
   pagingCounter!: number;
   eventosList: Evento[] = [];
+  tipoLista: string = 'Próximos';
   errorMessage: string = '';
+  terminoBusqueda: string = '';
 
   constructor(private eventosService: EventosService) {}
 
-  getEventos(newPage: number) {
-    this.eventosService.getAll(newPage, null, 'true').subscribe({
+  getEventos(tipo: string, newPage: number) {
+    let prox: string | null = null;
+    let filtro: string | null = null;
+    this.tipoLista = tipo;
+    if (tipo === 'Próximos') prox = 'true';
+    if (this.terminoBusqueda !== '') filtro = this.terminoBusqueda;
+    this.eventosService.getAll(newPage, filtro, prox).subscribe({
       next: (pagResponse: PaginationResponse) => {
         this.totalDocs = pagResponse.totalDocs;
         this.page = pagResponse.page;
@@ -49,8 +54,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getEventos(this.page);
+    this.getEventos(this.tipoLista, this.page);
   }
-
-  ngOnDestroy(): void {}
 }

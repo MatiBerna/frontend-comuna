@@ -89,7 +89,7 @@ export class EventosComponent implements OnInit, OnDestroy {
           },
           complete: () => {
             console.log('Evento Borrado');
-            this.toastService.show('Evento borrada', {
+            this.toastService.show('Evento borrado', {
               classname: 'bg-success text-light',
               delay: 5000,
             });

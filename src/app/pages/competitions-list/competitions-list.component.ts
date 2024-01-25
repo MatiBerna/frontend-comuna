@@ -61,7 +61,7 @@ export class CompetitionsListComponent implements OnInit {
     if (this.filtroCompeType !== '') compeType = this.filtroCompeType;
 
     this.competitionService
-      .getAll(prox, disp, newPage, evento, compeType)
+      .getAll(newPage, prox, disp, evento, compeType)
       .subscribe({
         next: (pagResponse: PaginationResponse) => {
           this.totalDocs = pagResponse.totalDocs;
@@ -116,8 +116,8 @@ export class CompetitionsListComponent implements OnInit {
             });
           },
           complete: () => {
-            console.log('Socio Borrado');
-            this.toastService.show('Socio borrado', {
+            console.log('Competencia Borrada');
+            this.toastService.show('Competencia borrada', {
               classname: 'bg-success text-light',
               delay: 5000,
             });
@@ -138,6 +138,19 @@ export class CompetitionsListComponent implements OnInit {
     }
 
     this.tipoFiltro = tipo;
+  }
+
+  isOpenedInscription(fechaHoraIni: Date) {
+    let fechaActual = new Date();
+    let fechaLimite = new Date(fechaHoraIni);
+    fechaLimite.setMonth(fechaLimite.getMonth() - 1);
+    let fechaInicio = new Date(fechaHoraIni);
+
+    if (fechaActual > fechaLimite && fechaActual < fechaInicio) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   getFecha(fechaHora: Date) {

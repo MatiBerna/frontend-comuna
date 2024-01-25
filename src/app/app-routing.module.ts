@@ -10,6 +10,11 @@ import { EventosComponent } from './pages/eventos/eventos.component';
 import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
 import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { CompetitorsComponent } from './pages/competitors/competitors.component';
+import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
+import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
+import { personGuard } from './guards/person.guard';
+import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,7 +31,7 @@ const routes: Routes = [
     canActivate: [loginGuard, adminGuard],
   },
   {
-    path: 'eventos',
+    path: 'eventos-admin',
     component: EventosComponent,
     canActivate: [loginGuard, adminGuard],
   },
@@ -43,6 +48,24 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'competitors/:id',
+    component: CompetitorsComponent,
+    canActivate: [loginGuard, adminGuard],
+  },
+  {
+    path: 'event/:id',
+    component: EventoDescriptionComponent,
+  },
+  {
+    path: 'registrations',
+    component: RegistrationsListComponent,
+    canActivate: [loginGuard, personGuard],
+  },
+  {
+    path: 'eventos',
+    component: EventosListComponent,
   },
 ];
 

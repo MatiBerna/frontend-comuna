@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { AddAdminComponent } from 'src/app/components/admins/add-admin/add-admin.component';
@@ -24,7 +25,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private loginService: LoginService,
     private modalService: NgbModal,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   logOut(): void {
@@ -32,8 +34,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openModifyUser() {
-    if (!expirationTokenAuth(sessionStorage.getItem('token_session')!)) {
-      if (adminGuard()) {
+    this.loginService.checkLoginStatus();
+    if (this.userLoginOn) {
+      if (this.checkUserRole() === 'Admin') {
         const modalRef = this.modalService.open(AddAdminComponent, {
           backdrop: true,
         });
@@ -59,6 +62,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
         });
       }
+    } else {
+      this.router.navigate(['/login']);
     }
   }
 
