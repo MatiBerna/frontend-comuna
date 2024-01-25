@@ -1,0 +1,23 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5">
+      {{ compType.description }}
+    </h1>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <img
+      [src]="compType.image"
+      alt="Imagen de tipo competencia"
+      class="img-fluid w-100"
+    />
+    <hr />
+    <h3>Reglas:</h3>
+    <p>{{ compType.rules }}</p>
+  </div>
+</div>
