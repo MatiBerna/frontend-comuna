@@ -30,7 +30,7 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
   competitionsList: Competition[] = [];
 
   idEvento: string | undefined = undefined;
-  evento!: Evento;
+  evento?: Evento;
 
   private loginSubs!: Subscription;
   private userDataSubs!: Subscription;
@@ -160,18 +160,6 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loginSubs = this.loginService.currentUserLoginOn.subscribe({
-      next: (userLoginOn) => {
-        this.userLoginOn = userLoginOn;
-      },
-    });
-
-    this.userDataSubs = this.loginService.currentUserData.subscribe({
-      next: (userData) => {
-        this.userData = userData;
-      },
-    });
-
     this.route.paramMap.subscribe((params) => {
       this.idEvento = params.get('id') || undefined;
     });
@@ -183,6 +171,18 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
       error: (errorData) => {
         console.log(errorData);
         this.errorMessage = errorData;
+      },
+    });
+
+    this.loginSubs = this.loginService.currentUserLoginOn.subscribe({
+      next: (userLoginOn) => {
+        this.userLoginOn = userLoginOn;
+      },
+    });
+
+    this.userDataSubs = this.loginService.currentUserData.subscribe({
+      next: (userData) => {
+        this.userData = userData;
       },
     });
 

@@ -1,16 +1,16 @@
 <div class="d-flex flex-wrap">
   <div class="col-12 col-sm-6 col-lg-4 p-0">
-    <img [src]="evento.image" alt="Imagen de fondo" class="img-fluid w-100" />
+    <img [src]="evento?.image" alt="Imagen de fondo" class="img-fluid w-100" />
   </div>
   <div class="col-12 col-sm-6 col-lg-8 p-2">
-    <h2 class="h2">{{ evento.description }}</h2>
+    <h2 class="h2">{{ evento?.description }}</h2>
     <p>
-      Fecha y hora de Inicio: {{ getFecha(evento.fechaHoraIni!) }} -
-      {{ getHora(evento.fechaHoraIni!) }}
+      Fecha y hora de Inicio: {{ getFecha(evento?.fechaHoraIni!) }} -
+      {{ getHora(evento?.fechaHoraIni!) }}
     </p>
     <p>
-      Fecha y hora de Fin: {{ getFecha(evento.fechaHoraFin!) }} -
-      {{ getHora(evento.fechaHoraFin!) }}
+      Fecha y hora de Fin: {{ getFecha(evento?.fechaHoraFin!) }} -
+      {{ getHora(evento?.fechaHoraFin!) }}
     </p>
   </div>
 </div>
