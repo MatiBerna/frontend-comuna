@@ -23,6 +23,19 @@ import { ToastsComponent } from './shared/toasts/toasts.component';
 import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
 import { AddCompetitionComponent } from './components/competitions/add-competition/add-competition.component';
 import { CompetitionDetailComponent } from './components/competitions/competition-detail/competition-detail.component';
+import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { ConfirmModalComponent } from './components/shared/confirm-modal/confirm-modal.component';
+import { CompetitorsComponent } from './pages/competitors/competitors.component';
+import { AddCompetitorComponent } from './components/competitors/add-competitor/add-competitor.component';
+import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
+import { ConfirmAddModalComponent } from './components/shared/confirm-add-modal/confirm-add-modal.component';
+import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
+import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
+import { CompetitionTypesListComponent } from './pages/common-user/competition-types-list/competition-types-list.component';
+import { CompetitionTypeDetailsComponent } from './components/competition-types/competition-type-details/competition-type-details.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+
 
 @NgModule({
   declarations: [
@@ -44,6 +57,18 @@ import { CompetitionDetailComponent } from './components/competitions/competitio
     CompetitionsListComponent,
     AddCompetitionComponent,
     CompetitionDetailComponent,
+    AdminListComponent,
+    RegisterComponent,
+    ConfirmModalComponent,
+    CompetitorsComponent,
+    AddCompetitorComponent,
+    EventoDescriptionComponent,
+    ConfirmAddModalComponent,
+    RegistrationsListComponent,
+    EventosListComponent,
+    CompetitionTypesListComponent,
+    CompetitionTypeDetailsComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

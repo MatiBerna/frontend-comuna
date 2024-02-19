@@ -33,6 +33,36 @@
           <div *ngIf="description.errors?.['required']">
             La descripcion es requerida
           </div>
+          <div *ngIf="description.errors?.['serverError']">
+            {{ description.getError("serverError") }}
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="descriptionInput" class="form-label">Imagen</label>
+        <input
+          formControlName="image"
+          class="form-control"
+          id="imageInput"
+          aria-describedby="imageHelp"
+          [ngClass]="{
+            'is-invalid': (image.dirty || image.touched) && image.invalid,
+            'is-valid': !image.invalid
+          }"
+        />
+        <div
+          *ngIf="image.invalid && (image.dirty || image.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="image.errors?.['required']">
+            La URL de la imagen es requerida
+          </div>
+          <div *ngIf="image.errors?.['serverError']">
+            {{ image.getError("serverError") }}
+          </div>
+        </div>
+        <div *ngIf="image.valid">
+          <img [src]="image.value" alt="Imagen" class="img-thumbnail mt-2" />
         </div>
       </div>
       <div class="row mb-3">
@@ -45,6 +75,8 @@
               formControlName="fechaIni"
               ngbDatepicker
               [minDate]="minDate!"
+              [maxDate]="maxDateIni!"
+              (dateSelect)="setLimiteFechaFin($event)"
               #d="ngbDatepicker"
               [ngClass]="{
                 'is-invalid':
@@ -64,8 +96,11 @@
               <div *ngIf="fechaIni.errors?.['required']">
                 La fecha de inicio es requerida
               </div>
-              <div *ngIf="!fechaIni.errors?.['required']">
+              <div *ngIf="fechaIni.errors?.['ngbDate']">
                 Ingrese una fecha válida
+              </div>
+              <div *ngIf="fechaIni.errors?.['serverError']">
+                {{ fechaIni.getError("serverError") }}
               </div>
             </div>
           </div>
@@ -89,6 +124,9 @@
             <div *ngIf="horaIni.errors?.['required']">
               La hora de inicio es requerida
             </div>
+            <div *ngIf="horaIni.errors?.['serverError']">
+              {{ horaIni.getError("serverError") }}
+            </div>
           </div>
         </div>
       </div>
@@ -101,7 +139,8 @@
               placeholder="yyyy-mm-dd"
               formControlName="fechaFin"
               ngbDatepicker
-              [minDate]="minDate!"
+              [minDate]="minDateFin!"
+              (dateSelect)="setLimiteFechaIni($event)"
               #d1="ngbDatepicker"
               [ngClass]="{
                 'is-invalid':
@@ -121,8 +160,11 @@
               <div *ngIf="fechaFin.errors?.['required']">
                 La fecha de fin es requerida
               </div>
-              <div *ngIf="!fechaFin.errors?.['required']">
+              <div *ngIf="fechaFin.errors?.['ngbDate']">
                 Ingrese una fecha válida
+              </div>
+              <div *ngIf="fechaFin.errors?.['serverError']">
+                {{ fechaFin.getError("serverError") }}
               </div>
             </div>
           </div>
@@ -145,6 +187,9 @@
           >
             <div *ngIf="horaFin.errors?.['required']">
               La hora de fin es requerida
+            </div>
+            <div *ngIf="horaFin.errors?.['serverError']">
+              {{ horaFin.getError("serverError") }}
             </div>
           </div>
         </div>

@@ -1,12 +1,12 @@
 <div class="container-sm" style="max-width: 1200px">
   <p>
     Nota: Las competencias disponibles serán las competencias disponibles para
-    poder inscribirse (2 dias antes de la fecha de inicio)
+    poder inscribirse (un mes antes de la fecha de inicio)
   </p>
   <p class="text-danger">{{ errorMessage }}</p>
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between flex-wrap flex-sm-nowrap mb-3">
     <button
-      class="btn btn-primary me-1 d-flex align-items-center"
+      class="btn btn-primary me-1 d-flex align-items-center mb-2"
       (click)="openModal(voidCompetition)"
     >
       <i class="bi bi-plus"></i>
@@ -14,7 +14,7 @@
     </button>
     <div class="dropdown">
       <button
-        class="btn btn-outline-primary dropdown-toggle mx-1"
+        class="btn btn-outline-primary dropdown-toggle mx-sm-1"
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
@@ -25,7 +25,7 @@
         <li>
           <a
             class="dropdown-item"
-            (click)="getCompetitions('Próximos')"
+            (click)="getCompetitions('Próximos', 1)"
             role="button"
             >Próximos</a
           >
@@ -34,7 +34,7 @@
           <a
             class="dropdown-item"
             role="button"
-            (click)="getCompetitions('Inscripción Abierta')"
+            (click)="getCompetitions('Inscripción Abierta', 1)"
             >Inscripción Abierta</a
           >
         </li>
@@ -42,64 +42,128 @@
           <a
             class="dropdown-item"
             role="button"
-            (click)="getCompetitions('Todos')"
+            (click)="getCompetitions('Todos', 1)"
             >Todos</a
           >
         </li>
       </ul>
     </div>
-    <div class="input-group ms-1" style="max-width: 400px">
-      <input
-        type="text"
-        class="form-control"
-        aria-describedby="inputGroup-sizing-sm"
-        [(ngModel)]="terminoBusqueda"
-        placeholder="Buscar..."
-      />
+    <div class="flex-fill flex-sm-grow-0 responsive-input-group">
+      <div class="input-group ms-sm-1">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ tipoFiltro }}
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" (click)="changeTipoFiltro('Tipo')"
+              >Tipo Competencia</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" (click)="changeTipoFiltro('Evento')"
+              >Evento</a
+            >
+          </li>
+        </ul>
+        <input
+          type="text"
+          class="form-control"
+          id="filtro-busqueda"
+          [disabled]="tipoFiltro === 'Filtrar por'"
+          [(ngModel)]="terminoBusqueda"
+          placeholder="Buscar..."
+        />
+        <button
+          class="btn btn-outline-secondary bi bi-search"
+          (click)="getCompetitions(tipoLista, 1)"
+        ></button>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div *ngIf="getOtherFilterStr()" class="form-text">
+          {{ getOtherFilterStr() }}
+        </div>
+        <div *ngIf="getOtherFilterStr()">
+          <a
+            (click)="deleteFiltros()"
+            class="form-text link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            style="cursor: pointer"
+            >borrar filtros</a
+          >
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="d-flex justify-content-between">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getCompetitions(tipoLista, $event)"
+    ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{
+        pagingCounter + competitionsList.length - 1
+      }}
+      filas de
+      {{ totalDocs }}
+    </p>
   </div>
   <div class="d-flex align-items-stretch flex-wrap justify-content-center mt-3">
     <div
       class="card m-1"
       style="width: 375px"
-      *ngFor="let competition of competitionsList | filter : terminoBusqueda"
+      *ngFor="let competition of competitionsList"
     >
       <div class="card-header">
         <h5 class="card-title">
-          {{ competition.competitionType.description }}
+          {{ setICompetitionType(competition.competitionType!).description }}
         </h5>
         <h6 class="card-subtitle mb-2 text-body-secondary">
-          {{ competition.evento.description }}
+          {{ setIEvento(competition.evento!).description }}
         </h6>
       </div>
       <div class="card-body">
         <p class="card-text fw-medium mb-0">Fecha y Hora inicio</p>
         <div class="row">
           <p class="card-text col-6">
-            Fecha: {{ getFecha(competition.fechaHoraIni) }}
+            Fecha: {{ getFecha(competition.fechaHoraIni!) }}
           </p>
           <p class="card-text col-6">
-            Hora: {{ getHora(competition.fechaHoraIni) }}
+            Hora: {{ getHora(competition.fechaHoraIni!) }}
           </p>
         </div>
         <p class="card-text fw-medium mb-0">Fecha y Hora fin estimada</p>
         <div class="row">
           <p class="card-text col-6">
-            Fecha: {{ getFecha(competition.fechaHoraFinEstimada) }}
+            Fecha: {{ getFecha(competition.fechaHoraFinEstimada!) }}
           </p>
           <p class="card-text col-6">
-            Hora: {{ getHora(competition.fechaHoraFinEstimada) }}
+            Hora: {{ getHora(competition.fechaHoraFinEstimada!) }}
           </p>
         </div>
         <div class="d-flex">
           <p class="card-text fw-medium">Costo de Inscripcion: &nbsp;</p>
           <p class="card-text">${{ competition.costoInscripcion }}</p>
         </div>
-        <div
-          class="d-flex justify-content-end"
-          (click)="openDetails(competition)"
-        >
-          <i class="bi bi-plus-circle" role="button"></i>
+        <div class="d-flex justify-content-between">
+          <a
+            [routerLink]="['/competitors', competition._id]"
+            *ngIf="isOpenedInscription(competition.fechaHoraIni!)"
+            >Participantes</a
+          >
+          <i
+            class="bi bi-plus-circle"
+            role="button"
+            (click)="openDetails(competition)"
+          ></i>
         </div>
       </div>
       <div class="card-footer d-flex justify-content-between">

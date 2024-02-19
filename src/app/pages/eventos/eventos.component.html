@@ -1,12 +1,12 @@
 <div class="container-sm" style="max-width: 1200px">
   <p class="text-danger">{{ errorMessage }}</p>
-  <div class="d-flex justify-content-between">
-    <button class="btn btn-primary me-1" (click)="openModal(voidEvento)">
+  <div class="d-flex justify-content-between flex-wrap flex-sm-nowrap mb-3">
+    <button class="btn btn-primary me-1 mb-2" (click)="openModal(voidEvento)">
       Nuevo&nbsp;Evento
     </button>
     <div class="dropdown">
       <button
-        class="btn btn-outline-primary dropdown-toggle mx-1"
+        class="btn btn-outline-primary dropdown-toggle mx-sm-1"
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
@@ -18,26 +18,51 @@
           <a
             class="dropdown-item"
             role="button"
-            (click)="getEventos('Próximos')"
+            (click)="getEventos('Próximos', 1)"
             >Próximos</a
           >
         </li>
         <li>
-          <a class="dropdown-item" role="button" (click)="getEventos('Todos')"
+          <a
+            class="dropdown-item"
+            role="button"
+            (click)="getEventos('Todos', 1)"
             >Todos</a
           >
         </li>
       </ul>
     </div>
-    <div class="input-group ms-1" style="max-width: 400px">
-      <input
-        type="text"
-        class="form-control"
-        aria-describedby="inputGroup-sizing-sm"
-        [(ngModel)]="terminoBusqueda"
-        placeholder="Buscar..."
-      />
+    <div class="flex-fill flex-sm-grow-0 responsive-input-group">
+      <div class="input-group ms-sm-1">
+        <input
+          type="text"
+          class="form-control"
+          aria-describedby="inputGroup-sizing-sm"
+          [(ngModel)]="terminoBusqueda"
+          placeholder="Buscar..."
+        />
+        <button
+          class="btn btn-outline-secondary bi bi-search"
+          (click)="getEventos(tipoLista, 1)"
+        ></button>
+      </div>
     </div>
+  </div>
+  <div class="d-flex justify-content-between">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getEventos(tipoLista, $event)"
+    ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{ pagingCounter + eventoList.length - 1 }}
+      filas de
+      {{ totalDocs }}
+    </p>
   </div>
   <table class="table table-hover">
     <thead>
@@ -49,15 +74,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let evento of eventoList | filter : terminoBusqueda">
+      <tr *ngFor="let evento of eventoList">
         <td>{{ evento.description }}</td>
         <td>
-          {{ this.getFecha(evento.fechaHoraIni) }}
-          {{ this.getHora(evento.fechaHoraIni) }}
+          {{ this.getFecha(evento.fechaHoraIni!) }}
+          {{ this.getHora(evento.fechaHoraIni!) }}
         </td>
         <td>
-          {{ this.getFecha(evento.fechaHoraFin) }}
-          {{ this.getHora(evento.fechaHoraFin) }}
+          {{ this.getFecha(evento.fechaHoraFin!) }}
+          {{ this.getHora(evento.fechaHoraFin!) }}
         </td>
         <td class="bi bi-edit">
           <button

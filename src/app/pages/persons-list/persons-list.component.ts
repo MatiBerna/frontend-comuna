@@ -4,6 +4,8 @@ import { Person } from 'src/app/models/person';
 import { PersonsService } from 'src/app/services/persons/persons.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/services/shared/toast/toast.service';
+import { ConfirmModalComponent } from 'src/app/components/shared/confirm-modal/confirm-modal.component';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 
 @Component({
   selector: 'app-persons-list',
@@ -11,10 +13,10 @@ import { ToastService } from 'src/app/services/shared/toast/toast.service';
   styleUrls: ['./persons-list.component.css'],
 })
 export class PersonsListComponent implements OnInit {
-  @ViewChild('editPersonModal')
-  editPerson!: AddPersonComponent;
   page: number = 1;
   pageSize: number = 10;
+  totalDocs!: number;
+  pagingCounter!: number;
   personsList: Person[] = [];
   errorMessage: string = '';
   terminoBusqueda: string = '';
@@ -41,14 +43,17 @@ export class PersonsListComponent implements OnInit {
     private toastService: ToastService
   ) {}
 
-  getPersons() {
+  getPersons(newPage: number) {
     let filtro: string | null = null;
     if (this.terminoBusqueda !== '') {
       filtro = this.terminoBusqueda;
     }
-    this.personsService.getAll(filtro).subscribe({
-      next: (persons: Person[]) => {
-        this.personsList = persons;
+    this.personsService.getAll(filtro, newPage).subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.totalDocs = pagResponse.totalDocs;
+        this.page = pagResponse.page;
+        this.pagingCounter = pagResponse.pagingCounter;
+        this.personsList = pagResponse.docs as Person[];
       },
       error: (errorData) => {
         console.log(errorData);
@@ -57,14 +62,8 @@ export class PersonsListComponent implements OnInit {
     });
   }
 
-  changeSelectedPerson(person: Person) {
-    this.selectedPerson = person;
-    console.log(this.selectedPerson);
-  }
-
   openModal(person: Person) {
     this.selectedPerson = person;
-    console.log(this.selectedPerson);
     const modalRef = this.modalService.open(AddPersonComponent, {
       backdrop: true,
     });
@@ -77,30 +76,41 @@ export class PersonsListComponent implements OnInit {
           delay: 5000,
         });
       }
-      this.getPersons();
+      this.getPersons(this.page);
     });
   }
 
   deletePerson(person: Person) {
-    if (window.confirm('¿estás seguro que quieres borrar el socio?')) {
-      console.log('borrando');
-      this.personsService.delete(person).subscribe({
-        error: (error) => {
-          console.log(error);
-          this.toastService.show(error, {
-            classname: 'bg-danger text-light',
-            delay: 10000,
-          });
-        },
-        complete: () => {
-          console.log('Socio Borrado');
-          this.getPersons();
-        },
-      });
-    }
+    const modalRef = this.modalService.open(ConfirmModalComponent, {
+      centered: true,
+    });
+    modalRef.componentInstance.message =
+      '¿Está seguro que quiere eliminar el Socio? Esta acción no se puede revertir';
+    modalRef.dismissed.subscribe((reason: string) => {
+      if (reason === 'aceptar') {
+        console.log('borrando');
+        this.personsService.delete(person).subscribe({
+          error: (error) => {
+            console.log(error);
+            this.toastService.show(error, {
+              classname: 'bg-danger text-light',
+              delay: 10000,
+            });
+          },
+          complete: () => {
+            console.log('Socio Borrado');
+            this.toastService.show('Socio borrado', {
+              classname: 'bg-success text-light',
+              delay: 5000,
+            });
+            this.getPersons(this.page);
+          },
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.getPersons();
+    this.getPersons(this.page);
   }
 }

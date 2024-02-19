@@ -1,0 +1,27 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="headerModalLabel">Atención</h1>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close('cerrar')"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <strong>{{ message }}</strong>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      data-bs-dismiss="modal"
+      (click)="close('cancelar')"
+    >
+      Cancelar
+    </button>
+    <button type="submit" class="btn btn-danger" (click)="close('aceptar')">
+      Aceptar
+    </button>
+  </div>
+</div>

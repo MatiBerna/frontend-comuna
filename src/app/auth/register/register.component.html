@@ -1,0 +1,227 @@
+<div class="card container-sm my-3" style="max-width: 600px">
+  <div class="card-body">
+    <h3 class="card-title">Registrar</h3>
+    <hr />
+    <form [formGroup]="registerForm">
+      <p class="text-danger">{{ registerError }}</p>
+      <div class="mb-3">
+        <label for="dniInput" class="form-label">DNI</label>
+        <input
+          formControlName="dni"
+          class="form-control"
+          id="dniInput"
+          aria-describedby="dniHelp"
+          [ngClass]="{
+            'is-invalid': (dni.dirty || dni.touched) && dni.invalid,
+            'is-valid': !dni.invalid
+          }"
+        />
+        <div
+          *ngIf="dni.invalid && (dni.dirty || dni.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="dni.errors?.['required']">El dni es requerido</div>
+          <div *ngIf="dni.errors?.['pattern']">El dni debe ser numérico</div>
+          <div *ngIf="dni.errors?.['minlength']">
+            El DNI debe contener al menos 7 dígitos
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6">
+          <label for="firstNameInput" class="form-label">Nombre</label>
+          <input
+            formControlName="firstName"
+            class="form-control"
+            id="firstNameInput"
+            aria-describedby="firstNameHelp"
+            [ngClass]="{
+              'is-invalid':
+                (firstName.dirty || firstName.touched) && firstName.invalid,
+              'is-valid': !firstName.invalid
+            }"
+          />
+          <div
+            *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="firstName.errors?.['required']">
+              El nombre es requerido
+            </div>
+            <div *ngIf="firstName.errors?.['pattern']">
+              El nombre debe estar conformado solo por letras
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="lastNameInput" class="form-label">Apellido</label>
+          <input
+            formControlName="lastName"
+            class="form-control"
+            id="lastNameInput"
+            aria-describedby="lastNameHelp"
+            [ngClass]="{
+              'is-invalid':
+                (lastName.dirty || lastName.touched) && lastName.invalid,
+              'is-valid': !lastName.invalid
+            }"
+          />
+          <div
+            *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="lastName.errors?.['required']">
+              El nombre es requerido
+            </div>
+            <div *ngIf="lastName.errors?.['pattern']">
+              El nombre debe estar conformado solo por letras
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="emailInput" class="form-label">Email</label>
+        <input
+          formControlName="email"
+          class="form-control"
+          id="emailInput"
+          aria-describedby="emailHelp"
+          [ngClass]="{
+            'is-invalid': (email.dirty || email.touched) && email.invalid,
+            'is-valid': !email.invalid
+          }"
+        />
+        <div
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="email.errors?.['required']">El email es requerido</div>
+          <div *ngIf="email.errors?.['email']">
+            El email ingresado no tiene un formato válido
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="phoneInput" class="form-label">Phone</label>
+        <input
+          formControlName="phone"
+          class="form-control"
+          id="phoneInput"
+          aria-describedby="phoneHelp"
+          [ngClass]="{
+            'is-invalid': (phone.dirty || phone.touched) && phone.invalid,
+            'is-valid': !phone.invalid && (phone.dirty || phone.touched)
+          }"
+        />
+        <div
+          *ngIf="phone.invalid && (phone.dirty || phone.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="phone.errors?.['pattern']">
+            El teléfono ingresado solo debe contener números
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="birthdateInput" class="form-label"
+          >Fecha de nacimiento</label
+        >
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            formControlName="birthdate"
+            ngbDatepicker
+            [maxDate]="maxDate!"
+            [minDate]="minDate!"
+            #d="ngbDatepicker"
+            [ngClass]="{
+              'is-invalid':
+                (birthdate.dirty || birthdate.touched) && birthdate.invalid,
+              'is-valid': !birthdate.invalid
+            }"
+          />
+          <button
+            class="btn btn-outline-secondary bi bi-calendar3"
+            (click)="d.toggle()"
+            type="button"
+          ></button>
+          <div
+            *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="birthdate.errors?.['required']">
+              La fecha de nacimiento es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="passwordInput" class="form-label">Nueva Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          id="passwordInput"
+          aria-labelledby="passwordHelp"
+          [ngClass]="{
+            'is-invalid':
+              (password.dirty || password.touched) && password.invalid,
+            'is-valid': !password.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            (registerForm.errors?.['notSame'] || password.invalid) &&
+            (password.dirty || password.touched)
+          "
+          class="invalid-feedback"
+        >
+          <div *ngIf="password.errors?.['required']">
+            El campo contraseña es requerido
+          </div>
+          <div *ngIf="password.errors?.['minlength']">
+            La contraseña debe tener al menos 6 caracteres
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="confirmPasswordInput" class="form-label"
+          >Confirmar Contraseña</label
+        >
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          class="form-control"
+          id="confirmPasswordInput"
+          aria-labelledby="confirmPasswordHelp"
+          [ngClass]="{
+            'is-invalid':
+              (confirmPassword.dirty || confirmPassword.touched) &&
+              (registerForm.errors?.['notSame'] || confirmPassword.invalid),
+            'is-valid': !registerForm.errors?.['notSame'] && !confirmPassword.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            (registerForm.errors?.['notSame'] || confirmPassword.invalid) &&
+            (confirmPassword.dirty || confirmPassword.touched)
+          "
+          class="invalid-feedback"
+        >
+          <div *ngIf="registerForm.errors?.['notSame']">
+            Las contraseñas no coinciden
+          </div>
+          <div *ngIf="confirmPassword.errors?.['required']">
+            El campo Confirmar Contraseña es requerido
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-primary" (click)="register()">
+          Registrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 <div class="card container-sm my-3" style="max-width: 600px">
   <div class="card-body">
+    <h3 class="card-title">Inicia Sesión</h3>
+    <hr />
     <form [formGroup]="loginForm">
       <p class="text-danger">{{ loginError }}</p>
       <div class="mb-3">
@@ -17,7 +19,7 @@
           class="text-danger"
         >
           <div *ngIf="username.errors?.['required']">
-            El username es requerido
+            El nombre de usuario es requerido
           </div>
         </div>
       </div>
@@ -37,10 +39,23 @@
           </div>
         </div>
       </div>
-
-      <button type="submit" class="btn btn-primary" (click)="login()">
-        Aceptar
-      </button>
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary p-2" (click)="login()">
+          Iniciar Sesión
+        </button>
+      </div>
+      <hr />
+      <div class="d-flex justify-content-center mt-4">
+        <button
+          class="btn btn-success"
+          style="width: 200px"
+          routerLink="/register"
+        >
+          Registrarse
+        </button>
+      </div>
     </form>
   </div>
 </div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

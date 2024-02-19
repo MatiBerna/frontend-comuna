@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { Admin } from 'src/app/models/admin';
 import { AdminsService } from 'src/app/services/admins/admins.service';
 import { LoginService } from 'src/app/services/auth/login.service';
+import { ErrorService } from 'src/app/services/error/error.service';
 
 @Component({
   selector: 'app-add-admin',
@@ -17,9 +18,10 @@ import { LoginService } from 'src/app/services/auth/login.service';
   styleUrls: ['./add-admin.component.css'],
 })
 export class AddAdminComponent implements OnInit, OnDestroy {
-  userData!: Admin;
-  private userDataSubs!: Subscription;
+  @Input() admin!: Admin;
+  //private userDataSubs!: Subscription;
   adminError: string = '';
+  private errorSub!: Subscription;
   adminForm = this.formBuilder.group(
     {
       _id: [''],
@@ -33,8 +35,8 @@ export class AddAdminComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private loginService: LoginService,
-    private adminsService: AdminsService
+    private adminsService: AdminsService,
+    private errorService: ErrorService
   ) {}
 
   checkPasswords(group: AbstractControl) {
@@ -64,11 +66,7 @@ export class AddAdminComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           console.log('Cambios Registrados');
-          window.alert('Se cerrará la sesion luego de aplicados los cambios');
-          sessionStorage.removeItem('token_session');
-          //this.loginService.checkLoginStatus();
-          location.reload(); //probablemente haya una mejor práctica
-          this.close();
+          this.close('Registro');
         },
       });
     } else {
@@ -88,22 +86,35 @@ export class AddAdminComponent implements OnInit, OnDestroy {
     return this.adminForm.controls.confirmPassword;
   }
 
-  close() {
+  close(reason: string) {
     this.adminForm.reset();
-    this.modalService.dismissAll();
+    this.modalService.dismissAll(reason);
   }
 
   ngOnInit(): void {
-    this.userDataSubs = this.loginService.currentUserData.subscribe({
-      next: (userData) => {
-        this.userData = userData as Admin;
-      },
+    this.adminForm.controls._id.setValue(this.admin._id!);
+
+    if (this.admin._id !== null) {
+      this.adminForm.controls.username.setValue(this.admin.username!);
+    } else {
+      this.adminForm.controls.password.addValidators(Validators.required);
+    }
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      for (const error of errors) {
+        switch (error.path) {
+          case 'username':
+            this.username.setErrors({ serverError: error.msg });
+            break;
+          case 'password':
+            this.password.setErrors({ serverError: error.msg });
+            break;
+        }
+      }
     });
-    this.adminForm.controls._id.setValue(this.userData._id!);
-    this.adminForm.controls.username.setValue(this.userData.username!);
   }
 
   ngOnDestroy(): void {
-    this.userDataSubs.unsubscribe();
+    this.errorSub.unsubscribe();
   }
 }

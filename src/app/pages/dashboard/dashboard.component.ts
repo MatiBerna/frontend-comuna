@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Admin } from 'src/app/models/admin';
-import { Person } from 'src/app/models/person';
+import { Evento } from 'src/app/models/evento';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 import { LoginService } from 'src/app/services/auth/login.service';
+import { EventosService } from 'src/app/services/eventos/eventos.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,28 +11,46 @@ import { LoginService } from 'src/app/services/auth/login.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  userLoginOn: boolean = false;
-  userData?: Admin | Person;
-  private loginSubs!: Subscription;
-  private userDataSubs!: Subscription;
-  constructor(private loginService: LoginService) {}
+  page: number = 1;
+  pageSize: number = 10;
+  totalDocs!: number;
+  pagingCounter!: number;
+  eventosList: Evento[] = [];
+  errorMessage: string = '';
+
+  constructor(private eventosService: EventosService) {}
+
+  getEventos(newPage: number) {
+    this.eventosService.getAll(newPage, null, 'true').subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.totalDocs = pagResponse.totalDocs;
+        this.page = pagResponse.page;
+        this.pagingCounter = pagResponse.pagingCounter;
+        this.eventosList = pagResponse.docs as Evento[];
+      },
+      error: (errorData) => {
+        console.log(errorData);
+        this.errorMessage = errorData;
+      },
+    });
+  }
+
+  getFecha(fechaHora: Date) {
+    const fecha = new Date(fechaHora).toLocaleDateString('es-AR');
+    return fecha;
+  }
+
+  getHora(fechaHora: Date) {
+    const hora = new Date(fechaHora).toLocaleTimeString('es-AR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return hora;
+  }
 
   ngOnInit(): void {
-    this.loginSubs = this.loginService.currentUserLoginOn.subscribe({
-      next: (userLoginOn) => {
-        this.userLoginOn = userLoginOn;
-      },
-    });
-
-    this.userDataSubs = this.loginService.currentUserData.subscribe({
-      next: (userData) => {
-        this.userData = userData;
-      },
-    });
+    this.getEventos(this.page);
   }
 
-  ngOnDestroy(): void {
-    this.userDataSubs.unsubscribe();
-    this.loginSubs.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

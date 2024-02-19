@@ -1,0 +1,46 @@
+<div class="container-sm" style="max-width: 1200px">
+  <p class="text-danger">{{ errorMessage }}</p>
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-primary me-1" (click)="openModal(voidAdmin)">
+      Nuevo&nbsp;Admin
+    </button>
+    <div class="input-group ms-1" style="max-width: 400px">
+      <input
+        type="text"
+        class="form-control"
+        aria-describedby="inputGroup-sizing-sm"
+        [(ngModel)]="terminoBusqueda"
+        placeholder="Buscar..."
+      />
+    </div>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Nombre de usuario</th>
+        <th scope="col" aria-label="row actions">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let admin of adminList | filter : terminoBusqueda">
+        <td>{{ admin.username }}</td>
+        <td class="bi bi-edit">
+          <button
+            class="btn btn-outline-primary me-2"
+            (click)="openModal(admin)"
+          >
+            <i class="bi bi-pencil-fill"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger mt-2 mt-sm-0"
+            (click)="deleteAdmin(admin)"
+          >
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

@@ -5,11 +5,14 @@ import {
   NgbModal,
   NgbTimeStruct,
 } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Competition } from 'src/app/models/competition';
 import { CompetitionType } from 'src/app/models/competition-type';
 import { Evento } from 'src/app/models/evento';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 import { CompetitionTypesService } from 'src/app/services/competition-types/competition-types.service';
 import { CompetitionsService } from 'src/app/services/competitions/competitions.service';
+import { ErrorService } from 'src/app/services/error/error.service';
 import { EventosService } from 'src/app/services/eventos/eventos.service';
 import { ToastService } from 'src/app/services/shared/toast/toast.service';
 
@@ -21,6 +24,7 @@ import { ToastService } from 'src/app/services/shared/toast/toast.service';
 export class AddCompetitionComponent implements OnInit {
   @Input() competition!: Competition;
   competitionError: string = '';
+  private errorSub!: Subscription;
   today: Date = new Date();
   eventos: Evento[] = [];
   selectedEventId: string = '';
@@ -28,6 +32,8 @@ export class AddCompetitionComponent implements OnInit {
   minDate!: NgbDateStruct | null;
   maxDate!: NgbDateStruct | null;
   minHour!: NgbTimeStruct | null;
+  fechaIniEvento!: Date | undefined;
+  fechaFinEvento!: Date;
 
   competitionForm = this.formBuilder.group({
     _idCompetitionType: ['', [Validators.required]],
@@ -54,7 +60,8 @@ export class AddCompetitionComponent implements OnInit {
     private eventoService: EventosService,
     private competitionTypeService: CompetitionTypesService,
     private competitionService: CompetitionsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private errorService: ErrorService
   ) {}
 
   addOrUpdate() {
@@ -84,8 +91,8 @@ export class AddCompetitionComponent implements OnInit {
         fechaHoraFinEstimada: fechaHoraFinEstimada,
         premios: this.premios.value!,
         costoInscripcion: ncostoInsc,
-        _idEvento: this._idEvento.value!,
-        _idCompetitionType: this._idcompetitionType.value!,
+        evento: this._idEvento.value!,
+        competitionType: this._idcompetitionType.value!,
       };
 
       this.competitionService.addOrUpdate(competitionToSend).subscribe({
@@ -112,6 +119,8 @@ export class AddCompetitionComponent implements OnInit {
 
     if (evento) {
       const fechaHoraIni = new Date(evento.fechaHoraIni!);
+      this.fechaIniEvento = new Date(evento.fechaHoraIni!);
+      this.fechaFinEvento = new Date(evento.fechaHoraFin!);
       this.minDate = {
         year: fechaHoraIni!.getFullYear(),
         month: fechaHoraIni!.getMonth() + 1,
@@ -130,6 +139,14 @@ export class AddCompetitionComponent implements OnInit {
   getFecha(fechaHora: Date | undefined) {
     const fecha = new Date(fechaHora!).toLocaleDateString('es-AR');
     return fecha;
+  }
+
+  getHora(fechaHora: Date) {
+    const hora = new Date(fechaHora).toLocaleTimeString('es-AR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return hora;
   }
 
   get description() {
@@ -183,11 +200,11 @@ export class AddCompetitionComponent implements OnInit {
 
     //#region services calls
 
-    this.eventoService.getAll('?prox=true').subscribe({
-      next: (eventos: Evento[]) => {
-        this.eventos = eventos;
+    this.eventoService.getAll(null, null, 'true').subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.eventos = pagResponse.docs as Evento[];
         if (this.competition.evento) {
-          this.setLimitesFechas(this.competition.evento!._id);
+          this.setLimitesFechas((this.competition.evento as Evento)._id);
         }
       },
       error: (errorData) => {
@@ -200,9 +217,9 @@ export class AddCompetitionComponent implements OnInit {
       },
     });
 
-    this.competitionTypeService.getAll().subscribe({
-      next: (compeTypes: CompetitionType[]) => {
-        this.compeTypes = compeTypes;
+    this.competitionTypeService.getAll(null, null).subscribe({
+      next: (pagResponse: PaginationResponse) => {
+        this.compeTypes = pagResponse.docs as CompetitionType[];
       },
       error: (errorData) => {
         console.log(errorData);
@@ -244,11 +261,11 @@ export class AddCompetitionComponent implements OnInit {
     );
     if (this.competition.evento) {
       this.competitionForm.controls._idEvento.setValue(
-        this.competition.evento!._id
+        (this.competition.evento as Evento)._id
       );
 
       this.competitionForm.controls._idCompetitionType.setValue(
-        this.competition.competitionType!._id
+        (this.competition.competitionType as CompetitionType)._id
       );
     }
     this.competitionForm.controls.premios.setValue(this.competition.premios!);
@@ -262,6 +279,34 @@ export class AddCompetitionComponent implements OnInit {
     this.competitionForm.controls.fechaFinEstimada.setValue(fechaFin);
     this.competitionForm.controls.horaFinEstimada.setValue(horaFin);
     //#endregion
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      for (const error of errors) {
+        switch (error.path) {
+          case 'description':
+            this.description.setErrors({ serverError: error.msg });
+            break;
+          case 'evento':
+            this._idEvento.setErrors({ serverError: error.msg });
+            break;
+          case 'competitionType':
+            this._idcompetitionType.setErrors({ serverError: error.msg });
+            break;
+          case 'premios':
+            this.premios.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraIni':
+            this.fechaIni.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraFinEstimada':
+            this.fechaFinEstimada.setErrors({ serverError: error.msg });
+            break;
+          case 'costoInscripcion':
+            this.costoInscripcion.setErrors({ serverError: error.msg });
+            break;
+        }
+      }
+    });
   }
 
   convertDateToNgbDate(fechaHoraP: string): NgbDateStruct {

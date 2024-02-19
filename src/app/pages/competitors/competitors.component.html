@@ -1,0 +1,86 @@
+<div class="container-sm" style="max-width: 1200px">
+  <p class="text-danger">{{ errorMessage }}</p>
+  <h2>
+    {{ setICompetitionType(competition.competitionType!).description }} -
+    {{ setIEvento(competition.evento!).description }}
+  </h2>
+  <p>
+    {{ getFecha(competition.fechaHoraIni!) }} -
+    {{ getHora(competition.fechaHoraIni!) }}
+  </p>
+  <div class="d-flex justify-content-between flex-wrap flex-sm-nowrap mb-3">
+    <button
+      class="btn btn-primary me-1 d-flex align-items-center mb-2"
+      (click)="openModal()"
+    >
+      <i class="bi bi-plus"></i>
+      <span>Inscribir</span>
+    </button>
+    <div class="flex-fill flex-sm-grow-0 responsive-input-group">
+      <div class="input-group ms-sm-1">
+        <input
+          type="text"
+          class="form-control"
+          aria-describedby="inputGroup-sizing-sm"
+          [(ngModel)]="terminoBusqueda"
+          placeholder="Buscar..."
+        />
+        <button
+          class="btn btn-outline-secondary bi bi-search"
+          (click)="getCompetitors(1)"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between">
+    <ngb-pagination
+      [collectionSize]="totalDocs"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [maxSize]="5"
+      [rotate]="true"
+      size="sm"
+      (pageChange)="getCompetitors($event)"
+    ></ngb-pagination>
+    <p class="text-body-secondary">
+      Mostrando {{ pagingCounter }}-{{
+        pagingCounter + competitorList.length - 1
+      }}
+      filas de
+      {{ totalDocs }}
+    </p>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">DNI</th>
+        <th scope="col">Nombre y apellido</th>
+        <th scope="col">Fecha Inscripción</th>
+        <th scope="col" aria-label="row actions">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let competitor of competitorList">
+        <td>{{ setIPerson(competitor.person).dni }}</td>
+        <td>
+          {{ setIPerson(competitor.person).firstName }}
+          {{ setIPerson(competitor.person).lastName }}
+        </td>
+        <td>
+          {{ this.getFecha(competitor.fechaHoraInscripcion!) }}
+          {{ this.getHora(competitor.fechaHoraInscripcion!) }}
+        </td>
+        <td>
+          <button
+            class="btn btn-outline-danger mt-2 mt-sm-0"
+            (click)="deleteCompetitor(competitor)"
+          >
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

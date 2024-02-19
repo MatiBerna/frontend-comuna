@@ -8,9 +8,19 @@ import { adminGuard } from './guards/admin.guard';
 import { CompetitionTypesComponent } from './pages/competition-types/competition-types.component';
 import { EventosComponent } from './pages/eventos/eventos.component';
 import { CompetitionsListComponent } from './pages/competitions-list/competitions-list.component';
+import { AdminListComponent } from './pages/admin/admin-list/admin-list.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { CompetitorsComponent } from './pages/competitors/competitors.component';
+import { EventoDescriptionComponent } from './pages/common-user/evento-description/evento-description.component';
+import { RegistrationsListComponent } from './pages/common-user/registrations-list/registrations-list.component';
+import { personGuard } from './guards/person.guard';
+import { EventosListComponent } from './pages/common-user/eventos-list/eventos-list.component';
+import { CompetitionTypesListComponent } from './pages/common-user/competition-types-list/competition-types-list.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '404', component: NotFoundComponent },
   { path: 'home', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
   {
@@ -24,17 +34,51 @@ const routes: Routes = [
     canActivate: [loginGuard, adminGuard],
   },
   {
-    path: 'eventos',
+    path: 'eventos-admin',
     component: EventosComponent,
+    canActivate: [loginGuard, adminGuard],
   },
   {
     path: 'competitions',
     component: CompetitionsListComponent,
+    canActivate: [loginGuard, adminGuard],
   },
+  {
+    path: 'admins',
+    component: AdminListComponent,
+    canActivate: [loginGuard, adminGuard],
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'competitors/:id',
+    component: CompetitorsComponent,
+    canActivate: [loginGuard, adminGuard],
+  },
+  {
+    path: 'event/:id',
+    component: EventoDescriptionComponent,
+  },
+  {
+    path: 'registrations',
+    component: RegistrationsListComponent,
+    canActivate: [loginGuard, personGuard],
+  },
+  {
+    path: 'eventos',
+    component: EventosListComponent,
+  },
+  {
+    path: 'competitionTypes',
+    component: CompetitionTypesListComponent,
+  },
+  { path: '**', redirectTo: '404' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

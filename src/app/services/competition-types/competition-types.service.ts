@@ -6,17 +6,29 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { CompetitionType } from 'src/app/models/competition-type';
+import { ErrorService } from '../error/error.service';
+import { PaginationResponse } from 'src/app/models/paginationResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompetitionTypesService {
   path: string = 'http://localhost:3000/api/competition-type';
-  constructor(private http: HttpClient) {}
+  constructor(private errorService: ErrorService, private http: HttpClient) {}
 
-  getAll(): Observable<CompetitionType[]> {
+  getAll(
+    filter: string | null,
+    page: number | null
+  ): Observable<PaginationResponse> {
+    let query: string = '';
+    if (page) {
+      query = `?page=${page}`;
+    }
+    if (filter) {
+      query = query + `&filter=${filter}`;
+    }
     return this.http
-      .get<CompetitionType[]>(`${this.path}`, this.createHeaders())
+      .get<PaginationResponse>(`${this.path}${query}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -40,12 +52,16 @@ export class CompetitionTypesService {
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError = (error: HttpErrorResponse) => {
     if (error.status === 0) {
       console.log(`Se ha producido un error: ${error.error}`);
       return throwError(
         () => new Error('Algo falló. Por favor intente nuevamente')
       );
+    } else if (error.status === 400) {
+      console.log('Error de tipo 400:', error.error.errors);
+      this.errorService.sendErrors(error.error.errors);
+      return throwError(() => new Error('Error en los datos ingresados'));
     } else {
       console.log(
         'Backend retornó el código de estado: ',
@@ -54,7 +70,7 @@ export class CompetitionTypesService {
       );
       return throwError(() => new Error(error.error.message));
     }
-  }
+  };
 
   private createHeaders() {
     return {

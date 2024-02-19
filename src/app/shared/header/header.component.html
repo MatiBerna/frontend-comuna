@@ -1,9 +1,10 @@
 <header class="jumbotron bg-primary text-white">
   <div class="row py-2 d-flex justify-content-beetween me-0">
-    <div class="col-5">
+    <div class="col-7">
       <app-nav></app-nav>
     </div>
-    <div class="col-2 font-weight-bold fs-4 text-center">Villa&nbsp;Fucsia</div>
+    <!-- <div class="col-2 font-weight-bold fs-4 text-center">Villa&nbsp;Fucsia</div> -->
+
     <div class="col-5 me-8 text-end dropdown" *ngIf="userLoginOn">
       <button
         class="btn btn-primary dropdown-toggle"
@@ -14,7 +15,36 @@
         <span class="bi bi-person-circle text-white"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" (click)="openModifyUser()">Usuario</a></li>
+        <li>
+          <a
+            class="dropdown-item"
+            (click)="openModifyUser()"
+            style="cursor: pointer"
+            >Usuario</a
+          >
+        </li>
+        <li *ngIf="checkUserRole() === 'Admin'">
+          <hr class="dropdown-divider" />
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            routerLink="/admins"
+            *ngIf="checkUserRole() === 'Admin'"
+            >Administradores</a
+          >
+        </li>
+        <li *ngIf="checkUserRole() === 'Person'">
+          <hr class="dropdown-divider" />
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            routerLink="/registrations"
+            *ngIf="checkUserRole() === 'Person'"
+            >Mis Inscripciones</a
+          >
+        </li>
         <li><hr class="dropdown-divider" /></li>
         <li>
           <a class="dropdown-item" (click)="logOut()" routerLink="/home"
@@ -30,3 +60,5 @@
     </div>
   </div>
 </header>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

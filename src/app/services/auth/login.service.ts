@@ -13,6 +13,7 @@ import {
   getDecodedAccessToken,
 } from 'src/app/utils/tokenValidations';
 import { Person } from 'src/app/models/person';
+import { ToastService } from '../shared/toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,24 +29,37 @@ export class LoginService {
     username: null,
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastService: ToastService) {}
 
   login(credentials: LoginRequest): Observable<UserAndToken> {
     return this.http
       .post<UserAndToken>(
-        'http://localhost:3000/api/auth/admin/login',
+        'http://localhost:3000/api/auth/user/login',
         credentials
       )
       .pipe(
         tap((userData: UserAndToken) => {
-          console.log('Antes de asignar a observables', userData);
-          console.log(this.currentUserData);
           this.currentUserData.next(userData.data);
-          console.log('durante asignar obs');
           this.currentUserLoginOn.next(true);
-          console.log('luego');
         }),
-        catchError(this.handleError)
+        catchError((error) => {
+          if (error.status === 401) {
+            return this.http
+              .post<UserAndToken>(
+                'http://localhost:3000/api/auth/admin/login',
+                credentials
+              )
+              .pipe(
+                tap((userData: UserAndToken) => {
+                  this.currentUserData.next(userData.data);
+                  this.currentUserLoginOn.next(true);
+                }),
+                catchError(this.handleError)
+              );
+          } else {
+            return this.handleError(error);
+          }
+        })
       );
   }
 
@@ -55,7 +69,15 @@ export class LoginService {
       if (expirationTokenAuth(token)) {
         // El token ha expirado
         this.currentUserLoginOn.next(false);
+        this.currentUserData.next({
+          _id: null,
+          username: null,
+        });
         sessionStorage.removeItem('token_session');
+        this.toastService.show('Tiempo de Sesión finalizado', {
+          classname: 'bg-warning text-light',
+          delay: 5000,
+        });
       } else {
         // El token es válido
         this.currentUserLoginOn.next(true);
@@ -65,11 +87,21 @@ export class LoginService {
     } else {
       // No hay token
       this.currentUserLoginOn.next(false);
+      this.currentUserData.next({
+        _id: null,
+        username: null,
+      });
     }
   }
 
   logOut(): void {
-    this.checkLoginStatus();
+    //this.checkLoginStatus();
+    this.currentUserLoginOn.next(false);
+    this.currentUserData.next({
+      _id: null,
+      username: null,
+    });
+    sessionStorage.removeItem('token_session');
   }
 
   private handleError(error: HttpErrorResponse) {

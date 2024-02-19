@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
   NgbDateAdapter,
@@ -7,7 +7,9 @@ import {
   NgbTimeAdapter,
   NgbTimeStruct,
 } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Evento } from 'src/app/models/evento';
+import { ErrorService } from 'src/app/services/error/error.service';
 import { EventosService } from 'src/app/services/eventos/eventos.service';
 
 @Component({
@@ -15,15 +17,19 @@ import { EventosService } from 'src/app/services/eventos/eventos.service';
   templateUrl: './add-evento.component.html',
   styleUrls: ['./add-evento.component.css'],
 })
-export class AddEventoComponent implements OnInit {
+export class AddEventoComponent implements OnInit, OnDestroy {
   @Input() evento!: Evento;
   eventoError: string = '';
+  private errorSub!: Subscription;
   today: Date = new Date();
   minDate!: NgbDateStruct | null;
+  maxDateIni!: NgbDateStruct;
+  minDateFin!: NgbDateStruct | null;
   minHour!: NgbTimeStruct | null;
 
   eventoForm = this.formBuilder.group({
     description: ['', [Validators.required]],
+    image: ['', [Validators.required]],
     fechaIni: [this.minDate, [Validators.required]],
     horaIni: [this.minHour, [Validators.required]],
     fechaFin: [this.minDate, [Validators.required]],
@@ -33,7 +39,8 @@ export class AddEventoComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private eventoService: EventosService
+    private eventoService: EventosService,
+    private errorService: ErrorService
   ) {}
 
   close(reason: string) {
@@ -61,6 +68,7 @@ export class AddEventoComponent implements OnInit {
       const eventoToSend: Evento = {
         _id: this.evento._id,
         description: this.description.value!,
+        image: this.image.value!,
         fechaHoraIni: fechaHoraIni,
         fechaHoraFin: fechaHoraFin,
       };
@@ -80,8 +88,21 @@ export class AddEventoComponent implements OnInit {
     }
   }
 
+  setLimiteFechaFin(fecha: NgbDateStruct) {
+    this.minDateFin = fecha;
+  }
+
+  setLimiteFechaIni(fecha: NgbDateStruct) {
+    this.maxDateIni = fecha;
+  }
+
+  //#region geters
   get description() {
     return this.eventoForm.controls.description;
+  }
+
+  get image() {
+    return this.eventoForm.controls.image;
   }
 
   get fechaIni() {
@@ -99,6 +120,7 @@ export class AddEventoComponent implements OnInit {
   get horaFin() {
     return this.eventoForm.controls.horaFin;
   }
+  //#endregion
 
   ngOnInit(): void {
     this.minDate = {
@@ -106,6 +128,7 @@ export class AddEventoComponent implements OnInit {
       month: this.today.getMonth() + 1,
       day: this.today.getDate(),
     };
+    this.minDateFin = this.minDate;
     this.minHour = {
       hour: this.today.getHours(),
       minute: this.today.getMinutes(),
@@ -126,10 +149,33 @@ export class AddEventoComponent implements OnInit {
     }
 
     this.eventoForm.controls.description.setValue(this.evento.description);
+    this.eventoForm.controls.image.setValue(this.evento.image);
     this.eventoForm.controls.fechaIni.setValue(fechaIni);
     this.eventoForm.controls.horaIni.setValue(horaIni);
     this.eventoForm.controls.fechaFin.setValue(fechaFin);
     this.eventoForm.controls.horaFin.setValue(horaFin);
+
+    this.errorSub = this.errorService.errors.subscribe((errors) => {
+      for (const error of errors) {
+        switch (error.path) {
+          case 'description':
+            this.description.setErrors({ serverError: error.msg });
+            break;
+          case 'image':
+            this.image.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraIni':
+            this.fechaIni.setErrors({ serverError: error.msg });
+            break;
+          case 'fechaHoraFin':
+            this.fechaFin.setErrors({ serverError: error.msg });
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.errorSub.unsubscribe();
   }
 
   convertDateToNgbDate(fechaHoraP: string): NgbDateStruct {

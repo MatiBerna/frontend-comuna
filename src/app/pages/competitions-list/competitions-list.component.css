@@ -1,0 +1,6 @@
+@media (min-width: 576px) {
+  .responsive-input-group {
+    width: 100%;
+    max-width: 500px;
+  }
+}
