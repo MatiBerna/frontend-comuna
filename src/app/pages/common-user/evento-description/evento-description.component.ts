@@ -143,7 +143,7 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
               console.log(error);
               this.toastService.show(error, {
                 classname: 'bg-danger text-light',
-                delay: 10000,
+                delay: 5000,
               });
             },
             complete: () => {
