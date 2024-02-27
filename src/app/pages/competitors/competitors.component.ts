@@ -112,6 +112,19 @@ export class CompetitorsComponent implements OnInit, OnDestroy {
     return hora;
   }
 
+  isOpenedInscription(fechaHoraIni: Date) {
+    let fechaActual = new Date();
+    let fechaLimite = new Date(fechaHoraIni);
+    fechaLimite.setMonth(fechaLimite.getMonth() - 1);
+    let fechaInicio = new Date(fechaHoraIni);
+
+    if (fechaActual > fechaLimite && fechaActual < fechaInicio) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   setICompetitionType(competitionType: CompetitionType | string) {
     return competitionType as CompetitionType;
   }
