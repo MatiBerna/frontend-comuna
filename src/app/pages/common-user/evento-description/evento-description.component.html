@@ -1,6 +1,17 @@
 <div class="d-flex flex-wrap">
   <div class="col-12 col-sm-6 col-lg-4 p-0">
-    <img [src]="evento?.image" alt="Imagen de fondo" class="img-fluid w-100" />
+    <img
+      *ngIf="evento?.image"
+      [src]="evento?.image"
+      alt="Imagen de fondo"
+      class="img-fluid w-100"
+    />
+    <img
+      *ngIf="!evento?.image"
+      src="../../../../assets/default-photo.jpg"
+      alt="Imagen de fondo"
+      class="img-fluid w-100"
+    />
   </div>
   <div class="col-12 col-sm-6 col-lg-8 p-2">
     <h2 class="h2">{{ evento?.description }}</h2>
@@ -49,7 +60,15 @@
       *ngFor="let competition of competitionsList"
     >
       <img
+        *ngIf="setICompetitionType(competition.competitionType!).image"
         [src]="setICompetitionType(competition.competitionType!).image"
+        class="card-img-top"
+        alt="Foto de la competencia"
+        style="height: 200px; object-fit: cover"
+      />
+      <img
+        *ngIf="!setICompetitionType(competition.competitionType!).image"
+        src="../../../../assets/default-photo.jpg"
         class="card-img-top"
         alt="Foto de la competencia"
         style="height: 200px; object-fit: cover"

@@ -11,6 +11,7 @@
           class="form-control"
           id="dniInput"
           aria-describedby="dniHelp"
+          maxlength="10"
           [ngClass]="{
             'is-invalid': (dni.dirty || dni.touched) && dni.invalid,
             'is-valid': !dni.invalid
@@ -35,6 +36,7 @@
             class="form-control"
             id="firstNameInput"
             aria-describedby="firstNameHelp"
+            maxlength="20"
             [ngClass]="{
               'is-invalid':
                 (firstName.dirty || firstName.touched) && firstName.invalid,
@@ -59,6 +61,7 @@
             formControlName="lastName"
             class="form-control"
             id="lastNameInput"
+            maxlength="30"
             aria-describedby="lastNameHelp"
             [ngClass]="{
               'is-invalid':
@@ -71,10 +74,10 @@
             class="invalid-feedback"
           >
             <div *ngIf="lastName.errors?.['required']">
-              El nombre es requerido
+              El apellido es requerido
             </div>
             <div *ngIf="lastName.errors?.['pattern']">
-              El nombre debe estar conformado solo por letras
+              El apellido debe estar conformado solo por letras
             </div>
           </div>
         </div>
@@ -108,6 +111,7 @@
           class="form-control"
           id="phoneInput"
           aria-describedby="phoneHelp"
+          maxlength="15"
           [ngClass]="{
             'is-invalid': (phone.dirty || phone.touched) && phone.invalid,
             'is-valid': !phone.invalid && (phone.dirty || phone.touched)

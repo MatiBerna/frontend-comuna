@@ -76,7 +76,15 @@
       [routerLink]="['/event', evento._id]"
     >
       <img
+        *ngIf="evento.image"
         [src]="evento.image"
+        class="card-img-top"
+        [alt]="evento.description"
+        style="height: 200px; object-fit: cover"
+      />
+      <img
+        *ngIf="!evento.image"
+        src="../../../assets/default-photo.jpg"
         class="card-img-top"
         [alt]="evento.description"
         style="height: 200px; object-fit: cover"
