@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.example.com', // URL para producción
+  apiUrl: 'https://comuna-backend.onrender.com/api', // URL para producción
 };
