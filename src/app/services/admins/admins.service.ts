@@ -7,12 +7,13 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Admin } from 'src/app/models/admin';
 import { ErrorService } from '../error/error.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminsService {
-  path: string = 'http://localhost:3000/api/admin';
+  path: string = `${environment.apiUrl}/admin`;
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   public getAll(): Observable<Admin[]> {

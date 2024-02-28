@@ -9,12 +9,13 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { PaginationResponse } from 'src/app/models/paginationResponse';
 import { Competitor } from 'src/app/models/competitor';
 import { LoginService } from '../auth/login.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompetitorsService {
-  path: string = 'http://localhost:3000/api/competitor';
+  path: string = `${environment.apiUrl}/competitor`;
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 

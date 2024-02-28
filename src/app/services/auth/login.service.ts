@@ -14,11 +14,13 @@ import {
 } from 'src/app/utils/tokenValidations';
 import { Person } from 'src/app/models/person';
 import { ToastService } from '../shared/toast/toast.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
+  path: string = `${environment.apiUrl}/auth`;
   currentUserLoginOn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -33,10 +35,7 @@ export class LoginService {
 
   login(credentials: LoginRequest): Observable<UserAndToken> {
     return this.http
-      .post<UserAndToken>(
-        'http://localhost:3000/api/auth/user/login',
-        credentials
-      )
+      .post<UserAndToken>(`${this.path}/user/login`, credentials)
       .pipe(
         tap((userData: UserAndToken) => {
           this.currentUserData.next(userData.data);
@@ -45,10 +44,7 @@ export class LoginService {
         catchError((error) => {
           if (error.status === 401) {
             return this.http
-              .post<UserAndToken>(
-                'http://localhost:3000/api/auth/admin/login',
-                credentials
-              )
+              .post<UserAndToken>(`${this.path}/admin/login`, credentials)
               .pipe(
                 tap((userData: UserAndToken) => {
                   this.currentUserData.next(userData.data);

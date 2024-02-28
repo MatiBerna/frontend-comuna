@@ -154,11 +154,7 @@
           <p class="card-text">${{ competition.costoInscripcion }}</p>
         </div>
         <div class="d-flex justify-content-between">
-          <a
-            [routerLink]="['/competitors', competition._id]"
-            *ngIf="isOpenedInscription(competition.fechaHoraIni!)"
-            >Participantes</a
-          >
+          <a [routerLink]="['/competitors', competition._id]">Participantes</a>
           <i
             class="bi bi-plus-circle"
             role="button"

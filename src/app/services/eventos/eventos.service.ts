@@ -8,12 +8,13 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Evento } from 'src/app/models/evento';
 import { ErrorService } from '../error/error.service';
 import { PaginationResponse } from 'src/app/models/paginationResponse';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventosService {
-  path: string = 'http://localhost:3000/api/evento';
+  path: string = `${environment.apiUrl}/evento`;
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
