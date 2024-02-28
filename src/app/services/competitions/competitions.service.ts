@@ -8,12 +8,13 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Competition } from 'src/app/models/competition';
 import { ErrorService } from '../error/error.service';
 import { PaginationResponse } from 'src/app/models/paginationResponse';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompetitionsService {
-  path: string = 'http://localhost:3000/api/competition';
+  path: string = `${environment.apiUrl}/competition`;
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
