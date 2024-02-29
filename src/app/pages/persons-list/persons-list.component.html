@@ -48,15 +48,17 @@
         <td>{{ person.dni }}</td>
         <td>{{ person.firstName }}</td>
         <td>{{ person.lastName }}</td>
-        <td>
+        <td class="d-flex justify-content-center flex-column flex-sm-row">
           <button
-            class="btn btn-outline-primary me-2"
+            class="btn btn-outline-primary me-0 me-sm-2 ms-auto ms-sm-0"
+            style="width: 41.6px"
             (click)="openModal(person)"
           >
             <i class="bi bi-pencil-fill"></i>
           </button>
           <button
-            class="btn btn-outline-danger my-2 my-sm-0"
+            class="btn btn-outline-danger my-2 my-sm-0 ms-auto ms-sm-0"
+            style="width: 41.6px"
             (click)="deletePerson(person)"
           >
             <i class="bi bi-trash-fill"></i>
