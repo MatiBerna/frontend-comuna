@@ -64,43 +64,45 @@
       {{ totalDocs }}
     </p>
   </div>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Descripcion</th>
-        <th scope="col">Fecha Inicio</th>
-        <th scope="col">Fecha Fin</th>
-        <th scope="col" aria-label="row actions">&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let evento of eventoList">
-        <td>{{ evento.description }}</td>
-        <td>
-          {{ this.getFecha(evento.fechaHoraIni!) }}
-          {{ this.getHora(evento.fechaHoraIni!) }}
-        </td>
-        <td>
-          {{ this.getFecha(evento.fechaHoraFin!) }}
-          {{ this.getHora(evento.fechaHoraFin!) }}
-        </td>
-        <td class="bi bi-edit">
-          <button
-            class="btn btn-outline-primary me-2"
-            (click)="openModal(evento)"
-          >
-            <i class="bi bi-pencil-fill"></i>
-          </button>
-          <button
-            class="btn btn-outline-danger mt-2 mt-md-0"
-            (click)="deleteEvento(evento)"
-          >
-            <i class="bi bi-trash-fill"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Descripcion</th>
+          <th scope="col">Fecha Inicio</th>
+          <th scope="col">Fecha Fin</th>
+          <th scope="col" aria-label="row actions">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let evento of eventoList">
+          <td>{{ evento.description }}</td>
+          <td>
+            {{ this.getFecha(evento.fechaHoraIni!) }}
+            {{ this.getHora(evento.fechaHoraIni!) }}
+          </td>
+          <td>
+            {{ this.getFecha(evento.fechaHoraFin!) }}
+            {{ this.getHora(evento.fechaHoraFin!) }}
+          </td>
+          <td class="d-flex justify-content-center flex-column flex-sm-row">
+            <button
+              class="btn btn-outline-primary me-0 me-sm-2 ms-auto ms-sm-0"
+              (click)="openModal(evento)"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button
+              class="btn btn-outline-danger my-2 my-sm-0 ms-auto ms-sm-0"
+              (click)="deleteEvento(evento)"
+            >
+              <i class="bi bi-trash-fill"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

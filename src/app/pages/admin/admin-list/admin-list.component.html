@@ -24,17 +24,14 @@
     <tbody>
       <tr *ngFor="let admin of adminList | filter : terminoBusqueda">
         <td>{{ admin.username }}</td>
-        <td class="bi bi-edit">
+        <td class="d-flex justify-content-end">
           <button
             class="btn btn-outline-primary me-2"
             (click)="openModal(admin)"
           >
             <i class="bi bi-pencil-fill"></i>
           </button>
-          <button
-            class="btn btn-outline-danger mt-2 mt-sm-0"
-            (click)="deleteAdmin(admin)"
-          >
+          <button class="btn btn-outline-danger" (click)="deleteAdmin(admin)">
             <i class="bi bi-trash-fill"></i>
           </button>
         </td>
