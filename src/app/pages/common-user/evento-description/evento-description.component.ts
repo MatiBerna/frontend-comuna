@@ -32,6 +32,8 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
   idEvento: string | undefined = undefined;
   evento?: Evento;
 
+  inscriptionList: Competitor[] = [];
+
   private loginSubs!: Subscription;
   private userDataSubs!: Subscription;
   userLoginOn: boolean = false;
@@ -74,6 +76,15 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  isRegistered(competition: string) {
+    let count: number = 0;
+    this.inscriptionList.forEach((insc) => {
+      if (insc.competition === competition) count++;
+    });
+    console.log(count);
+    return count !== 0;
   }
 
   getInscriptionOpening(fechaHoraIni: Date) {
@@ -148,6 +159,7 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
             },
             complete: () => {
               console.log('Inscripción Registrada');
+              this.getInscriptions();
               this.toastService.show('Inscripción registrada', {
                 classname: 'bg-success text-light',
                 delay: 5000,
@@ -156,6 +168,28 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
           });
         }
       });
+    }
+  }
+
+  getInscriptions() {
+    if (this.userData && this.checkUserRole() === 'Person') {
+      this.competitorsService
+        .getAll(
+          this.page,
+          undefined,
+          this.userData._id!,
+          undefined,
+          this.idEvento
+        )
+        .subscribe({
+          next: (inscriptions) => {
+            this.inscriptionList = inscriptions.docs as Competitor[];
+          },
+          error: (errorData) => {
+            console.log(errorData);
+            this.errorMessage = errorData;
+          },
+        });
     }
   }
 
@@ -174,6 +208,8 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
       },
     });
 
+    this.loginService.checkLoginStatus();
+
     this.loginSubs = this.loginService.currentUserLoginOn.subscribe({
       next: (userLoginOn) => {
         this.userLoginOn = userLoginOn;
@@ -185,6 +221,8 @@ export class EventoDescriptionComponent implements OnInit, OnDestroy {
         this.userData = userData;
       },
     });
+
+    this.getInscriptions();
 
     this.getCompetitions(this.page);
   }

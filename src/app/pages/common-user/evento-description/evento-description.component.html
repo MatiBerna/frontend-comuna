@@ -102,11 +102,24 @@
           *ngIf="
             userLoginOn &&
             checkUserRole() === 'Person' &&
-            isOpenedInscription(competition.fechaHoraIni!)
+            isOpenedInscription(competition.fechaHoraIni!) &&
+            !isRegistered(competition._id!)
           "
           (click)="addInscription(competition)"
         >
           Inscribirse
+        </button>
+        <button
+          class="btn btn-outline-success"
+          *ngIf="
+            userLoginOn &&
+            checkUserRole() === 'Person' &&
+            isOpenedInscription(competition.fechaHoraIni!) &&
+            isRegistered(competition._id!)
+          "
+          disabled
+        >
+          Inscripto
         </button>
         <p class="text-body-secondary" *ngIf="!userLoginOn">
           Inicie sesion para inscribirse
