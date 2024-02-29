@@ -23,12 +23,14 @@ export class CompetitorsService {
     page: number,
     competition?: string,
     person?: string,
-    prox?: string
+    prox?: string,
+    evento?: string
   ): Observable<PaginationResponse> {
     let query: string = `?page=${page}`;
     if (competition) query += `&competition=${competition}`;
     if (person) query += `&person=${person}`;
     if (prox && prox === 'true') query += `&prox=true`;
+    if (evento) query += `&evento=${evento}`;
     return this.http
       .get<PaginationResponse>(`${this.path}${query}`, this.createHeaders())
       .pipe(catchError(this.handleError));
